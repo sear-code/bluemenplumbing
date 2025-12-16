@@ -1,3 +1,5 @@
+'use client'
+
 import { QuoteRequest } from '@/models/Quote';
 import { CheckCircle2, Mail, Phone, MapPin, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';

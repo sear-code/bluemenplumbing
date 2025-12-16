@@ -1,15 +1,24 @@
-import { useState } from 'react';
+'use client'
+
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import QuoteForm from '@/components/forms/QuoteForm';
 import { FileText, Clock, CheckCircle, ArrowRight } from 'lucide-react';
 import Lottie from 'lottie-react';
-import bluemenLottie from '@/assets/lotties/bluemen_lottie.json';
 
 const QuoteGenerator = () => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+  const [lottieData, setLottieData] = useState(null);
+
+  useEffect(() => {
+    fetch('/assets/lotties/bluemen_lottie.json')
+      .then(response => response.json())
+      .then(data => setLottieData(data))
+      .catch(err => console.error('Failed to load Lottie animation:', err));
+  }, []);
 
   return (
     <section className="pt-8 pb-16 md:pt-0 md:pb-0 bg-gradient-to-br from-blue-50 via-white to-blue-50">
@@ -21,11 +30,13 @@ const QuoteGenerator = () => {
             aria-hidden="true"
           >
             <div className="relative z-10 w-full max-w-2xl mx-auto">
-              <Lottie 
-                animationData={bluemenLottie}
-                loop={true}
-                className="w-full h-auto"
-              />
+              {lottieData && (
+                <Lottie 
+                  animationData={lottieData}
+                  loop={true}
+                  className="w-full h-auto"
+                />
+              )}
             </div>
           </div>
 

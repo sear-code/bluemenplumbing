@@ -1,13 +1,8 @@
+'use client'
+
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Wrench, Settings, Droplets, Bath } from 'lucide-react';
-
-// Import service images
-import emergencyImage from '@/assets/services/emergency.jpg';
-import pipesImage from '@/assets/services/pipes.jpg';
-import leakRepairImage from '@/assets/services/leak-repair.jpg';
-import bathroomImage from '@/assets/services/bathroom-renovations.jpg';
-import drainCleaningImage from '@/assets/services/drain-cleaning.jpg';
 
 const Services = () => {
   const { t } = useTranslation();
@@ -17,28 +12,28 @@ const Services = () => {
       icon: Wrench,
       title: t('services.emergency.title'),
       description: t('services.emergency.description'),
-      image: emergencyImage,
+      image: '/assets/services/emergency.jpg',
       color: 'text-red-500'
     },
     {
       icon: Droplets,
       title: t('services.maintenance.title'),
       description: t('services.maintenance.description'),
-      image: drainCleaningImage,
+      image: '/assets/services/drain-cleaning.jpg',
       color: 'text-blue-500'
     },
     {
       icon: Settings,
       title: t('services.installation.title'),
       description: t('services.installation.description'),
-      image: pipesImage,
+      image: '/assets/services/pipes.jpg',
       color: 'text-primary'
     },
     {
       icon: Bath,
       title: t('services.bathroom.title'),
       description: t('services.bathroom.description'),
-      image: bathroomImage,
+      image: '/assets/services/bathroom-renovations.jpg',
       color: 'text-primary-glow'
     }
   ];

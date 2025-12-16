@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from 'react';
 import { QuoteRequest } from '@/models/Quote';
 import { quoteService } from '@/services/quoteService';

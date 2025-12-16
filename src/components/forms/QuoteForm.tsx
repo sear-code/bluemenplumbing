@@ -1,3 +1,5 @@
+'use client'
+
 import { useQuoteForm } from '@/viewmodels/useQuoteForm';
 import ServiceSelector from './ServiceSelector';
 import ProblemDetails from './ProblemDetails';
