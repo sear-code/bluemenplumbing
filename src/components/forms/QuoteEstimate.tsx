@@ -1,0 +1,177 @@
+'use client'
+
+import { QuoteRequest } from '@/models/Quote';
+import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { pricingService } from '@/services/pricingService';
+import { Clock, DollarSign, AlertCircle } from 'lucide-react';
+
+interface QuoteEstimateProps {
+  quoteData: QuoteRequest;
+}
+
+const QuoteEstimate = ({ quoteData }: QuoteEstimateProps) => {
+  const selectedServiceDetails = quoteData.selectedServices
+    .map((id) => pricingService.getServiceById(id))
+    .filter(Boolean);
+
+  const totalDuration = selectedServiceDetails.reduce(
+    (sum, service) => sum + (service?.estimatedDuration || 0),
+    0
+  );
+
+  const getUrgencyLabel = (urgency: string) => {
+    switch (urgency) {
+      case 'emergency':
+        return { text: 'Emergency', color: 'bg-[#FF8C00] text-white' };
+      case 'urgent':
+        return { text: 'Urgent', color: 'bg-orange-500 text-white' };
+      default:
+        return { text: 'Standard', color: 'bg-[#2C5F7F] text-white' };
+    }
+  };
+
+  const urgencyLabel = getUrgencyLabel(quoteData.urgency);
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          Your Estimated Quote
+        </h2>
+        <p className="text-gray-600 mb-6">
+          Based on the information provided, here's your estimated cost
+        </p>
+      </div>
+
+      {/* Price Display */}
+      <Card className="p-8 bg-gradient-to-br from-[#4492AC] to-[#357a91] text-white">
+        <div className="text-center">
+          <p className="text-lg opacity-90 mb-2">Estimated Total</p>
+          <div className="flex items-center justify-center gap-2">
+            <DollarSign className="w-8 h-8" />
+            <span className="text-5xl font-bold">
+              {quoteData.estimatedPrice || 0}
+            </span>
+          </div>
+          <p className="text-sm opacity-75 mt-3">
+            *Final price may vary based on inspection
+          </p>
+        </div>
+      </Card>
+
+      {/* Quote Details */}
+      <Card className="p-6">
+        <h3 className="font-semibold text-lg text-gray-900 mb-4">
+          Quote Details
+        </h3>
+
+        <div className="space-y-4">
+          {/* Services */}
+          <div>
+            <p className="text-sm font-medium text-gray-600 mb-2">
+              Selected Services
+            </p>
+            <div className="space-y-2">
+              {selectedServiceDetails.map((service) => (
+                <div
+                  key={service?.id}
+                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                >
+                  <span className="text-gray-900 font-medium">
+                    {service?.name}
+                  </span>
+                  <span className="text-gray-600">
+                    ${service?.basePrice}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Property & Location */}
+          <div className="flex items-center justify-between py-3 border-t border-gray-200">
+            <span className="text-sm font-medium text-gray-600">
+              Property Type
+            </span>
+            <span className="text-gray-900 capitalize">
+              {quoteData.propertyType}
+            </span>
+          </div>
+
+          <div className="flex items-center justify-between py-3 border-t border-gray-200">
+            <span className="text-sm font-medium text-gray-600">
+              Location
+            </span>
+            <span className="text-gray-900">
+              {quoteData.address.city}
+            </span>
+          </div>
+
+          {/* Urgency */}
+          <div className="flex items-center justify-between py-3 border-t border-gray-200">
+            <span className="text-sm font-medium text-gray-600">
+              Service Level
+            </span>
+            <Badge className={urgencyLabel.color}>
+              {urgencyLabel.text}
+            </Badge>
+          </div>
+
+          {/* Estimated Duration */}
+          <div className="flex items-center justify-between py-3 border-t border-gray-200">
+            <span className="text-sm font-medium text-gray-600">
+              Estimated Duration
+            </span>
+            <div className="flex items-center gap-1 text-gray-900">
+              <Clock className="w-4 h-4" />
+              <span>~{Math.round(totalDuration / 60)} hours</span>
+            </div>
+          </div>
+        </div>
+      </Card>
+
+      {/* Information Notice */}
+      <Card className="p-4 bg-blue-50 border-[#4492AC]">
+        <div className="flex items-start gap-3">
+          <AlertCircle className="w-5 h-5 text-[#4492AC] flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="text-sm text-gray-700">
+              <strong>Next Step:</strong> To proceed with this quote and book your service, 
+              we'll need your contact information and full service address. Click "Proceed" 
+              below to continue.
+            </p>
+          </div>
+        </div>
+      </Card>
+
+      {/* What's Included */}
+      <Card className="p-6">
+        <h3 className="font-semibold text-lg text-gray-900 mb-3">
+          What's Included
+        </h3>
+        <ul className="space-y-2 text-gray-700">
+          <li className="flex items-start gap-2">
+            <span className="text-[#4492AC] font-bold">✓</span>
+            <span>Professional licensed plumbers</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-[#4492AC] font-bold">✓</span>
+            <span>All necessary tools and equipment</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-[#4492AC] font-bold">✓</span>
+            <span>Cleanup after service completion</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-[#4492AC] font-bold">✓</span>
+            <span>Satisfaction guarantee</span>
+          </li>
+        </ul>
+      </Card>
+    </div>
+  );
+};
+
+export default QuoteEstimate;
+

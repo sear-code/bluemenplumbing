@@ -13,7 +13,7 @@ export interface QuoteRequest {
   // Service details
   selectedServices: string[];
   problemDescription: string;
-  urgency: 'emergency' | 'urgent' | 'normal' | 'flexible';
+  urgency: 'standard' | 'urgent' | 'emergency';
   
   // Property details
   propertyType: 'house' | 'apartment' | 'commercial';

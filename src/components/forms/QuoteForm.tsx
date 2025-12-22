@@ -5,11 +5,12 @@ import ServiceSelector from './ServiceSelector';
 import ProblemDetails from './ProblemDetails';
 import PropertyInfo from './PropertyInfo';
 import ContactInfo from './ContactInfo';
+import QuoteEstimate from './QuoteEstimate';
 import QuoteConfirmation from './QuoteConfirmation';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { AlertCircle, ArrowLeft, ArrowRight } from 'lucide-react';
+import { AlertCircle, ArrowLeft, ArrowRight, CheckCircle } from 'lucide-react';
 
 const QuoteForm = () => {
   const {
@@ -23,14 +24,15 @@ const QuoteForm = () => {
     handleSubmit,
   } = useQuoteForm();
 
-  const totalSteps = 5;
+  const totalSteps = 6;
   const progress = (currentStep / totalSteps) * 100;
 
   const stepTitles = [
     'Select Services',
+    'Property Info',
     'Describe Problem',
-    'Property Details',
-    'Contact Info',
+    'Your Quote',
+    'Contact Details',
     'Confirmation',
   ];
 
@@ -46,40 +48,55 @@ const QuoteForm = () => {
         );
       case 2:
         return (
+          <PropertyInfo
+            propertyType={formData.propertyType}
+            address={formData.address}
+            onUpdate={updateFormData}
+          />
+        );
+      case 3:
+        return (
           <ProblemDetails
             description={formData.problemDescription}
             photos={formData.photos}
             onUpdate={updateFormData}
           />
         );
-      case 3:
-        return (
-          <PropertyInfo
-            propertyType={formData.propertyType}
-            address={formData.address}
-            accessNotes={formData.accessNotes}
-            onUpdate={updateFormData}
-          />
-        );
       case 4:
+        return <QuoteEstimate quoteData={formData} />;
+      case 5:
         return (
           <ContactInfo
             customerInfo={formData.customerInfo}
+            address={formData.address}
+            accessNotes={formData.accessNotes}
             preferredDateTime={formData.preferredDateTime}
             onUpdate={updateFormData}
           />
         );
-      case 5:
+      case 6:
         return <QuoteConfirmation quoteData={formData} />;
       default:
         return null;
     }
   };
 
+  const getButtonText = () => {
+    if (currentStep === 4) return 'Proceed';
+    if (currentStep === 5) return 'Submit Quote Request';
+    return 'Next';
+  };
+
+  const getButtonIcon = () => {
+    if (currentStep === 4) return <CheckCircle className="w-4 h-4 ml-2" />;
+    if (currentStep === 5) return null;
+    return <ArrowRight className="w-4 h-4 ml-2" />;
+  };
+
   return (
     <div className="max-w-4xl mx-auto p-4 md:p-6">
       {/* Header */}
-      {currentStep < 5 && (
+      {currentStep < 6 && (
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
             Request a Free Quote
@@ -105,7 +122,7 @@ const QuoteForm = () => {
       </div>
 
       {/* Navigation Buttons */}
-      {currentStep < 5 && (
+      {currentStep < 6 && (
         <div className="flex justify-between items-center gap-4">
           <Button
             variant="outline"
@@ -117,19 +134,19 @@ const QuoteForm = () => {
             Previous
           </Button>
 
-          {currentStep < 4 ? (
+          {currentStep < 5 ? (
             <Button
               onClick={handleNextStep}
               className="px-6 bg-[#4492AC] hover:bg-[#4492AC]/90"
             >
-              Next
-              <ArrowRight className="w-4 h-4 ml-2" />
+              {getButtonText()}
+              {getButtonIcon()}
             </Button>
           ) : (
             <Button
               onClick={handleSubmit}
               disabled={isSubmitting}
-              className="px-6 bg-[#28A745] hover:bg-[#28A745]/90"
+              className="px-6 bg-[#4492AC] hover:bg-[#4492AC]/90"
             >
               {isSubmitting ? 'Submitting...' : 'Submit Quote Request'}
             </Button>

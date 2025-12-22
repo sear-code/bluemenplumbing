@@ -767,7 +767,8 @@ const useQuoteForm = ()=>{
     };
     const handleNextStep = ()=>{
         if (validateCurrentStep()) {
-            setCurrentStep((prev)=>Math.min(prev + 1, 5));
+            setCurrentStep((prev)=>Math.min(prev + 1, 6));
+            // Calculate estimate after problem description step (step 3)
             if (currentStep === 3) {
                 calculateEstimate();
             }
@@ -781,33 +782,45 @@ const useQuoteForm = ()=>{
         setError(null);
         switch(currentStep){
             case 1:
+                // Step 1: Service Selection
                 if (formData.selectedServices.length === 0) {
                     setError('Please select at least one service');
                     return false;
                 }
                 return true;
             case 2:
+                // Step 2: Property Info (only city required)
+                if (!formData.address.city || formData.address.city.trim().length === 0) {
+                    setError('Please enter your city');
+                    return false;
+                }
+                return true;
+            case 3:
+                // Step 3: Problem Description
                 if (formData.problemDescription.trim().length < 10) {
                     setError('Please provide a detailed description (at least 10 characters)');
                     return false;
                 }
                 return true;
-            case 3:
-                if (!formData.address.street || !formData.address.city || !formData.address.zipCode) {
-                    setError('Please fill in all required address fields');
-                    return false;
-                }
-                return true;
             case 4:
-                const { firstName, email, phone } = formData.customerInfo;
-                if (!firstName || !email || !phone) {
-                    setError('Please fill in all required contact fields');
+                // Step 4: Quote Estimate (no validation needed, just viewing)
+                return true;
+            case 5:
+                // Step 5: Contact Info with full address
+                const { firstName, lastName, email, phone } = formData.customerInfo;
+                if (!firstName || !lastName || !email || !phone) {
+                    setError('Please fill in all required personal information fields');
                     return false;
                 }
                 // Basic email validation
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (!emailRegex.test(email)) {
                     setError('Please enter a valid email address');
+                    return false;
+                }
+                // Validate full address
+                if (!formData.address.street || !formData.address.city || !formData.address.state || !formData.address.zipCode) {
+                    setError('Please fill in all required address fields');
                     return false;
                 }
                 return true;
@@ -829,7 +842,7 @@ const useQuoteForm = ()=>{
                 ...formData,
                 status: 'submitted'
             });
-            setCurrentStep(5); // Show confirmation
+            setCurrentStep(6); // Show confirmation
             return response;
         } catch (err) {
             setError('Failed to submit quote. Please try again.');
@@ -2770,6 +2783,511 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
 }
 }),
+"[project]/src/components/forms/QuoteEstimate.tsx [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "default",
+    ()=>__TURBOPACK__default__export__
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/card.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/badge.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$pricingService$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/services/pricingService.ts [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$clock$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Clock$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/clock.js [app-client] (ecmascript) <export default as Clock>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$dollar$2d$sign$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__DollarSign$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/dollar-sign.js [app-client] (ecmascript) <export default as DollarSign>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertCircle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-alert.js [app-client] (ecmascript) <export default as AlertCircle>");
+'use client';
+;
+;
+;
+;
+;
+const QuoteEstimate = ({ quoteData })=>{
+    const selectedServiceDetails = quoteData.selectedServices.map((id)=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$pricingService$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["pricingService"].getServiceById(id)).filter(Boolean);
+    const totalDuration = selectedServiceDetails.reduce((sum, service)=>sum + (service?.estimatedDuration || 0), 0);
+    const getUrgencyLabel = (urgency)=>{
+        switch(urgency){
+            case 'emergency':
+                return {
+                    text: 'Emergency',
+                    color: 'bg-[#FF8C00] text-white'
+                };
+            case 'urgent':
+                return {
+                    text: 'Urgent',
+                    color: 'bg-orange-500 text-white'
+                };
+            default:
+                return {
+                    text: 'Standard',
+                    color: 'bg-[#2C5F7F] text-white'
+                };
+        }
+    };
+    const urgencyLabel = getUrgencyLabel(quoteData.urgency);
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "space-y-6",
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                        className: "text-2xl font-bold text-gray-900 mb-2",
+                        children: "Your Estimated Quote"
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                        lineNumber: 39,
+                        columnNumber: 9
+                    }, ("TURBOPACK compile-time value", void 0)),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-gray-600 mb-6",
+                        children: "Based on the information provided, here's your estimated cost"
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                        lineNumber: 42,
+                        columnNumber: 9
+                    }, ("TURBOPACK compile-time value", void 0))
+                ]
+            }, void 0, true, {
+                fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                lineNumber: 38,
+                columnNumber: 7
+            }, ("TURBOPACK compile-time value", void 0)),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+                className: "p-8 bg-gradient-to-br from-[#4492AC] to-[#357a91] text-white",
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "text-center",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                            className: "text-lg opacity-90 mb-2",
+                            children: "Estimated Total"
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                            lineNumber: 50,
+                            columnNumber: 11
+                        }, ("TURBOPACK compile-time value", void 0)),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "flex items-center justify-center gap-2",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$dollar$2d$sign$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__DollarSign$3e$__["DollarSign"], {
+                                    className: "w-8 h-8"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                    lineNumber: 52,
+                                    columnNumber: 13
+                                }, ("TURBOPACK compile-time value", void 0)),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                    className: "text-5xl font-bold",
+                                    children: quoteData.estimatedPrice || 0
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                    lineNumber: 53,
+                                    columnNumber: 13
+                                }, ("TURBOPACK compile-time value", void 0))
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                            lineNumber: 51,
+                            columnNumber: 11
+                        }, ("TURBOPACK compile-time value", void 0)),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                            className: "text-sm opacity-75 mt-3",
+                            children: "*Final price may vary based on inspection"
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                            lineNumber: 57,
+                            columnNumber: 11
+                        }, ("TURBOPACK compile-time value", void 0))
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                    lineNumber: 49,
+                    columnNumber: 9
+                }, ("TURBOPACK compile-time value", void 0))
+            }, void 0, false, {
+                fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                lineNumber: 48,
+                columnNumber: 7
+            }, ("TURBOPACK compile-time value", void 0)),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+                className: "p-6",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                        className: "font-semibold text-lg text-gray-900 mb-4",
+                        children: "Quote Details"
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                        lineNumber: 65,
+                        columnNumber: 9
+                    }, ("TURBOPACK compile-time value", void 0)),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "space-y-4",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                        className: "text-sm font-medium text-gray-600 mb-2",
+                                        children: "Selected Services"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                        lineNumber: 72,
+                                        columnNumber: 13
+                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "space-y-2",
+                                        children: selectedServiceDetails.map((service)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "flex items-center justify-between p-3 bg-gray-50 rounded-lg",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "text-gray-900 font-medium",
+                                                        children: service?.name
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                                        lineNumber: 81,
+                                                        columnNumber: 19
+                                                    }, ("TURBOPACK compile-time value", void 0)),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "text-gray-600",
+                                                        children: [
+                                                            "$",
+                                                            service?.basePrice
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                                        lineNumber: 84,
+                                                        columnNumber: 19
+                                                    }, ("TURBOPACK compile-time value", void 0))
+                                                ]
+                                            }, service?.id, true, {
+                                                fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                                lineNumber: 77,
+                                                columnNumber: 17
+                                            }, ("TURBOPACK compile-time value", void 0)))
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                        lineNumber: 75,
+                                        columnNumber: 13
+                                    }, ("TURBOPACK compile-time value", void 0))
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                lineNumber: 71,
+                                columnNumber: 11
+                            }, ("TURBOPACK compile-time value", void 0)),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex items-center justify-between py-3 border-t border-gray-200",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "text-sm font-medium text-gray-600",
+                                        children: "Property Type"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                        lineNumber: 94,
+                                        columnNumber: 13
+                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "text-gray-900 capitalize",
+                                        children: quoteData.propertyType
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                        lineNumber: 97,
+                                        columnNumber: 13
+                                    }, ("TURBOPACK compile-time value", void 0))
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                lineNumber: 93,
+                                columnNumber: 11
+                            }, ("TURBOPACK compile-time value", void 0)),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex items-center justify-between py-3 border-t border-gray-200",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "text-sm font-medium text-gray-600",
+                                        children: "Location"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                        lineNumber: 103,
+                                        columnNumber: 13
+                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "text-gray-900",
+                                        children: quoteData.address.city
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                        lineNumber: 106,
+                                        columnNumber: 13
+                                    }, ("TURBOPACK compile-time value", void 0))
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                lineNumber: 102,
+                                columnNumber: 11
+                            }, ("TURBOPACK compile-time value", void 0)),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex items-center justify-between py-3 border-t border-gray-200",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "text-sm font-medium text-gray-600",
+                                        children: "Service Level"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                        lineNumber: 113,
+                                        columnNumber: 13
+                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
+                                        className: urgencyLabel.color,
+                                        children: urgencyLabel.text
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                        lineNumber: 116,
+                                        columnNumber: 13
+                                    }, ("TURBOPACK compile-time value", void 0))
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                lineNumber: 112,
+                                columnNumber: 11
+                            }, ("TURBOPACK compile-time value", void 0)),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex items-center justify-between py-3 border-t border-gray-200",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "text-sm font-medium text-gray-600",
+                                        children: "Estimated Duration"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                        lineNumber: 123,
+                                        columnNumber: 13
+                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "flex items-center gap-1 text-gray-900",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$clock$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Clock$3e$__["Clock"], {
+                                                className: "w-4 h-4"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                                lineNumber: 127,
+                                                columnNumber: 15
+                                            }, ("TURBOPACK compile-time value", void 0)),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                children: [
+                                                    "~",
+                                                    Math.round(totalDuration / 60),
+                                                    " hours"
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                                lineNumber: 128,
+                                                columnNumber: 15
+                                            }, ("TURBOPACK compile-time value", void 0))
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                        lineNumber: 126,
+                                        columnNumber: 13
+                                    }, ("TURBOPACK compile-time value", void 0))
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                lineNumber: 122,
+                                columnNumber: 11
+                            }, ("TURBOPACK compile-time value", void 0))
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                        lineNumber: 69,
+                        columnNumber: 9
+                    }, ("TURBOPACK compile-time value", void 0))
+                ]
+            }, void 0, true, {
+                fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                lineNumber: 64,
+                columnNumber: 7
+            }, ("TURBOPACK compile-time value", void 0)),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+                className: "p-4 bg-blue-50 border-[#4492AC]",
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "flex items-start gap-3",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertCircle$3e$__["AlertCircle"], {
+                            className: "w-5 h-5 text-[#4492AC] flex-shrink-0 mt-0.5"
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                            lineNumber: 137,
+                            columnNumber: 11
+                        }, ("TURBOPACK compile-time value", void 0)),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                className: "text-sm text-gray-700",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
+                                        children: "Next Step:"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                        lineNumber: 140,
+                                        columnNumber: 15
+                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    ' To proceed with this quote and book your service, we\'ll need your contact information and full service address. Click "Proceed" below to continue.'
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                lineNumber: 139,
+                                columnNumber: 13
+                            }, ("TURBOPACK compile-time value", void 0))
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                            lineNumber: 138,
+                            columnNumber: 11
+                        }, ("TURBOPACK compile-time value", void 0))
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                    lineNumber: 136,
+                    columnNumber: 9
+                }, ("TURBOPACK compile-time value", void 0))
+            }, void 0, false, {
+                fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                lineNumber: 135,
+                columnNumber: 7
+            }, ("TURBOPACK compile-time value", void 0)),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+                className: "p-6",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                        className: "font-semibold text-lg text-gray-900 mb-3",
+                        children: "What's Included"
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                        lineNumber: 150,
+                        columnNumber: 9
+                    }, ("TURBOPACK compile-time value", void 0)),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
+                        className: "space-y-2 text-gray-700",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                className: "flex items-start gap-2",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "text-[#4492AC] font-bold",
+                                        children: "✓"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                        lineNumber: 155,
+                                        columnNumber: 13
+                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        children: "Professional licensed plumbers"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                        lineNumber: 156,
+                                        columnNumber: 13
+                                    }, ("TURBOPACK compile-time value", void 0))
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                lineNumber: 154,
+                                columnNumber: 11
+                            }, ("TURBOPACK compile-time value", void 0)),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                className: "flex items-start gap-2",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "text-[#4492AC] font-bold",
+                                        children: "✓"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                        lineNumber: 159,
+                                        columnNumber: 13
+                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        children: "All necessary tools and equipment"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                        lineNumber: 160,
+                                        columnNumber: 13
+                                    }, ("TURBOPACK compile-time value", void 0))
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                lineNumber: 158,
+                                columnNumber: 11
+                            }, ("TURBOPACK compile-time value", void 0)),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                className: "flex items-start gap-2",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "text-[#4492AC] font-bold",
+                                        children: "✓"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                        lineNumber: 163,
+                                        columnNumber: 13
+                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        children: "Cleanup after service completion"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                        lineNumber: 164,
+                                        columnNumber: 13
+                                    }, ("TURBOPACK compile-time value", void 0))
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                lineNumber: 162,
+                                columnNumber: 11
+                            }, ("TURBOPACK compile-time value", void 0)),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                className: "flex items-start gap-2",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "text-[#4492AC] font-bold",
+                                        children: "✓"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                        lineNumber: 167,
+                                        columnNumber: 13
+                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        children: "Satisfaction guarantee"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                        lineNumber: 168,
+                                        columnNumber: 13
+                                    }, ("TURBOPACK compile-time value", void 0))
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                                lineNumber: 166,
+                                columnNumber: 11
+                            }, ("TURBOPACK compile-time value", void 0))
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                        lineNumber: 153,
+                        columnNumber: 9
+                    }, ("TURBOPACK compile-time value", void 0))
+                ]
+            }, void 0, true, {
+                fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+                lineNumber: 149,
+                columnNumber: 7
+            }, ("TURBOPACK compile-time value", void 0))
+        ]
+    }, void 0, true, {
+        fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
+        lineNumber: 37,
+        columnNumber: 5
+    }, ("TURBOPACK compile-time value", void 0));
+};
+_c = QuoteEstimate;
+const __TURBOPACK__default__export__ = QuoteEstimate;
+var _c;
+__turbopack_context__.k.register(_c, "QuoteEstimate");
+if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
+    __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
+}
+}),
 "[project]/src/components/forms/QuoteConfirmation.tsx [app-client] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
@@ -3405,6 +3923,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$forms$2
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$forms$2f$ProblemDetails$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/forms/ProblemDetails.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$forms$2f$PropertyInfo$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/forms/PropertyInfo.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$forms$2f$ContactInfo$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/forms/ContactInfo.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$forms$2f$QuoteEstimate$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/forms/QuoteEstimate.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$forms$2f$QuoteConfirmation$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/forms/QuoteConfirmation.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/button.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$progress$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/progress.tsx [app-client] (ecmascript)");
@@ -3412,6 +3931,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$a
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertCircle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-alert.js [app-client] (ecmascript) <export default as AlertCircle>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$left$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowLeft$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/arrow-left.js [app-client] (ecmascript) <export default as ArrowLeft>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowRight$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/arrow-right.js [app-client] (ecmascript) <export default as ArrowRight>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2d$big$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-check-big.js [app-client] (ecmascript) <export default as CheckCircle>");
 ;
 var _s = __turbopack_context__.k.signature();
 'use client';
@@ -3425,16 +3945,18 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
+;
 const QuoteForm = ()=>{
     _s();
     const { formData, currentStep, isSubmitting, error, updateFormData, handleNextStep, handlePreviousStep, handleSubmit } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$viewmodels$2f$useQuoteForm$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useQuoteForm"])();
-    const totalSteps = 5;
+    const totalSteps = 6;
     const progress = currentStep / totalSteps * 100;
     const stepTitles = [
         'Select Services',
+        'Property Info',
         'Describe Problem',
-        'Property Details',
-        'Contact Info',
+        'Your Quote',
+        'Contact Details',
         'Confirmation'
     ];
     const renderStep = ()=>{
@@ -3446,56 +3968,87 @@ const QuoteForm = ()=>{
                     onUpdate: updateFormData
                 }, void 0, false, {
                     fileName: "[project]/src/components/forms/QuoteForm.tsx",
-                    lineNumber: 41,
+                    lineNumber: 43,
                     columnNumber: 11
                 }, ("TURBOPACK compile-time value", void 0));
             case 2:
+                return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$forms$2f$PropertyInfo$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                    propertyType: formData.propertyType,
+                    address: formData.address,
+                    onUpdate: updateFormData
+                }, void 0, false, {
+                    fileName: "[project]/src/components/forms/QuoteForm.tsx",
+                    lineNumber: 51,
+                    columnNumber: 11
+                }, ("TURBOPACK compile-time value", void 0));
+            case 3:
                 return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$forms$2f$ProblemDetails$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                     description: formData.problemDescription,
                     photos: formData.photos,
                     onUpdate: updateFormData
                 }, void 0, false, {
                     fileName: "[project]/src/components/forms/QuoteForm.tsx",
-                    lineNumber: 49,
-                    columnNumber: 11
-                }, ("TURBOPACK compile-time value", void 0));
-            case 3:
-                return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$forms$2f$PropertyInfo$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                    propertyType: formData.propertyType,
-                    address: formData.address,
-                    accessNotes: formData.accessNotes,
-                    onUpdate: updateFormData
-                }, void 0, false, {
-                    fileName: "[project]/src/components/forms/QuoteForm.tsx",
-                    lineNumber: 57,
+                    lineNumber: 59,
                     columnNumber: 11
                 }, ("TURBOPACK compile-time value", void 0));
             case 4:
+                return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$forms$2f$QuoteEstimate$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                    quoteData: formData
+                }, void 0, false, {
+                    fileName: "[project]/src/components/forms/QuoteForm.tsx",
+                    lineNumber: 66,
+                    columnNumber: 16
+                }, ("TURBOPACK compile-time value", void 0));
+            case 5:
                 return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$forms$2f$ContactInfo$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                     customerInfo: formData.customerInfo,
+                    address: formData.address,
+                    accessNotes: formData.accessNotes,
                     preferredDateTime: formData.preferredDateTime,
                     onUpdate: updateFormData
                 }, void 0, false, {
                     fileName: "[project]/src/components/forms/QuoteForm.tsx",
-                    lineNumber: 66,
+                    lineNumber: 69,
                     columnNumber: 11
                 }, ("TURBOPACK compile-time value", void 0));
-            case 5:
+            case 6:
                 return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$forms$2f$QuoteConfirmation$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                     quoteData: formData
                 }, void 0, false, {
                     fileName: "[project]/src/components/forms/QuoteForm.tsx",
-                    lineNumber: 73,
+                    lineNumber: 78,
                     columnNumber: 16
                 }, ("TURBOPACK compile-time value", void 0));
             default:
                 return null;
         }
     };
+    const getButtonText = ()=>{
+        if (currentStep === 4) return 'Proceed';
+        if (currentStep === 5) return 'Submit Quote Request';
+        return 'Next';
+    };
+    const getButtonIcon = ()=>{
+        if (currentStep === 4) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2d$big$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle$3e$__["CheckCircle"], {
+            className: "w-4 h-4 ml-2"
+        }, void 0, false, {
+            fileName: "[project]/src/components/forms/QuoteForm.tsx",
+            lineNumber: 91,
+            columnNumber: 35
+        }, ("TURBOPACK compile-time value", void 0));
+        if (currentStep === 5) return null;
+        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowRight$3e$__["ArrowRight"], {
+            className: "w-4 h-4 ml-2"
+        }, void 0, false, {
+            fileName: "[project]/src/components/forms/QuoteForm.tsx",
+            lineNumber: 93,
+            columnNumber: 12
+        }, ("TURBOPACK compile-time value", void 0));
+    };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "max-w-4xl mx-auto p-4 md:p-6",
         children: [
-            currentStep < 5 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            currentStep < 6 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "mb-8",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -3503,7 +4056,7 @@ const QuoteForm = ()=>{
                         children: "Request a Free Quote"
                     }, void 0, false, {
                         fileName: "[project]/src/components/forms/QuoteForm.tsx",
-                        lineNumber: 84,
+                        lineNumber: 101,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3518,7 +4071,7 @@ const QuoteForm = ()=>{
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/forms/QuoteForm.tsx",
-                        lineNumber: 87,
+                        lineNumber: 104,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$progress$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Progress"], {
@@ -3526,13 +4079,13 @@ const QuoteForm = ()=>{
                         className: "h-2"
                     }, void 0, false, {
                         fileName: "[project]/src/components/forms/QuoteForm.tsx",
-                        lineNumber: 90,
+                        lineNumber: 107,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/forms/QuoteForm.tsx",
-                lineNumber: 83,
+                lineNumber: 100,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0)),
             error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$alert$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Alert"], {
@@ -3543,20 +4096,20 @@ const QuoteForm = ()=>{
                         className: "h-4 w-4"
                     }, void 0, false, {
                         fileName: "[project]/src/components/forms/QuoteForm.tsx",
-                        lineNumber: 97,
+                        lineNumber: 114,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$alert$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDescription"], {
                         children: error
                     }, void 0, false, {
                         fileName: "[project]/src/components/forms/QuoteForm.tsx",
-                        lineNumber: 98,
+                        lineNumber: 115,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/forms/QuoteForm.tsx",
-                lineNumber: 96,
+                lineNumber: 113,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3564,10 +4117,10 @@ const QuoteForm = ()=>{
                 children: renderStep()
             }, void 0, false, {
                 fileName: "[project]/src/components/forms/QuoteForm.tsx",
-                lineNumber: 103,
+                lineNumber: 120,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
-            currentStep < 5 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            currentStep < 6 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "flex justify-between items-center gap-4",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -3580,53 +4133,47 @@ const QuoteForm = ()=>{
                                 className: "w-4 h-4 mr-2"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/forms/QuoteForm.tsx",
-                                lineNumber: 116,
+                                lineNumber: 133,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0)),
                             "Previous"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/forms/QuoteForm.tsx",
-                        lineNumber: 110,
+                        lineNumber: 127,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)),
-                    currentStep < 4 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                    currentStep < 5 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                         onClick: handleNextStep,
                         className: "px-6 bg-[#4492AC] hover:bg-[#4492AC]/90",
                         children: [
-                            "Next",
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowRight$3e$__["ArrowRight"], {
-                                className: "w-4 h-4 ml-2"
-                            }, void 0, false, {
-                                fileName: "[project]/src/components/forms/QuoteForm.tsx",
-                                lineNumber: 126,
-                                columnNumber: 15
-                            }, ("TURBOPACK compile-time value", void 0))
+                            getButtonText(),
+                            getButtonIcon()
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/forms/QuoteForm.tsx",
-                        lineNumber: 121,
+                        lineNumber: 138,
                         columnNumber: 13
                     }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                         onClick: handleSubmit,
                         disabled: isSubmitting,
-                        className: "px-6 bg-[#28A745] hover:bg-[#28A745]/90",
+                        className: "px-6 bg-[#4492AC] hover:bg-[#4492AC]/90",
                         children: isSubmitting ? 'Submitting...' : 'Submit Quote Request'
                     }, void 0, false, {
                         fileName: "[project]/src/components/forms/QuoteForm.tsx",
-                        lineNumber: 129,
+                        lineNumber: 146,
                         columnNumber: 13
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/forms/QuoteForm.tsx",
-                lineNumber: 109,
+                lineNumber: 126,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/forms/QuoteForm.tsx",
-        lineNumber: 80,
+        lineNumber: 97,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };
@@ -5519,4 +6066,4 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
 }),
 ]);
 
-//# sourceMappingURL=_f0217638._.js.map
+//# sourceMappingURL=_d53c8c2c._.js.map

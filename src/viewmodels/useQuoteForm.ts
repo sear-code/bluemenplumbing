@@ -13,7 +13,7 @@ export const useQuoteForm = () => {
   const [formData, setFormData] = useState<QuoteRequest>({
     selectedServices: [],
     problemDescription: '',
-    urgency: 'normal',
+    urgency: 'standard',
     propertyType: 'house',
     address: {
       street: '',
@@ -46,7 +46,8 @@ export const useQuoteForm = () => {
 
   const handleNextStep = () => {
     if (validateCurrentStep()) {
-      setCurrentStep((prev) => Math.min(prev + 1, 5));
+      setCurrentStep((prev) => Math.min(prev + 1, 6));
+      // Calculate estimate after problem description step (step 3)
       if (currentStep === 3) {
         calculateEstimate();
       }
@@ -63,33 +64,46 @@ export const useQuoteForm = () => {
     
     switch (currentStep) {
       case 1:
+        // Step 1: Service Selection
         if (formData.selectedServices.length === 0) {
           setError('Please select at least one service');
           return false;
         }
         return true;
       case 2:
+        // Step 2: Property Info (only city required)
+        if (!formData.address.city || formData.address.city.trim().length === 0) {
+          setError('Please enter your city');
+          return false;
+        }
+        return true;
+      case 3:
+        // Step 3: Problem Description
         if (formData.problemDescription.trim().length < 10) {
           setError('Please provide a detailed description (at least 10 characters)');
           return false;
         }
         return true;
-      case 3:
-        if (!formData.address.street || !formData.address.city || !formData.address.zipCode) {
-          setError('Please fill in all required address fields');
-          return false;
-        }
-        return true;
       case 4:
-        const { firstName, email, phone } = formData.customerInfo;
-        if (!firstName || !email || !phone) {
-          setError('Please fill in all required contact fields');
+        // Step 4: Quote Estimate (no validation needed, just viewing)
+        return true;
+      case 5:
+        // Step 5: Contact Info with full address
+        const { firstName, lastName, email, phone } = formData.customerInfo;
+        if (!firstName || !lastName || !email || !phone) {
+          setError('Please fill in all required personal information fields');
           return false;
         }
         // Basic email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
           setError('Please enter a valid email address');
+          return false;
+        }
+        // Validate full address
+        if (!formData.address.street || !formData.address.city || 
+            !formData.address.state || !formData.address.zipCode) {
+          setError('Please fill in all required address fields');
           return false;
         }
         return true;
@@ -116,7 +130,7 @@ export const useQuoteForm = () => {
         status: 'submitted',
       });
       
-      setCurrentStep(5); // Show confirmation
+      setCurrentStep(6); // Show confirmation
       return response;
     } catch (err) {
       setError('Failed to submit quote. Please try again.');
@@ -130,7 +144,7 @@ export const useQuoteForm = () => {
     setFormData({
       selectedServices: [],
       problemDescription: '',
-      urgency: 'normal',
+      urgency: 'standard',
       propertyType: 'house',
       address: {
         street: '',

@@ -97,16 +97,9 @@ const ServiceSelector = ({
           className="space-y-3"
         >
           <div className="flex items-center space-x-3 p-3 rounded-lg border border-gray-200 hover:border-[#4492AC] transition-colors">
-            <RadioGroupItem value="flexible" id="flexible" />
-            <Label htmlFor="flexible" className="cursor-pointer flex-1">
-              <span className="font-medium">Flexible</span>
-              <span className="text-sm text-gray-500 ml-2">(within 1-2 weeks)</span>
-            </Label>
-          </div>
-          <div className="flex items-center space-x-3 p-3 rounded-lg border border-gray-200 hover:border-[#4492AC] transition-colors">
-            <RadioGroupItem value="normal" id="normal" />
-            <Label htmlFor="normal" className="cursor-pointer flex-1">
-              <span className="font-medium">Normal</span>
+            <RadioGroupItem value="standard" id="standard" />
+            <Label htmlFor="standard" className="cursor-pointer flex-1">
+              <span className="font-medium">Standard</span>
               <span className="text-sm text-gray-500 ml-2">(within 3-5 days)</span>
             </Label>
           </div>
