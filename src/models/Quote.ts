@@ -9,9 +9,36 @@ export interface Service {
   icon?: string;
 }
 
+// Two-tier service structure
+export interface ServiceItem {
+  id: string;
+  name: string;
+  description?: string;
+  unitPrice: number;
+  partsExtra: boolean;
+  partsPrice?: number;
+  estimatedDuration: number;
+  displayOrder: number;
+}
+
+export interface ServiceCategory {
+  id: string;
+  name: string;
+  description: string;
+  category: 'rough-in' | 'finishing' | 'kitchen' | 'laundry' | 'repair' | 'maintenance';
+  icon: string;
+  priceRangeMin: number;
+  priceRangeMax: number;
+  estimatedDuration: number;
+  items: ServiceItem[];
+  displayOrder: number;
+}
+
 export interface QuoteRequest {
   // Service details
-  selectedServices: string[];
+  selectedServices: string[]; // Array of service item IDs
+  selectedCategories: string[]; // Array of category IDs
+  customService?: string; // Custom service description if not in list
   problemDescription: string;
   urgency: 'standard' | 'urgent' | 'emergency';
   

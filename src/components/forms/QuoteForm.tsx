@@ -1,7 +1,7 @@
 'use client'
 
 import { useQuoteForm } from '@/viewmodels/useQuoteForm';
-import ServiceSelector from './ServiceSelector';
+import ServiceSelectorTwoTier from './ServiceSelectorTwoTier';
 import ProblemDetails from './ProblemDetails';
 import PropertyInfo from './PropertyInfo';
 import ContactInfo from './ContactInfo';
@@ -40,7 +40,7 @@ const QuoteForm = () => {
     switch (currentStep) {
       case 1:
         return (
-          <ServiceSelector
+          <ServiceSelectorTwoTier
             selectedServices={formData.selectedServices}
             urgency={formData.urgency}
             onUpdate={updateFormData}
@@ -65,6 +65,9 @@ const QuoteForm = () => {
       case 4:
         return <QuoteEstimate quoteData={formData} />;
       case 5:
+        const isCustomOnly = formData.selectedServices.length === 0 && 
+                            formData.customService && 
+                            formData.customService.trim().length > 0;
         return (
           <ContactInfo
             customerInfo={formData.customerInfo}
@@ -72,6 +75,7 @@ const QuoteForm = () => {
             accessNotes={formData.accessNotes}
             preferredDateTime={formData.preferredDateTime}
             onUpdate={updateFormData}
+            isCustomServiceOnly={isCustomOnly}
           />
         );
       case 6:

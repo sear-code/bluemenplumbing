@@ -26,6 +26,7 @@ interface ContactInfoProps {
   accessNotes?: string;
   preferredDateTime?: string;
   onUpdate: (updates: any) => void;
+  isCustomServiceOnly?: boolean;
 }
 
 const ContactInfo = ({
@@ -34,6 +35,7 @@ const ContactInfo = ({
   accessNotes,
   preferredDateTime,
   onUpdate,
+  isCustomServiceOnly = false,
 }: ContactInfoProps) => {
   const [date, setDate] = useState<Date | undefined>(
     preferredDateTime ? new Date(preferredDateTime) : undefined
@@ -68,10 +70,12 @@ const ContactInfo = ({
     <div className="space-y-8">
       <div>
         <h2 className="text-2xl font-bold text-gray-900 mb-2">
-          Contact & Service Address
+          {isCustomServiceOnly ? 'Contact Information' : 'Contact & Service Address'}
         </h2>
         <p className="text-gray-600 mb-6">
-          Please provide your contact details and complete service address
+          {isCustomServiceOnly 
+            ? 'Please provide your contact details so we can discuss your custom service request'
+            : 'Please provide your contact details and complete service address'}
         </p>
 
         <div className="space-y-6">
@@ -141,9 +145,10 @@ const ContactInfo = ({
             </div>
           </div>
 
-          {/* Service Address */}
-          <div className="space-y-4 pt-4 border-t border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-900">Service Address</h3>
+          {/* Service Address - Optional for custom service only */}
+          {!isCustomServiceOnly && (
+            <div className="space-y-4 pt-4 border-t border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-900">Service Address</h3>
             <div>
               <Label htmlFor="street" className="text-base font-medium">
                 Street Address *
@@ -222,10 +227,12 @@ const ContactInfo = ({
               />
             </div>
           </div>
+          )}
         </div>
       </div>
 
-      <div className="pt-4 border-t border-gray-200">
+      {!isCustomServiceOnly && (
+        <div className="pt-4 border-t border-gray-200">
         <Label className="text-base font-medium mb-2 block">
           Preferred Date & Time (Optional)
         </Label>
@@ -259,7 +266,8 @@ const ContactInfo = ({
             We'll do our best to accommodate your preferred date. Our team will contact you to confirm availability.
           </p>
         )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

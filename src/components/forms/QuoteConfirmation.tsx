@@ -15,6 +15,12 @@ const QuoteConfirmation = ({ quoteData }: QuoteConfirmationProps) => {
     (id) => pricingService.getServiceById(id)
   ).filter(Boolean);
 
+  // Check if this is a custom service request
+  const isCustomServiceRequest = 
+    quoteData.selectedServices.length === 0 && 
+    quoteData.customService && 
+    quoteData.customService.trim().length > 0;
+
   return (
     <div className="space-y-6">
       <div className="text-center">
@@ -22,7 +28,7 @@ const QuoteConfirmation = ({ quoteData }: QuoteConfirmationProps) => {
           <CheckCircle2 className="w-10 h-10 text-green-600" />
         </div>
         <h2 className="text-3xl font-bold text-gray-900 mb-2">
-          Quote Request Submitted!
+          {isCustomServiceRequest ? 'Custom Quote Request Received!' : 'Quote Request Submitted!'}
         </h2>
         <p className="text-lg text-gray-600">
           Thank you for choosing Blue Men Plumbing
@@ -35,23 +41,40 @@ const QuoteConfirmation = ({ quoteData }: QuoteConfirmationProps) => {
             <h3 className="font-semibold text-lg text-gray-900 mb-3">
               What happens next?
             </h3>
-            <ul className="space-y-2 text-gray-700">
-              <li className="flex items-start gap-2">
-                <span className="text-[#4492AC] font-bold">1.</span>
-                <span>Our team will review your quote request within 24 hours</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-[#4492AC] font-bold">2.</span>
-                <span>We'll contact you via phone or email with a detailed quote</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-[#4492AC] font-bold">3.</span>
-                <span>Once approved, we'll schedule your service at your convenience</span>
-              </li>
-            </ul>
+            {isCustomServiceRequest ? (
+              <ul className="space-y-2 text-gray-700">
+                <li className="flex items-start gap-2">
+                  <span className="text-[#4492AC] font-bold">1.</span>
+                  <span>Our team will carefully review your custom service request</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#4492AC] font-bold">2.</span>
+                  <span>We'll contact you within 24 hours to discuss your specific needs</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#4492AC] font-bold">3.</span>
+                  <span>After understanding your requirements, we'll provide a detailed custom quote</span>
+                </li>
+              </ul>
+            ) : (
+              <ul className="space-y-2 text-gray-700">
+                <li className="flex items-start gap-2">
+                  <span className="text-[#4492AC] font-bold">1.</span>
+                  <span>Our team will review your quote request within 24 hours</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#4492AC] font-bold">2.</span>
+                  <span>We'll contact you via phone or email with a detailed quote</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#4492AC] font-bold">3.</span>
+                  <span>Once approved, we'll schedule your service at your convenience</span>
+                </li>
+              </ul>
+            )}
           </div>
 
-          {quoteData.estimatedPrice && (
+          {!isCustomServiceRequest && quoteData.estimatedPrice && (
             <div className="pt-4 border-t border-blue-200">
               <p className="text-sm text-gray-600 mb-1">Estimated Price Range</p>
               <p className="text-2xl font-bold text-[#4492AC]">
@@ -71,27 +94,51 @@ const QuoteConfirmation = ({ quoteData }: QuoteConfirmationProps) => {
         </h3>
 
         <div className="space-y-4">
-          <div>
-            <p className="text-sm font-medium text-gray-600 mb-2">Selected Services</p>
-            <ul className="space-y-1">
-              {selectedServiceDetails.map((service) => (
-                <li key={service?.id} className="text-gray-900">
-                  • {service?.name}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="flex items-start gap-2">
-            <MapPin className="w-5 h-5 text-gray-500 mt-0.5" />
+          {isCustomServiceRequest ? (
             <div>
-              <p className="text-sm font-medium text-gray-600">Service Address</p>
-              <p className="text-gray-900">
-                {quoteData.address.street}, {quoteData.address.city},{' '}
-                {quoteData.address.state} {quoteData.address.zipCode}
-              </p>
+              <p className="text-sm font-medium text-gray-600 mb-2">Custom Service Request</p>
+              <div className="p-3 bg-blue-50 rounded-lg border border-[#4492AC]">
+                <p className="text-gray-900">{quoteData.customService}</p>
+              </div>
+              {quoteData.photos && quoteData.photos.length > 0 && (
+                <p className="text-sm text-gray-600 mt-2">
+                  📷 {quoteData.photos.length} photo{quoteData.photos.length !== 1 ? 's' : ''} attached
+                </p>
+              )}
             </div>
-          </div>
+          ) : (
+            <div>
+              <p className="text-sm font-medium text-gray-600 mb-2">Selected Services</p>
+              <ul className="space-y-1">
+                {selectedServiceDetails.map((service) => (
+                  <li key={service?.id} className="text-gray-900">
+                    • {service?.name}
+                  </li>
+                ))}
+              </ul>
+              {quoteData.customService && quoteData.customService.trim().length > 0 && (
+                <div className="mt-3">
+                  <p className="text-sm font-medium text-gray-600 mb-1">Additional Notes</p>
+                  <div className="p-3 bg-blue-50 rounded-lg border border-[#4492AC]">
+                    <p className="text-gray-900">{quoteData.customService}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {!isCustomServiceRequest && quoteData.address.street && (
+            <div className="flex items-start gap-2">
+              <MapPin className="w-5 h-5 text-gray-500 mt-0.5" />
+              <div>
+                <p className="text-sm font-medium text-gray-600">Service Address</p>
+                <p className="text-gray-900">
+                  {quoteData.address.street}, {quoteData.address.city},{' '}
+                  {quoteData.address.state} {quoteData.address.zipCode}
+                </p>
+              </div>
+            </div>
+          )}
 
           <div className="flex items-start gap-2">
             <Mail className="w-5 h-5 text-gray-500 mt-0.5" />

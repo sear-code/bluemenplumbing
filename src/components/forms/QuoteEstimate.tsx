@@ -3,7 +3,7 @@
 import { QuoteRequest } from '@/models/Quote';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { pricingService } from '@/services/pricingService';
+import { getServiceItemById, calculateTotalDuration } from '@/services/serviceData';
 import { Clock, DollarSign, AlertCircle } from 'lucide-react';
 
 interface QuoteEstimateProps {
@@ -12,13 +12,10 @@ interface QuoteEstimateProps {
 
 const QuoteEstimate = ({ quoteData }: QuoteEstimateProps) => {
   const selectedServiceDetails = quoteData.selectedServices
-    .map((id) => pricingService.getServiceById(id))
+    .map((id) => getServiceItemById(id))
     .filter(Boolean);
 
-  const totalDuration = selectedServiceDetails.reduce(
-    (sum, service) => sum + (service?.estimatedDuration || 0),
-    0
-  );
+  const totalDuration = calculateTotalDuration(quoteData.selectedServices);
 
   const getUrgencyLabel = (urgency: string) => {
     switch (urgency) {
@@ -73,19 +70,57 @@ const QuoteEstimate = ({ quoteData }: QuoteEstimateProps) => {
               Selected Services
             </p>
             <div className="space-y-2">
-              {selectedServiceDetails.map((service) => (
-                <div
-                  key={service?.id}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-                >
-                  <span className="text-gray-900 font-medium">
-                    {service?.name}
-                  </span>
-                  <span className="text-gray-600">
-                    ${service?.basePrice}
-                  </span>
+              {selectedServiceDetails.map((serviceData) => {
+                if (!serviceData) return null;
+                const { category, item } = serviceData;
+                return (
+                  <div
+                    key={item.id}
+                    className="p-3 bg-gray-50 rounded-lg"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1">
+                        <p className="text-xs text-gray-500 mb-1">
+                          {category.name}
+                        </p>
+                        <p className="text-gray-900 font-medium">
+                          {item.name}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-gray-900 font-semibold">
+                          ${item.unitPrice}
+                        </span>
+                        {item.partsExtra && (
+                          <p className="text-xs text-orange-600 mt-1">
+                            + parts
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+              {/* Custom Service */}
+              {quoteData.customService && quoteData.customService.trim().length > 0 && (
+                <div className="p-3 bg-blue-50 rounded-lg border border-[#4492AC]">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <p className="text-xs text-[#4492AC] font-medium mb-1">
+                        Custom Service Request
+                      </p>
+                      <p className="text-gray-900 font-medium text-sm">
+                        {quoteData.customService}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-xs text-gray-600">
+                        Quote Required
+                      </span>
+                    </div>
+                  </div>
                 </div>
-              ))}
+              )}
             </div>
           </div>
 
