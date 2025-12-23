@@ -6,13 +6,13 @@ import { Providers } from './providers'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Blue Men Plumbing - Professional Plumbing Services in Vancouver',
+  title: 'Blue Men Plumbing - Professional Plumbing Services in GTA',
   description: 'Quality plumbing services at affordable prices. Emergency repairs, bathroom renovations, drain cleaning, and more. Why pay more when you can pay less!',
-  keywords: ['plumbing', 'vancouver', 'emergency plumber', 'drain cleaning', 'bathroom renovation', 'leak repair'],
+  keywords: ['plumbing', 'GTA', 'Toronto', 'Scarborough', 'emergency plumber', 'drain cleaning', 'bathroom renovation', 'leak repair'],
   authors: [{ name: 'Blue Men Plumbing' }],
   openGraph: {
     title: 'Blue Men Plumbing - Professional Plumbing Services',
-    description: 'Quality plumbing services at affordable prices in Vancouver',
+    description: 'Quality plumbing services at affordable prices in GTA',
     type: 'website',
     locale: 'en_CA',
     alternateLocale: 'fr_CA',

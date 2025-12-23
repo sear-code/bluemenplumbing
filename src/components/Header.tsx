@@ -48,22 +48,22 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             <button
+              onClick={() => scrollToSection('quote')}
+              className="text-foreground hover:text-primary transition-colors"
+            >
+              {t('nav.quote')}
+            </button>
+            <button
               onClick={() => scrollToSection('services')}
               className="text-foreground hover:text-primary transition-colors"
             >
               {t('nav.services')}
             </button>
             <button
-              onClick={() => scrollToSection('about')}
-              className="text-foreground hover:text-primary transition-colors"
-            >
-              {t('nav.about')}
-            </button>
-            <button
               onClick={() => scrollToSection('testimonials')}
               className="text-foreground hover:text-primary transition-colors"
             >
-              {t('nav.testimonials')}
+              {t('nav.reviews')}
             </button>
             <button
               onClick={() => scrollToSection('contact')}
@@ -110,22 +110,22 @@ const Header = () => {
           <div className="md:hidden py-4 animate-fade-in">
             <nav className="flex flex-col space-y-4">
               <button
+                onClick={() => scrollToSection('quote')}
+                className="text-left text-foreground hover:text-primary transition-colors"
+              >
+                {t('nav.quote')}
+              </button>
+              <button
                 onClick={() => scrollToSection('services')}
                 className="text-left text-foreground hover:text-primary transition-colors"
               >
                 {t('nav.services')}
               </button>
               <button
-                onClick={() => scrollToSection('about')}
-                className="text-left text-foreground hover:text-primary transition-colors"
-              >
-                {t('nav.about')}
-              </button>
-              <button
                 onClick={() => scrollToSection('testimonials')}
                 className="text-left text-foreground hover:text-primary transition-colors"
               >
-                {t('nav.testimonials')}
+                {t('nav.reviews')}
               </button>
               <button
                 onClick={() => scrollToSection('contact')}

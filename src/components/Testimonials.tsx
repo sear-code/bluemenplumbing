@@ -58,7 +58,7 @@ const Testimonials = () => {
           {testimonials.map((testimonial, index) => (
             <Card 
               key={index}
-              className="bg-gradient-card border-border/50 hover:shadow-card-hover transition-all duration-300 hover:-translate-y-2 animate-fade-in relative"
+              className="bg-gradient-card border-border/50 hover:shadow-card-hover transition-all duration-300 hover:-translate-y-2 animate-fade-in relative flex flex-col h-full"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <CardHeader>
@@ -71,13 +71,13 @@ const Testimonials = () => {
                   </div>
                 </div>
               </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground mb-4 italic">
+              <CardContent className="flex flex-col flex-grow">
+                <p className="text-muted-foreground mb-4 italic flex-grow">
                   "{testimonial.text}"
                 </p>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between mt-auto pt-4">
                   <div className="flex items-center">
-                    <div className="w-10 h-10 bg-[#4492AC] rounded-full flex items-center justify-center mr-3">
+                    <div className="w-10 h-10 bg-[#4492AC] rounded-full flex items-center justify-center mr-3 flex-shrink-0">
                       <span className="text-white font-semibold">
                         {testimonial.author.charAt(0)}
                       </span>

@@ -59,20 +59,20 @@
   "testimonials": {
     "title": "Ce Que Disent Nos Clients",
     "subtitle": "Vrais avis de nos clients satisfaits",
-    "googleLink": "https://g.co/kgs/9TyFHga",
+    "googleLink": "https://share.google/B88kLmpVaa9flScJr",
     "review1": {
-      "text": "Service professionnel et temps de réponse rapide. Ils ont réparé notre problème de plomberie d'urgence le jour même. Je recommande vivement Blue Men Plumbing !",
-      "author": "Avis Client",
+      "text": "Ali, is very professional, friendly and reliable. He and his brother are amazing and do not over charge or scam in any way. I recommend them for all your plumbing needs.",
+      "author": "E Prab",
       "platform": "Google"
     },
     "review2": {
-      "text": "Excellent travail sur notre rénovation de salle de bain. Propre, efficace et prix raisonnable. Nous les utiliserons certainement à nouveau.",
-      "author": "Client Vérifié",
+      "text": "Had a great experience with them. All came right on time on a saturday morning, and he quickly fixed 3-4 problems in my apartment unit such as fixing a sliding mirror door, re-installing a door and a few other minor problems. Will highly recommend them.",
+      "author": "Sogl Nasab",
       "platform": "Google"
     },
     "review3": {
-      "text": "Je les ai appelés pour une réparation de fuite et ils sont venus immédiatement. Équipe très professionnelle et travail de qualité. 5 étoiles !",
-      "author": "Résident Local",
+      "text": "I was so fortunate to come across and use Blue Men Plumbing. They were prompt, efficient and did great work. Their quote and final price was lower than I expected. Anyone needing a professional plumber for a small or an extensive large job; they are who to call and you won't be disappointed.",
+      "author": "Michael Masse",
       "platform": "Google"
     },
     "viewAll": "Voir Tous les Avis Google"
@@ -86,9 +86,9 @@
     "hours": "Service d'Urgence Disponible 24/7"
   },
   "nav": {
+    "quote": "Devis",
     "services": "Services",
-    "about": "À Propos",
-    "testimonials": "Avis",
+    "reviews": "Avis",
     "contact": "Contact"
   },
   "footer": {

@@ -693,12 +693,12 @@ body {
   margin-left: .25rem;
 }
 
-.ml-12 {
-  margin-left: 3rem;
-}
-
 .ml-2 {
   margin-left: .5rem;
+}
+
+.ml-3 {
+  margin-left: .75rem;
 }
 
 .ml-8 {
@@ -763,6 +763,13 @@ body {
 
 .mt-auto {
   margin-top: auto;
+}
+
+.line-clamp-4 {
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  overflow: hidden;
 }
 
 .block {
@@ -926,6 +933,10 @@ body {
   min-height: 0;
 }
 
+.min-h-\[120px\] {
+  min-height: 120px;
+}
+
 .min-h-\[150px\] {
   min-height: 150px;
 }
@@ -940,10 +951,6 @@ body {
 
 .min-h-svh {
   min-height: 100svh;
-}
-
-.min-h-\[120px\] {
-  min-height: 120px;
 }
 
 .w-0 {
@@ -1118,7 +1125,7 @@ body {
   flex-shrink: 0;
 }
 
-.grow {
+.flex-grow, .grow {
   flex-grow: 1;
 }
 
@@ -1224,6 +1231,16 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: 1s linear infinite spin;
 }
 
 .cursor-default {
@@ -1431,6 +1448,10 @@ body {
   overflow-wrap: break-word;
 }
 
+.rounded {
+  border-radius: .25rem;
+}
+
 .rounded-2xl {
   border-radius: 1rem;
 }
@@ -1457,10 +1478,6 @@ body {
 
 .rounded-sm {
   border-radius: calc(var(--radius)  - 4px);
-}
-
-.rounded {
-  border-radius: .25rem;
 }
 
 .rounded-t-\[10px\] {
@@ -1910,6 +1927,11 @@ body {
 .py-1\.5 {
   padding-top: .375rem;
   padding-bottom: .375rem;
+}
+
+.py-12 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
 }
 
 .py-2 {
@@ -2538,10 +2560,6 @@ body {
 
 .zoom-in-95 {
   --tw-enter-scale: .95;
-}
-
-.slide-in-from-top {
-  --tw-enter-translate-y: -100%;
 }
 
 .duration-1000 {

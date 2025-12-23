@@ -81,11 +81,13 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$providers$2e$tsx__$5b
 ;
 ;
 const metadata = {
-    title: 'Blue Men Plumbing - Professional Plumbing Services in Vancouver',
+    title: 'Blue Men Plumbing - Professional Plumbing Services in GTA',
     description: 'Quality plumbing services at affordable prices. Emergency repairs, bathroom renovations, drain cleaning, and more. Why pay more when you can pay less!',
     keywords: [
         'plumbing',
-        'vancouver',
+        'GTA',
+        'Toronto',
+        'Scarborough',
         'emergency plumber',
         'drain cleaning',
         'bathroom renovation',
@@ -98,7 +100,7 @@ const metadata = {
     ],
     openGraph: {
         title: 'Blue Men Plumbing - Professional Plumbing Services',
-        description: 'Quality plumbing services at affordable prices in Vancouver',
+        description: 'Quality plumbing services at affordable prices in GTA',
         type: 'website',
         locale: 'en_CA',
         alternateLocale: 'fr_CA'

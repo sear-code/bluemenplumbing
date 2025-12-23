@@ -59,20 +59,20 @@
   "testimonials": {
     "title": "What Our Customers Say",
     "subtitle": "Real reviews from our satisfied customers",
-    "googleLink": "https://g.co/kgs/9TyFHga",
+    "googleLink": "https://share.google/B88kLmpVaa9flScJr",
     "review1": {
-      "text": "Professional service and quick response time. Fixed our emergency plumbing issue same day. Highly recommend Blue Men Plumbing!",
-      "author": "Customer Review",
+      "text": "Ali, is very professional, friendly and reliable. He and his brother are amazing and do not over charge or scam in any way. I recommend them for all your plumbing needs.",
+      "author": "E Prab",
       "platform": "Google"
     },
     "review2": {
-      "text": "Excellent workmanship on our bathroom renovation. Clean, efficient, and reasonably priced. Will definitely use them again.",
-      "author": "Verified Customer",
+      "text": "Had a great experience with them. All came right on time on a saturday morning, and he quickly fixed 3-4 problems in my apartment unit such as fixing a sliding mirror door, re-installing a door and a few other minor problems. Will highly recommend them.",
+      "author": "Sogl Nasab",
       "platform": "Google"
     },
     "review3": {
-      "text": "Called them for a leak repair and they came out immediately. Very professional team and quality work. 5 stars!",
-      "author": "Local Resident",
+      "text": "I was so fortunate to come across and use Blue Men Plumbing. They were prompt, efficient and did great work. Their quote and final price was lower than I expected. Anyone needing a professional plumber for a small or an extensive large job; they are who to call and you won't be disappointed.",
+      "author": "Michael Masse",
       "platform": "Google"
     },
     "viewAll": "View All Google Reviews"
@@ -86,9 +86,9 @@
     "hours": "24/7 Emergency Service Available"
   },
   "nav": {
+    "quote": "Quote",
     "services": "Services",
-    "about": "About",
-    "testimonials": "Reviews",
+    "reviews": "Reviews",
     "contact": "Contact"
   },
   "footer": {

@@ -1,0 +1,24 @@
+# Google Reviews Integration
+
+This project now includes Google Reviews integration.
+
+## Quick Reference
+- Service: `src/services/googleReviewsService.ts`
+- API Route: `app/api/google-reviews/route.ts`
+- Component: `src/components/Testimonials.tsx`
+- Config: `.env.local` (API keys)
+
+## Documentation
+- **START_HERE.md** - Quick start guide
+- **GOOGLE_REVIEWS_QUICKSTART.md** - 5-minute setup
+- **GOOGLE_REVIEWS_SETUP.md** - Detailed guide with troubleshooting
+- **IMPLEMENTATION_SUMMARY.md** - Technical details
+- **VISUAL_SUMMARY.md** - Visual guide with diagrams
+
+## Environment Variables Required
+```
+NEXT_PUBLIC_GOOGLE_PLACES_API_KEY=your_key_here
+NEXT_PUBLIC_GOOGLE_PLACE_ID=your_place_id_here
+```
+
+See `.env.local.example` for template.

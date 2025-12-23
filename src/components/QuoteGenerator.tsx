@@ -21,7 +21,7 @@ const QuoteGenerator = () => {
   }, []);
 
   return (
-    <section className="pt-8 pb-16 md:pt-0 md:pb-0 bg-gradient-to-br from-blue-50 via-white to-blue-50">
+    <section id="quote" className="pt-8 pb-16 md:pt-0 md:pb-0 bg-gradient-to-br from-blue-50 via-white to-blue-50">
       <div className="container mx-auto px-4 md:px-0">
         <div className="grid grid-cols-1 md:grid-cols-2 md:min-h-screen">
           {/* Left Side - Logo Wallpaper (Hidden on Mobile) */}
