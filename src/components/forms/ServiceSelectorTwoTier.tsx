@@ -1,14 +1,13 @@
 'use client'
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { CheckCircle2, ChevronRight, ChevronLeft, Upload, X } from 'lucide-react';
-import { serviceCategories } from '@/services/serviceData';
+import { CheckCircle2, ChevronRight, ChevronLeft, Upload, X, Loader2 } from 'lucide-react';
 import { ServiceCategory } from '@/models/Quote';
 
 interface ServiceSelectorTwoTierProps {
@@ -26,7 +25,36 @@ const ServiceSelectorTwoTier = ({
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [customService, setCustomService] = useState<string>('');
   const [customPhotos, setCustomPhotos] = useState<File[]>([]);
+  const [serviceCategories, setServiceCategories] = useState<ServiceCategory[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Fetch services from Supabase on component mount
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const response = await fetch('/api/services');
+        const result = await response.json();
+        
+        if (result.success && result.data) {
+          setServiceCategories(result.data);
+        } else {
+          setError('Failed to load services. Please try again.');
+        }
+      } catch (err) {
+        console.error('Error fetching services:', err);
+        setError('Failed to load services. Please try again.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, []);
 
   const handleToggleCategory = (categoryId: string) => {
     if (expandedCategory === categoryId) {
@@ -79,6 +107,34 @@ const ServiceSelectorTwoTier = ({
     setCustomPhotos(updatedPhotos);
     onUpdate({ photos: updatedPhotos });
   };
+
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <div className="text-center">
+          <Loader2 className="w-8 h-8 animate-spin text-[#4492AC] mx-auto mb-4" />
+          <p className="text-gray-600">Loading services...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-red-600 mb-4">{error}</p>
+        <Button 
+          onClick={() => window.location.reload()} 
+          variant="outline"
+          className="border-[#4492AC] text-[#4492AC] hover:bg-[#4492AC] hover:text-white"
+        >
+          Retry
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">

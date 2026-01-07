@@ -1531,11 +1531,10 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$left$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronLeft$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/chevron-left.js [app-client] (ecmascript) <export default as ChevronLeft>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$upload$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Upload$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/upload.js [app-client] (ecmascript) <export default as Upload>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/x.js [app-client] (ecmascript) <export default as X>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$serviceData$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/services/serviceData.ts [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/loader-circle.js [app-client] (ecmascript) <export default as Loader2>");
 ;
 var _s = __turbopack_context__.k.signature();
 'use client';
-;
 ;
 ;
 ;
@@ -1550,7 +1549,36 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
     const [selectedCategories, setSelectedCategories] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [customService, setCustomService] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('');
     const [customPhotos, setCustomPhotos] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [serviceCategories, setServiceCategories] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
+    const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const fileInputRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
+    // Fetch services from Supabase on component mount
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "ServiceSelectorTwoTier.useEffect": ()=>{
+            const fetchServices = {
+                "ServiceSelectorTwoTier.useEffect.fetchServices": async ()=>{
+                    try {
+                        setLoading(true);
+                        setError(null);
+                        const response = await fetch('/api/services');
+                        const result = await response.json();
+                        if (result.success && result.data) {
+                            setServiceCategories(result.data);
+                        } else {
+                            setError('Failed to load services. Please try again.');
+                        }
+                    } catch (err) {
+                        console.error('Error fetching services:', err);
+                        setError('Failed to load services. Please try again.');
+                    } finally{
+                        setLoading(false);
+                    }
+                }
+            }["ServiceSelectorTwoTier.useEffect.fetchServices"];
+            fetchServices();
+        }
+    }["ServiceSelectorTwoTier.useEffect"], []);
     const handleToggleCategory = (categoryId)=>{
         if (expandedCategory === categoryId) {
             setExpandedCategory(null);
@@ -1575,7 +1603,7 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
         });
     };
     const getCategoryItemCount = (categoryId)=>{
-        const category = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$serviceData$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["serviceCategories"].find((c)=>c.id === categoryId);
+        const category = serviceCategories.find((c)=>c.id === categoryId);
         if (!category) return 0;
         return category.items.filter((item)=>selectedServices.includes(item.id)).length;
     };
@@ -1610,6 +1638,70 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
             photos: updatedPhotos
         });
     };
+    // Show loading state
+    if (loading) {
+        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "flex items-center justify-center py-12",
+            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "text-center",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
+                        className: "w-8 h-8 animate-spin text-[#4492AC] mx-auto mb-4"
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
+                        lineNumber: 116,
+                        columnNumber: 11
+                    }, ("TURBOPACK compile-time value", void 0)),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-gray-600",
+                        children: "Loading services..."
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
+                        lineNumber: 117,
+                        columnNumber: 11
+                    }, ("TURBOPACK compile-time value", void 0))
+                ]
+            }, void 0, true, {
+                fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
+                lineNumber: 115,
+                columnNumber: 9
+            }, ("TURBOPACK compile-time value", void 0))
+        }, void 0, false, {
+            fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
+            lineNumber: 114,
+            columnNumber: 7
+        }, ("TURBOPACK compile-time value", void 0));
+    }
+    // Show error state
+    if (error) {
+        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "text-center py-12",
+            children: [
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                    className: "text-red-600 mb-4",
+                    children: error
+                }, void 0, false, {
+                    fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
+                    lineNumber: 127,
+                    columnNumber: 9
+                }, ("TURBOPACK compile-time value", void 0)),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                    onClick: ()=>window.location.reload(),
+                    variant: "outline",
+                    className: "border-[#4492AC] text-[#4492AC] hover:bg-[#4492AC] hover:text-white",
+                    children: "Retry"
+                }, void 0, false, {
+                    fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
+                    lineNumber: 128,
+                    columnNumber: 9
+                }, ("TURBOPACK compile-time value", void 0))
+            ]
+        }, void 0, true, {
+            fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
+            lineNumber: 126,
+            columnNumber: 7
+        }, ("TURBOPACK compile-time value", void 0));
+    }
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "space-y-8",
         children: [
@@ -1620,7 +1712,7 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                         children: "Select Services"
                     }, void 0, false, {
                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                        lineNumber: 86,
+                        lineNumber: 142,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1628,13 +1720,13 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                         children: "Choose a service category, then select the specific items you need"
                     }, void 0, false, {
                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                        lineNumber: 87,
+                        lineNumber: 143,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "space-y-4",
                         children: [
-                            __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$serviceData$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["serviceCategories"].map((category)=>{
+                            serviceCategories.map((category)=>{
                                 const isExpanded = expandedCategory === category.id;
                                 const itemCount = getCategoryItemCount(category.id);
                                 const hasSelectedItems = itemCount > 0;
@@ -1658,7 +1750,7 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                                         children: category.name
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                        lineNumber: 113,
+                                                                        lineNumber: 169,
                                                                         columnNumber: 25
                                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1666,13 +1758,13 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                                         children: category.description
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                        lineNumber: 116,
+                                                                        lineNumber: 172,
                                                                         columnNumber: 25
                                                                     }, ("TURBOPACK compile-time value", void 0))
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                lineNumber: 112,
+                                                                lineNumber: 168,
                                                                 columnNumber: 23
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1684,7 +1776,7 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                                         children: formatPriceRange(category.priceRangeMin, category.priceRangeMax)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                        lineNumber: 121,
+                                                                        lineNumber: 177,
                                                                         columnNumber: 25
                                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1697,7 +1789,7 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                        lineNumber: 124,
+                                                                        lineNumber: 180,
                                                                         columnNumber: 25
                                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                                     hasSelectedItems && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -1708,19 +1800,19 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                        lineNumber: 128,
+                                                                        lineNumber: 184,
                                                                         columnNumber: 27
                                                                     }, ("TURBOPACK compile-time value", void 0))
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                lineNumber: 120,
+                                                                lineNumber: 176,
                                                                 columnNumber: 23
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                        lineNumber: 111,
+                                                        lineNumber: 167,
                                                         columnNumber: 21
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1730,37 +1822,37 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                                 className: "w-6 h-6 text-[#4492AC]"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                lineNumber: 136,
+                                                                lineNumber: 192,
                                                                 columnNumber: 25
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             isExpanded ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$left$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronLeft$3e$__["ChevronLeft"], {
                                                                 className: "w-5 h-5 text-gray-400"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                lineNumber: 139,
+                                                                lineNumber: 195,
                                                                 columnNumber: 25
                                                             }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__["ChevronRight"], {
                                                                 className: "w-5 h-5 text-gray-400"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                lineNumber: 141,
+                                                                lineNumber: 197,
                                                                 columnNumber: 25
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                        lineNumber: 134,
+                                                        lineNumber: 190,
                                                         columnNumber: 21
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                lineNumber: 110,
+                                                lineNumber: 166,
                                                 columnNumber: 19
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                            lineNumber: 100,
+                                            lineNumber: 156,
                                             columnNumber: 17
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         isExpanded && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1771,7 +1863,7 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                     children: "Select the specific services you need:"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                    lineNumber: 150,
+                                                    lineNumber: 206,
                                                     columnNumber: 21
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 category.items.map((item)=>{
@@ -1793,7 +1885,7 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                                                     children: item.name
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                                    lineNumber: 169,
+                                                                                    lineNumber: 225,
                                                                                     columnNumber: 33
                                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                                 item.partsExtra && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -1802,13 +1894,13 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                                                     children: "Parts Extra"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                                    lineNumber: 173,
+                                                                                    lineNumber: 229,
                                                                                     columnNumber: 35
                                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                            lineNumber: 168,
+                                                                            lineNumber: 224,
                                                                             columnNumber: 31
                                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                                         item.description && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1816,7 +1908,7 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                                             children: item.description
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                            lineNumber: 179,
+                                                                            lineNumber: 235,
                                                                             columnNumber: 33
                                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1830,7 +1922,7 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                                                     ]
                                                                                 }, void 0, true, {
                                                                                     fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                                    lineNumber: 184,
+                                                                                    lineNumber: 240,
                                                                                     columnNumber: 33
                                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1842,19 +1934,19 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                                                     ]
                                                                                 }, void 0, true, {
                                                                                     fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                                    lineNumber: 187,
+                                                                                    lineNumber: 243,
                                                                                     columnNumber: 33
                                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                            lineNumber: 183,
+                                                                            lineNumber: 239,
                                                                             columnNumber: 31
                                                                         }, ("TURBOPACK compile-time value", void 0))
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                    lineNumber: 167,
+                                                                    lineNumber: 223,
                                                                     columnNumber: 29
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1863,42 +1955,42 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                                         className: "w-5 h-5 text-[#4492AC]"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                        lineNumber: 194,
+                                                                        lineNumber: 250,
                                                                         columnNumber: 33
                                                                     }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                         className: "w-5 h-5 rounded-full border-2 border-gray-300"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                        lineNumber: 196,
+                                                                        lineNumber: 252,
                                                                         columnNumber: 33
                                                                     }, ("TURBOPACK compile-time value", void 0))
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                    lineNumber: 192,
+                                                                    lineNumber: 248,
                                                                     columnNumber: 29
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                            lineNumber: 166,
+                                                            lineNumber: 222,
                                                             columnNumber: 27
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     }, item.id, false, {
                                                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                        lineNumber: 157,
+                                                        lineNumber: 213,
                                                         columnNumber: 25
                                                     }, ("TURBOPACK compile-time value", void 0));
                                                 })
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                            lineNumber: 149,
+                                            lineNumber: 205,
                                             columnNumber: 19
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, category.id, true, {
                                     fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                    lineNumber: 98,
+                                    lineNumber: 154,
                                     columnNumber: 15
                                 }, ("TURBOPACK compile-time value", void 0));
                             }),
@@ -1928,7 +2020,7 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                                     children: "Other Service"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                    lineNumber: 230,
+                                                                    lineNumber: 286,
                                                                     columnNumber: 21
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1936,13 +2028,13 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                                     children: "Service not listed? Describe what you need and we'll provide a custom quote"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                    lineNumber: 233,
+                                                                    lineNumber: 289,
                                                                     columnNumber: 21
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                            lineNumber: 229,
+                                                            lineNumber: 285,
                                                             columnNumber: 19
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1954,7 +2046,7 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                                     children: "Contact for Quote"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                    lineNumber: 238,
+                                                                    lineNumber: 294,
                                                                     columnNumber: 21
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 customService.trim().length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -1962,19 +2054,19 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                                     children: "Custom service added"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                    lineNumber: 242,
+                                                                    lineNumber: 298,
                                                                     columnNumber: 23
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                            lineNumber: 237,
+                                                            lineNumber: 293,
                                                             columnNumber: 19
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                    lineNumber: 228,
+                                                    lineNumber: 284,
                                                     columnNumber: 17
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1984,37 +2076,37 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                             className: "w-6 h-6 text-[#4492AC]"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                            lineNumber: 250,
+                                                            lineNumber: 306,
                                                             columnNumber: 21
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         expandedCategory === 'other' ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$left$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronLeft$3e$__["ChevronLeft"], {
                                                             className: "w-5 h-5 text-gray-400"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                            lineNumber: 253,
+                                                            lineNumber: 309,
                                                             columnNumber: 21
                                                         }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__["ChevronRight"], {
                                                             className: "w-5 h-5 text-gray-400"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                            lineNumber: 255,
+                                                            lineNumber: 311,
                                                             columnNumber: 21
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                    lineNumber: 248,
+                                                    lineNumber: 304,
                                                     columnNumber: 17
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                            lineNumber: 227,
+                                            lineNumber: 283,
                                             columnNumber: 15
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                        lineNumber: 211,
+                                        lineNumber: 267,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     expandedCategory === 'other' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2027,7 +2119,7 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                         children: "Please describe the plumbing service you need:"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                        lineNumber: 265,
+                                                        lineNumber: 321,
                                                         columnNumber: 19
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$textarea$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Textarea"], {
@@ -2038,13 +2130,13 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                         onClick: (e)=>e.stopPropagation()
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                        lineNumber: 268,
+                                                        lineNumber: 324,
                                                         columnNumber: 19
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                lineNumber: 264,
+                                                lineNumber: 320,
                                                 columnNumber: 17
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2055,7 +2147,7 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                         children: "Add Photos (Optional)"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                        lineNumber: 279,
+                                                        lineNumber: 335,
                                                         columnNumber: 19
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2063,7 +2155,7 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                         children: "Photos help us understand your needs better and provide a more accurate quote"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                        lineNumber: 282,
+                                                        lineNumber: 338,
                                                         columnNumber: 19
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2075,7 +2167,7 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                         className: "hidden"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                        lineNumber: 286,
+                                                        lineNumber: 342,
                                                         columnNumber: 19
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2088,14 +2180,14 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                                 className: "w-4 h-4 mr-2"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                lineNumber: 301,
+                                                                lineNumber: 357,
                                                                 columnNumber: 21
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             "Upload Photos"
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                        lineNumber: 295,
+                                                        lineNumber: 351,
                                                         columnNumber: 19
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     customPhotos.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2111,7 +2203,7 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                lineNumber: 308,
+                                                                lineNumber: 364,
                                                                 columnNumber: 23
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2127,12 +2219,12 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                                                         className: "w-4 h-4 text-gray-400"
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                                        lineNumber: 319,
+                                                                                        lineNumber: 375,
                                                                                         columnNumber: 33
                                                                                     }, ("TURBOPACK compile-time value", void 0))
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                                    lineNumber: 318,
+                                                                                    lineNumber: 374,
                                                                                     columnNumber: 31
                                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2143,7 +2235,7 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                                                             children: photo.name
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                                            lineNumber: 322,
+                                                                                            lineNumber: 378,
                                                                                             columnNumber: 33
                                                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2154,13 +2246,13 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                                                             ]
                                                                                         }, void 0, true, {
                                                                                             fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                                            lineNumber: 325,
+                                                                                            lineNumber: 381,
                                                                                             columnNumber: 33
                                                                                         }, ("TURBOPACK compile-time value", void 0))
                                                                                     ]
                                                                                 }, void 0, true, {
                                                                                     fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                                    lineNumber: 321,
+                                                                                    lineNumber: 377,
                                                                                     columnNumber: 31
                                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2171,40 +2263,40 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                                                         className: "w-4 h-4 text-gray-500"
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                                        lineNumber: 334,
+                                                                                        lineNumber: 390,
                                                                                         columnNumber: 33
                                                                                     }, ("TURBOPACK compile-time value", void 0))
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                                    lineNumber: 329,
+                                                                                    lineNumber: 385,
                                                                                     columnNumber: 31
                                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                            lineNumber: 317,
+                                                                            lineNumber: 373,
                                                                             columnNumber: 29
                                                                         }, ("TURBOPACK compile-time value", void 0))
                                                                     }, index, false, {
                                                                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                        lineNumber: 313,
+                                                                        lineNumber: 369,
                                                                         columnNumber: 27
                                                                     }, ("TURBOPACK compile-time value", void 0)))
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                                lineNumber: 311,
+                                                                lineNumber: 367,
                                                                 columnNumber: 23
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                        lineNumber: 307,
+                                                        lineNumber: 363,
                                                         columnNumber: 21
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                lineNumber: 278,
+                                                lineNumber: 334,
                                                 columnNumber: 17
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2212,31 +2304,31 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                 children: "Our team will review your request and contact you with a detailed custom quote."
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                lineNumber: 344,
+                                                lineNumber: 400,
                                                 columnNumber: 17
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                        lineNumber: 263,
+                                        lineNumber: 319,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                lineNumber: 210,
+                                lineNumber: 266,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                        lineNumber: 91,
+                        lineNumber: 147,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                lineNumber: 85,
+                lineNumber: 141,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2246,7 +2338,7 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                         children: "Urgency Level"
                     }, void 0, false, {
                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                        lineNumber: 355,
+                        lineNumber: 411,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$radio$2d$group$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["RadioGroup"], {
@@ -2264,7 +2356,7 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                         id: "standard"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                        lineNumber: 364,
+                                        lineNumber: 420,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
@@ -2276,7 +2368,7 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                 children: "Standard"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                lineNumber: 366,
+                                                lineNumber: 422,
                                                 columnNumber: 15
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2284,19 +2376,19 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                 children: "(within 3-5 days)"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                lineNumber: 367,
+                                                lineNumber: 423,
                                                 columnNumber: 15
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                        lineNumber: 365,
+                                        lineNumber: 421,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                lineNumber: 363,
+                                lineNumber: 419,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2307,7 +2399,7 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                         id: "urgent"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                        lineNumber: 371,
+                                        lineNumber: 427,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
@@ -2319,7 +2411,7 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                 children: "Urgent"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                lineNumber: 373,
+                                                lineNumber: 429,
                                                 columnNumber: 15
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2327,19 +2419,19 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                 children: "(within 24-48 hours)"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                lineNumber: 374,
+                                                lineNumber: 430,
                                                 columnNumber: 15
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                        lineNumber: 372,
+                                        lineNumber: 428,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                lineNumber: 370,
+                                lineNumber: 426,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2350,7 +2442,7 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                         id: "emergency"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                        lineNumber: 378,
+                                        lineNumber: 434,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
@@ -2362,7 +2454,7 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                 children: "Emergency"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                lineNumber: 380,
+                                                lineNumber: 436,
                                                 columnNumber: 15
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2370,31 +2462,31 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                                 children: "(immediate response)"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                                lineNumber: 381,
+                                                lineNumber: 437,
                                                 columnNumber: 15
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                        lineNumber: 379,
+                                        lineNumber: 435,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                lineNumber: 377,
+                                lineNumber: 433,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                        lineNumber: 358,
+                        lineNumber: 414,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                lineNumber: 354,
+                lineNumber: 410,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             (selectedServices.length > 0 || customService.trim().length > 0) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -2416,27 +2508,27 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                            lineNumber: 394,
+                                            lineNumber: 450,
                                             columnNumber: 19
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         selectedServices.length > 0 && customService.trim().length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: " + custom service"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                            lineNumber: 397,
+                                            lineNumber: 453,
                                             columnNumber: 19
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         selectedServices.length === 0 && customService.trim().length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "Custom service added"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                            lineNumber: 400,
+                                            lineNumber: 456,
                                             columnNumber: 19
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                    lineNumber: 392,
+                                    lineNumber: 448,
                                     columnNumber: 15
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2444,41 +2536,41 @@ const ServiceSelectorTwoTier = ({ selectedServices, urgency, onUpdate })=>{
                                     children: "Review your selection and continue"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                                    lineNumber: 403,
+                                    lineNumber: 459,
                                     columnNumber: 15
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                            lineNumber: 391,
+                            lineNumber: 447,
                             columnNumber: 13
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
                             className: "w-6 h-6 text-[#4492AC]"
                         }, void 0, false, {
                             fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                            lineNumber: 407,
+                            lineNumber: 463,
                             columnNumber: 13
                         }, ("TURBOPACK compile-time value", void 0))
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                    lineNumber: 390,
+                    lineNumber: 446,
                     columnNumber: 11
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-                lineNumber: 389,
+                lineNumber: 445,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/forms/ServiceSelectorTwoTier.tsx",
-        lineNumber: 84,
+        lineNumber: 140,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };
-_s(ServiceSelectorTwoTier, "HiLhJCn3Xp4Ve39nzZCMIxuqAzs=");
+_s(ServiceSelectorTwoTier, "ClU2XLONoYwzHCS1SnJIxP52WgQ=");
 _c = ServiceSelectorTwoTier;
 const __TURBOPACK__default__export__ = ServiceSelectorTwoTier;
 var _c;

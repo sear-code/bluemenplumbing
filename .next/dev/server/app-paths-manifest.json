@@ -1,4 +1,4 @@
 {
-  "/api/google-reviews/route": "app/api/google-reviews/route.js",
+  "/api/services/route": "app/api/services/route.js",
   "/page": "app/page.js"
 }

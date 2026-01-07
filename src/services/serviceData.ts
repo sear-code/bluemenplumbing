@@ -345,7 +345,7 @@ export const getServiceItemById = (itemId: string): { category: ServiceCategory;
 };
 
 /**
- * Calculate total price for selected service items
+ * Calculate total price for selected service items (local fallback)
  */
 export const calculateTotalPrice = (
   selectedItemIds: string[],
@@ -374,7 +374,7 @@ export const calculateTotalPrice = (
 };
 
 /**
- * Calculate total estimated duration
+ * Calculate total estimated duration (local fallback)
  */
 export const calculateTotalDuration = (selectedItemIds: string[]): number => {
   let totalDuration = 0;
