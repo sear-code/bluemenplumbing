@@ -54,7 +54,6 @@ INSERT INTO service_categories (
   name, 
   description, 
   category, 
-  icon, 
   price_range_min, 
   price_range_max, 
   estimated_duration, 
@@ -64,7 +63,6 @@ INSERT INTO service_categories (
   'HVAC Services',
   'Heating, ventilation, and air conditioning',
   'maintenance',
-  '❄️',
   150,
   800,
   180,
@@ -152,7 +150,6 @@ DELETE FROM service_items WHERE id = 'service-id';
 | `name` | TEXT | Display name | `Bathroom Rough-In` |
 | `description` | TEXT | Category description | `Complete plumbing installation...` |
 | `category` | TEXT | Type: `rough-in`, `finishing`, `kitchen`, `laundry`, `repair`, `maintenance` | `rough-in` |
-| `icon` | TEXT | Emoji or icon | `🚿` |
 | `price_range_min` | INTEGER | Minimum price ($) | `50` |
 | `price_range_max` | INTEGER | Maximum price ($) | `3000` |
 | `estimated_duration` | INTEGER | Average duration (minutes) | `240` |
@@ -227,7 +224,6 @@ INSERT INTO service_categories (
   name, 
   description, 
   category, 
-  icon, 
   price_range_min, 
   price_range_max, 
   estimated_duration, 
@@ -237,7 +233,6 @@ INSERT INTO service_categories (
   'Water Heater Services',
   'Installation, repair, and maintenance of water heaters',
   'installation',
-  '🔥',
   200,
   1500,
   180,

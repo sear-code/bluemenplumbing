@@ -1,7 +1,6 @@
 'use client'
 
 import { useTranslation } from 'react-i18next';
-import { Button } from '@/components/ui/button';
 import { Wrench, Settings, Droplets, Bath } from 'lucide-react';
 
 const Services = () => {
@@ -86,16 +85,9 @@ const Services = () => {
                 <h3 className="text-xl font-bold mb-2 group-hover:text-[#94E2FC] transition-colors">
                   {service.title}
                 </h3>
-                <p className="text-white/90 text-sm mb-4 line-clamp-2">
+                <p className="text-white/90 text-sm line-clamp-2">
                   {service.description}
                 </p>
-                <Button 
-                  size="sm" 
-                  variant="secondary"
-                  className="bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white hover:text-black transition-all duration-300"
-                >
-                  More info
-                </Button>
               </div>
             </div>
           ))}
@@ -130,16 +122,9 @@ const Services = () => {
                   <h3 className="text-xl font-bold mb-2 group-hover:text-[#94E2FC] transition-colors">
                     {service.title}
                   </h3>
-                  <p className="text-white/90 text-sm mb-4 line-clamp-2">
+                  <p className="text-white/90 text-sm line-clamp-2">
                     {service.description}
                   </p>
-                  <Button 
-                    size="sm" 
-                    variant="secondary"
-                    className="bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white hover:text-black transition-all duration-300"
-                  >
-                    More info
-                  </Button>
                 </div>
               </div>
             ))}

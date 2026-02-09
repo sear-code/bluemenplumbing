@@ -190,7 +190,6 @@ const mapServiceCategoryRowToModel = (row, items)=>{
         name: row.name,
         description: row.description || '',
         category: row.category,
-        icon: row.icon || '',
         priceRangeMin: row.price_range_min,
         priceRangeMax: row.price_range_max,
         estimatedDuration: row.estimated_duration,

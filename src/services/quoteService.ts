@@ -3,30 +3,22 @@ import { QuoteRequest, QuoteResponse } from '@/models/Quote';
 export const quoteService = {
   submitQuote: async (quoteData: QuoteRequest): Promise<QuoteResponse> => {
     try {
-      // Simulate API call - in production, replace with actual API endpoint
-      // const response = await fetch('/api/quotes', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(quoteData),
-      // });
+      const response = await fetch('/api/quotes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(quoteData),
+      });
       
-      // For now, simulate a successful response
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const result = await response.json();
       
-      const quoteId = `BMP-${Date.now()}`;
-      const validUntil = new Date();
-      validUntil.setDate(validUntil.getDate() + 30);
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to submit quote');
+      }
       
-      return {
-        quoteId,
-        estimatedPrice: quoteData.estimatedPrice || 0,
-        estimatedDuration: 120,
-        validUntil,
-        message: 'Your quote request has been received. We will contact you within 24 hours.',
-      };
+      return result.data;
     } catch (error) {
       console.error('Quote submission error:', error);
-      throw new Error('Failed to submit quote. Please try again.');
+      throw new Error(error instanceof Error ? error.message : 'Failed to submit quote. Please try again.');
     }
   },
 

@@ -170,3 +170,6 @@ const topReviews = getTopReviews(data.reviews, 3, 5); // Show only 5-star review
 
 **Ready to go live?** Just follow the 5-minute setup above and your real Google reviews will appear on your website! 🎉
 
+
+
+

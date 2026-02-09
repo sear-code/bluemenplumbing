@@ -221,3 +221,6 @@ With the implemented caching (1 hour):
 
 **Note:** Make sure to add `.env.local` to your `.gitignore` file to prevent accidentally committing your API keys to version control. The repository already includes `.env.local.example` as a template.
 
+
+
+

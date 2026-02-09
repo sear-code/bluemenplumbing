@@ -6,6 +6,12 @@ import { ServiceCategory, ServiceItem } from '@/models/Quote';
  */
 export const fetchServiceCategories = async (): Promise<ServiceCategory[]> => {
   try {
+    // Check if Supabase is configured
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      console.warn('Supabase not configured - environment variables missing');
+      return [];
+    }
+
     // Fetch categories
     const { data: categories, error: categoriesError } = await supabase
       .from('service_categories')
@@ -15,10 +21,12 @@ export const fetchServiceCategories = async (): Promise<ServiceCategory[]> => {
 
     if (categoriesError) {
       console.error('Error fetching categories:', categoriesError);
-      throw new Error('Failed to fetch service categories');
+      // Return empty array instead of throwing to allow fallback
+      return [];
     }
 
     if (!categories || categories.length === 0) {
+      console.warn('No categories found in Supabase');
       return [];
     }
 
@@ -31,7 +39,8 @@ export const fetchServiceCategories = async (): Promise<ServiceCategory[]> => {
 
     if (itemsError) {
       console.error('Error fetching items:', itemsError);
-      throw new Error('Failed to fetch service items');
+      // Return empty array instead of throwing to allow fallback
+      return [];
     }
 
     // Map database rows to application models
@@ -43,10 +52,12 @@ export const fetchServiceCategories = async (): Promise<ServiceCategory[]> => {
       return mapServiceCategoryRowToModel(cat, categoryItems);
     });
 
+    console.log(`Successfully fetched ${serviceCategories.length} categories from Supabase`);
     return serviceCategories;
   } catch (error) {
     console.error('Error in fetchServiceCategories:', error);
-    throw error;
+    // Return empty array instead of throwing to allow fallback to local data
+    return [];
   }
 };
 
@@ -197,7 +208,6 @@ const mapServiceCategoryRowToModel = (
     name: row.name,
     description: row.description || '',
     category: row.category,
-    icon: row.icon || '',
     priceRangeMin: row.price_range_min,
     priceRangeMax: row.price_range_max,
     estimatedDuration: row.estimated_duration,

@@ -91,7 +91,7 @@
 │  │  │  ─────────────────────────────────────────────│    │  │
 │  │  │  • 5 active categories                         │    │  │
 │  │  │  • Bathroom Rough-In, Finishing, etc.         │    │  │
-│  │  │  • Price ranges, icons, descriptions          │    │  │
+│  │  │  • Price ranges, descriptions                 │    │  │
 │  │  └────────────────────────────────────────────────┘    │  │
 │  │                                                          │  │
 │  │  ┌────────────────────────────────────────────────┐    │  │
@@ -160,7 +160,6 @@
 │    name                           │           │
 │    description                    │           │
 │    category                       │           │ FOREIGN KEY
-│    icon                           │           │
 │    price_range_min                │           │
 │    price_range_max                │           │
 │    estimated_duration             │           │

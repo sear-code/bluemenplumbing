@@ -100,21 +100,14 @@ const ServiceSelector = ({
             <RadioGroupItem value="standard" id="standard" />
             <Label htmlFor="standard" className="cursor-pointer flex-1">
               <span className="font-medium">Standard</span>
-              <span className="text-sm text-gray-500 ml-2">(within 3-5 days)</span>
-            </Label>
-          </div>
-          <div className="flex items-center space-x-3 p-3 rounded-lg border border-gray-200 hover:border-[#4492AC] transition-colors">
-            <RadioGroupItem value="urgent" id="urgent" />
-            <Label htmlFor="urgent" className="cursor-pointer flex-1">
-              <span className="font-medium">Urgent</span>
-              <span className="text-sm text-gray-500 ml-2">(within 24-48 hours)</span>
+              <span className="text-sm text-gray-500 ml-2">(24-48 hours)</span>
             </Label>
           </div>
           <div className="flex items-center space-x-3 p-3 rounded-lg border border-[#FF8C00] bg-orange-50 hover:border-[#FF8C00] transition-colors">
             <RadioGroupItem value="emergency" id="emergency" />
             <Label htmlFor="emergency" className="cursor-pointer flex-1">
               <span className="font-medium text-[#FF8C00]">Emergency</span>
-              <span className="text-sm text-gray-600 ml-2">(immediate response)</span>
+              <span className="text-sm text-gray-600 ml-2">(immediately)</span>
             </Label>
           </div>
         </RadioGroup>

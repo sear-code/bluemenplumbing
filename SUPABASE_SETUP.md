@@ -32,7 +32,6 @@ Stores the main service categories (Bathroom Rough-In, Kitchen Plumbing, etc.)
 - `name` (TEXT) - Display name (e.g., 'Bathroom Rough-In')
 - `description` (TEXT) - Category description
 - `category` (TEXT) - Category type: 'rough-in', 'finishing', 'kitchen', 'laundry', 'repair', 'maintenance'
-- `icon` (TEXT) - Emoji or icon (e.g., '🚿')
 - `price_range_min` (INTEGER) - Minimum price in dollars
 - `price_range_max` (INTEGER) - Maximum price in dollars
 - `estimated_duration` (INTEGER) - Estimated duration in minutes
@@ -75,7 +74,6 @@ Fetches all active service categories with their items
       "name": "Bathroom Rough-In",
       "description": "Complete plumbing installation...",
       "category": "rough-in",
-      "icon": "🚿",
       "priceRangeMin": 50,
       "priceRangeMax": 3000,
       "estimatedDuration": 240,
@@ -101,7 +99,6 @@ Create a new category
   "name": "New Category",
   "description": "Description",
   "category": "repair",
-  "icon": "🔧",
   "price_range_min": 100,
   "price_range_max": 500,
   "estimated_duration": 120,
@@ -149,7 +146,7 @@ Same pattern for service items:
 **Add a new service category:**
 ```sql
 INSERT INTO service_categories (
-  id, name, description, category, icon, 
+  id, name, description, category, 
   price_range_min, price_range_max, 
   estimated_duration, display_order
 ) VALUES (
@@ -157,7 +154,6 @@ INSERT INTO service_categories (
   'HVAC Services',
   'Heating, ventilation, and air conditioning',
   'maintenance',
-  '❄️',
   150, 800, 180, 6
 );
 ```

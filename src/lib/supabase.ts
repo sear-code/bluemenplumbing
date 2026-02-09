@@ -23,6 +23,11 @@ export interface Database {
         Insert: ServiceItemInsert;
         Update: ServiceItemUpdate;
       };
+      quotes: {
+        Row: QuoteRow;
+        Insert: QuoteInsert;
+        Update: QuoteUpdate;
+      };
     };
   };
 }
@@ -32,7 +37,6 @@ export interface ServiceCategoryRow {
   name: string;
   description: string | null;
   category: 'rough-in' | 'finishing' | 'kitchen' | 'laundry' | 'repair' | 'maintenance';
-  icon: string | null;
   price_range_min: number;
   price_range_max: number;
   estimated_duration: number;
@@ -47,7 +51,6 @@ export interface ServiceCategoryInsert {
   name: string;
   description?: string | null;
   category: 'rough-in' | 'finishing' | 'kitchen' | 'laundry' | 'repair' | 'maintenance';
-  icon?: string | null;
   price_range_min?: number;
   price_range_max?: number;
   estimated_duration?: number;
@@ -60,7 +63,6 @@ export interface ServiceCategoryUpdate {
   name?: string;
   description?: string | null;
   category?: 'rough-in' | 'finishing' | 'kitchen' | 'laundry' | 'repair' | 'maintenance';
-  icon?: string | null;
   price_range_min?: number;
   price_range_max?: number;
   estimated_duration?: number;
@@ -107,5 +109,80 @@ export interface ServiceItemUpdate {
   estimated_duration?: number;
   display_order?: number;
   is_active?: boolean;
+}
+
+export interface QuoteRow {
+  id: string;
+  quote_id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  property_type: string | null;
+  address_street: string | null;
+  address_city: string | null;
+  address_state: string | null;
+  address_zip: string | null;
+  selected_services: any; // JSONB
+  selected_categories: any; // JSONB
+  custom_service: string | null;
+  problem_description: string | null;
+  urgency: string;
+  estimated_price: number;
+  estimated_duration: number;
+  status: 'draft' | 'submitted' | 'contacted' | 'approved' | 'completed' | 'cancelled';
+  access_notes: string | null;
+  preferred_datetime: string | null;
+  photos: any; // JSONB
+  created_at: string;
+  updated_at: string;
+}
+
+export interface QuoteInsert {
+  quote_id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  property_type?: string | null;
+  address_street?: string | null;
+  address_city?: string | null;
+  address_state?: string | null;
+  address_zip?: string | null;
+  selected_services?: any;
+  selected_categories?: any;
+  custom_service?: string | null;
+  problem_description?: string | null;
+  urgency?: string;
+  estimated_price?: number;
+  estimated_duration?: number;
+  status?: 'draft' | 'submitted' | 'contacted' | 'approved' | 'completed' | 'cancelled';
+  access_notes?: string | null;
+  preferred_datetime?: string | null;
+  photos?: any;
+}
+
+export interface QuoteUpdate {
+  quote_id?: string;
+  first_name?: string;
+  last_name?: string;
+  email?: string;
+  phone?: string;
+  property_type?: string | null;
+  address_street?: string | null;
+  address_city?: string | null;
+  address_state?: string | null;
+  address_zip?: string | null;
+  selected_services?: any;
+  selected_categories?: any;
+  custom_service?: string | null;
+  problem_description?: string | null;
+  urgency?: string;
+  estimated_price?: number;
+  estimated_duration?: number;
+  status?: 'draft' | 'submitted' | 'contacted' | 'approved' | 'completed' | 'cancelled';
+  access_notes?: string | null;
+  preferred_datetime?: string | null;
+  photos?: any;
 }
 

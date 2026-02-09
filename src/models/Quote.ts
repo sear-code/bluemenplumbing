@@ -26,7 +26,6 @@ export interface ServiceCategory {
   name: string;
   description: string;
   category: 'rough-in' | 'finishing' | 'kitchen' | 'laundry' | 'repair' | 'maintenance';
-  icon: string;
   priceRangeMin: number;
   priceRangeMax: number;
   estimatedDuration: number;
