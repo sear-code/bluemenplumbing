@@ -40,6 +40,7 @@ export const fetchServices = async (): Promise<ServiceCategory[]> => {
 export const createCategory = async (data: {
   name: string;
   description: string;
+  category: 'rough-in' | 'finishing' | 'kitchen' | 'laundry' | 'repair' | 'maintenance';
   priceRangeMin: number;
   priceRangeMax: number;
   estimatedDuration: number;
@@ -51,6 +52,7 @@ export const createCategory = async (data: {
     id: `category-${Date.now()}`,
     name: data.name,
     description: data.description,
+    category: data.category,
     priceRangeMin: data.priceRangeMin,
     priceRangeMax: data.priceRangeMax,
     estimatedDuration: data.estimatedDuration,
@@ -69,6 +71,7 @@ export const updateCategory = async (
   data: {
     name: string;
     description: string;
+    category: 'rough-in' | 'finishing' | 'kitchen' | 'laundry' | 'repair' | 'maintenance';
     priceRangeMin: number;
     priceRangeMax: number;
     estimatedDuration: number;
@@ -87,6 +90,7 @@ export const updateCategory = async (
     ...categories[categoryIndex],
     name: data.name,
     description: data.description,
+    category: data.category,
     priceRangeMin: data.priceRangeMin,
     priceRangeMax: data.priceRangeMax,
     estimatedDuration: data.estimatedDuration,

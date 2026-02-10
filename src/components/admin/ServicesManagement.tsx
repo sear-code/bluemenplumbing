@@ -50,6 +50,7 @@ const CategoryForm = ({
   categoryFormData: {
     name: string
     description: string
+    category: 'rough-in' | 'finishing' | 'kitchen' | 'laundry' | 'repair' | 'maintenance'
     priceRangeMin: string
     priceRangeMax: string
     estimatedDuration: string
@@ -57,6 +58,7 @@ const CategoryForm = ({
   setCategoryFormData: React.Dispatch<React.SetStateAction<{
     name: string
     description: string
+    category: 'rough-in' | 'finishing' | 'kitchen' | 'laundry' | 'repair' | 'maintenance'
     priceRangeMin: string
     priceRangeMax: string
     estimatedDuration: string
@@ -84,6 +86,26 @@ const CategoryForm = ({
         className="mt-1"
         rows={3}
       />
+    </div>
+
+    <div>
+      <Label htmlFor="cat-type">Category Type *</Label>
+      <Select
+        value={categoryFormData.category}
+        onValueChange={(value) => setCategoryFormData({ ...categoryFormData, category: value as 'rough-in' | 'finishing' | 'kitchen' | 'laundry' | 'repair' | 'maintenance' })}
+      >
+        <SelectTrigger className="mt-1">
+          <SelectValue placeholder="Select category type" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="rough-in">Rough-In</SelectItem>
+          <SelectItem value="finishing">Finishing</SelectItem>
+          <SelectItem value="kitchen">Kitchen</SelectItem>
+          <SelectItem value="laundry">Laundry</SelectItem>
+          <SelectItem value="repair">Repair</SelectItem>
+          <SelectItem value="maintenance">Maintenance</SelectItem>
+        </SelectContent>
+      </Select>
     </div>
 
     <div className="grid grid-cols-2 gap-4">
@@ -266,6 +288,7 @@ const ServicesManagement = () => {
   const [categoryFormData, setCategoryFormData] = useState({
     name: '',
     description: '',
+    category: 'repair' as 'rough-in' | 'finishing' | 'kitchen' | 'laundry' | 'repair' | 'maintenance',
     priceRangeMin: '',
     priceRangeMax: '',
     estimatedDuration: ''
@@ -426,6 +449,7 @@ const ServicesManagement = () => {
     setCategoryFormData({
       name: '',
       description: '',
+      category: 'repair' as 'rough-in' | 'finishing' | 'kitchen' | 'laundry' | 'repair' | 'maintenance',
       priceRangeMin: '',
       priceRangeMax: '',
       estimatedDuration: ''
@@ -439,6 +463,7 @@ const ServicesManagement = () => {
       await adminServiceApi.createCategory({
         name: categoryFormData.name,
         description: categoryFormData.description,
+        category: categoryFormData.category,
         priceRangeMin: parseInt(categoryFormData.priceRangeMin),
         priceRangeMax: parseInt(categoryFormData.priceRangeMax),
         estimatedDuration: parseInt(categoryFormData.estimatedDuration),
@@ -469,6 +494,7 @@ const ServicesManagement = () => {
     setCategoryFormData({
       name: category.name,
       description: category.description,
+      category: category.category,
       priceRangeMin: category.priceRangeMin.toString(),
       priceRangeMax: category.priceRangeMax.toString(),
       estimatedDuration: category.estimatedDuration.toString()
@@ -484,6 +510,7 @@ const ServicesManagement = () => {
       await adminServiceApi.updateCategory(editingCategory.id, {
         name: categoryFormData.name,
         description: categoryFormData.description,
+        category: categoryFormData.category,
         priceRangeMin: parseInt(categoryFormData.priceRangeMin),
         priceRangeMax: parseInt(categoryFormData.priceRangeMax),
         estimatedDuration: parseInt(categoryFormData.estimatedDuration),

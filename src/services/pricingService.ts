@@ -1,4 +1,5 @@
 import { Service } from '@/models/Quote';
+import { applyPriceMarkup } from '@/lib/utils';
 
 // Sample pricing data - matches Blue Men Plumbing services
 export const servicesData: Service[] = [
@@ -65,7 +66,8 @@ export const pricingService = {
     propertyType: string
   ): number => {
     const services = servicesData.filter((s) => serviceIds.includes(s.id));
-    const baseTotal = services.reduce((sum, s) => sum + s.basePrice, 0);
+    // Apply 20% markup to each service's base price before summing
+    const baseTotal = services.reduce((sum, s) => sum + applyPriceMarkup(s.basePrice), 0);
     
     // Apply multipliers based on urgency and property type
     let multiplier = 1.0;

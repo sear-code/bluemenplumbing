@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { CheckCircle2 } from 'lucide-react';
+import { applyPriceMarkup } from '@/lib/utils';
 
 interface ServiceSelectorProps {
   selectedServices: string[];
@@ -66,7 +67,7 @@ const ServiceSelector = ({
                     </p>
                     <div className="flex items-center gap-2">
                       <Badge variant="secondary" className="bg-gray-100">
-                        From ${service.basePrice}
+                        From ${applyPriceMarkup(service.basePrice)}
                       </Badge>
                       <span className="text-xs text-gray-500">
                         ~{service.estimatedDuration} min

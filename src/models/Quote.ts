@@ -65,6 +65,9 @@ export interface QuoteRequest {
   // Privacy consent
   pipedaConsent?: boolean;
   
+  // Flags
+  isCustomServiceRequest?: boolean;
+  
   // Calculated
   estimatedPrice?: number;
   status: 'draft' | 'submitted' | 'pending' | 'reviewed';

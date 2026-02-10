@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { getServiceItemById, calculateTotalDuration } from '@/services/serviceData';
 import { Clock, DollarSign, AlertCircle } from 'lucide-react';
+import { applyPriceMarkup } from '@/lib/utils';
 
 interface QuoteEstimateProps {
   quoteData: QuoteRequest;
@@ -89,7 +90,7 @@ const QuoteEstimate = ({ quoteData }: QuoteEstimateProps) => {
                       </div>
                       <div className="text-right">
                         <span className="text-gray-900 font-semibold">
-                          ${item.unitPrice}
+                          ${applyPriceMarkup(item.unitPrice)}
                         </span>
                         {item.partsExtra && (
                           <p className="text-xs text-orange-600 mt-1">

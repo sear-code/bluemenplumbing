@@ -1,4 +1,5 @@
-import { ServiceCategory } from '@/models/Quote';
+import { ServiceCategory, ServiceItem } from '@/models/Quote';
+import { applyPriceMarkup } from '@/lib/utils';
 
 /**
  * Two-tier service structure with categories and items
@@ -341,6 +342,7 @@ export const getServiceItemById = (itemId: string): { category: ServiceCategory;
 
 /**
  * Calculate total price for selected service items (local fallback)
+ * Applies 20% markup to all prices for frontend display
  */
 export const calculateTotalPrice = (
   selectedItemIds: string[],
@@ -349,11 +351,11 @@ export const calculateTotalPrice = (
 ): number => {
   let baseTotal = 0;
 
-  // Sum up all selected items
+  // Sum up all selected items with 20% markup applied
   selectedItemIds.forEach(itemId => {
     const result = getServiceItemById(itemId);
     if (result) {
-      baseTotal += result.item.unitPrice;
+      baseTotal += applyPriceMarkup(result.item.unitPrice);
     }
   });
 

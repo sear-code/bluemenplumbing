@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { CheckCircle2, ChevronRight, ChevronLeft, Upload, X, Loader2 } from 'lucide-react';
 import { ServiceCategory } from '@/models/Quote';
+import { applyPriceMarkup } from '@/lib/utils';
 
 interface ServiceSelectorTwoTierProps {
   selectedServices: string[];
@@ -92,8 +93,10 @@ const ServiceSelectorTwoTier = ({
   };
 
   const formatPriceRange = (min: number, max: number): string => {
-    if (min === max) return `$${min}`;
-    return `$${min}-$${max}`;
+    const markedUpMin = applyPriceMarkup(min);
+    const markedUpMax = applyPriceMarkup(max);
+    if (markedUpMin === markedUpMax) return `$${markedUpMin}`;
+    return `$${markedUpMin}-$${markedUpMax}`;
   };
 
   const handleCustomServiceChange = (value: string) => {
@@ -247,7 +250,7 @@ const ServiceSelectorTwoTier = ({
                               )}
                               <div className="flex items-center gap-3 mt-2">
                                 <span className="text-[#4492AC] font-semibold">
-                                  ${item.unitPrice}
+                                  ${applyPriceMarkup(item.unitPrice)}
                                 </span>
                                 <span className="text-xs text-gray-500">
                                   ~{item.estimatedDuration} min
