@@ -1,0 +1,10 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/api/admin/services/categories/route": "/api/admin/services/categories",
+  "/api/admin/services/items/route": "/api/admin/services/items",
+  "/api/google-reviews/route": "/api/google-reviews",
+  "/api/quotes/route": "/api/quotes",
+  "/api/services/route": "/api/services",
+  "/page": "/"
+}
