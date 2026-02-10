@@ -9,6 +9,21 @@ export const quoteService = {
         body: JSON.stringify(quoteData),
       });
       
+      // Check if response is OK before parsing
+      if (!response.ok) {
+        let errorMessage = 'Failed to submit quote';
+        
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.error || errorMessage;
+        } catch {
+          // If JSON parsing fails, use status text
+          errorMessage = `Server error: ${response.status} ${response.statusText}`;
+        }
+        
+        throw new Error(errorMessage);
+      }
+      
       const result = await response.json();
       
       if (!result.success) {
@@ -18,6 +33,12 @@ export const quoteService = {
       return result.data;
     } catch (error) {
       console.error('Quote submission error:', error);
+      
+      // Provide more detailed error messages
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        throw new Error('Unable to connect to the server. Please check your internet connection and try again.');
+      }
+      
       throw new Error(error instanceof Error ? error.message : 'Failed to submit quote. Please try again.');
     }
   },

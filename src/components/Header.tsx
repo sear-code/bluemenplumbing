@@ -87,10 +87,12 @@ const Header = () => {
             <Button
               variant="cta"
               size="sm"
-              onClick={() => scrollToSection('contact')}
+              asChild
               className="hidden md:flex"
             >
-              {t('hero.call')}
+              <a href="tel:+16475007989">
+                {t('hero.call')}
+              </a>
             </Button>
 
             {/* Mobile menu button */}
@@ -137,8 +139,10 @@ const Header = () => {
                 <Button variant="ghost" size="icon" onClick={toggleLanguage}>
                   <Globe className="h-4 w-4" />
                 </Button>
-                <Button variant="cta" size="sm" onClick={() => scrollToSection('contact')}>
-                  {t('hero.call')}
+                <Button variant="cta" size="sm" asChild>
+                  <a href="tel:+16475007989">
+                    {t('hero.call')}
+                  </a>
                 </Button>
               </div>
             </nav>

@@ -1,263 +1,262 @@
-# Supabase Database Setup - Blue Men Plumbing
+# Supabase Setup Guide
 
-## Overview
+## Current Issue
 
-Your project is now connected to Supabase for dynamic service management. All services in the quote generation section are now fetched from the database, allowing you to easily add, edit, or delete services without touching the code.
+Your Supabase project (`elqkduzhcjsgsoksastu`) is not accessible. The DNS lookup fails, which means either:
+- The project was deleted
+- The project was paused (free tier)
+- The URL is incorrect
 
-## Database Information
+## Quick Fix
 
-- **Project Name**: bluemenplumbing
-- **Region**: Canada Central (ca-central-1)
-- **Project ID**: elqkduzhcjsgsoksastu
-- **API URL**: https://elqkduzhcjsgsoksastu.supabase.co
+### Step 1: Check Existing Project
 
-## Environment Variables
+1. Go to [https://app.supabase.com](https://app.supabase.com)
+2. Sign in with your account
+3. Look for project `elqkduzhcjsgsoksastu`
 
-Add these to your `.env.local` file:
+**If you see the project:**
+- Check if it says "Paused" - free tier projects pause after inactivity
+- Click "Resume" or "Restore" to reactivate it
+- Wait 2-3 minutes for DNS to propagate
+- Run the test script again: `node test-supabase-connection.cjs`
 
-```bash
-NEXT_PUBLIC_SUPABASE_URL=https://elqkduzhcjsgsoksastu.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVscWtkdXpoY2pzZ3Nva3Nhc3R1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3NzUwMjcsImV4cCI6MjA4MzM1MTAyN30.c7p4OIcerriPBg7Ca0LUOzuvLHwV9D4OuGEi5vbmw9c
-```
+**If you don't see the project:**
+- It may have been deleted
+- Follow the steps below to create a new one
 
-## Database Schema
+### Step 2: Create New Supabase Project
 
-### Tables
+1. **Go to Supabase Dashboard**
+   - Visit [https://app.supabase.com](https://app.supabase.com)
+   - Sign in or create an account
 
-#### `service_categories`
-Stores the main service categories (Bathroom Rough-In, Kitchen Plumbing, etc.)
+2. **Create New Project**
+   - Click "New Project"
+   - Choose your organization
+   - Fill in project details:
+     - **Name**: `bluemenplumbing`
+     - **Database Password**: (create a strong password and save it)
+     - **Region**: Choose closest to your location
+   - Click "Create new project"
+   - Wait 2-3 minutes for setup
 
-**Columns:**
-- `id` (TEXT, PRIMARY KEY) - Unique identifier (e.g., 'bathroom-rough-in')
-- `name` (TEXT) - Display name (e.g., 'Bathroom Rough-In')
-- `description` (TEXT) - Category description
-- `category` (TEXT) - Category type: 'rough-in', 'finishing', 'kitchen', 'laundry', 'repair', 'maintenance'
-- `price_range_min` (INTEGER) - Minimum price in dollars
-- `price_range_max` (INTEGER) - Maximum price in dollars
-- `estimated_duration` (INTEGER) - Estimated duration in minutes
-- `display_order` (INTEGER) - Order for sorting
-- `is_active` (BOOLEAN) - Active/inactive status
-- `created_at` (TIMESTAMP)
-- `updated_at` (TIMESTAMP)
+3. **Get Your Credentials**
+   - Go to Project Settings (gear icon)
+   - Click "API" in the sidebar
+   - You'll see:
+     - **Project URL**: `https://xxxxx.supabase.co`
+     - **anon/public key**: `eyJhbG...` (long JWT token)
 
-#### `service_items`
-Stores individual service items within categories
-
-**Columns:**
-- `id` (TEXT, PRIMARY KEY) - Unique identifier (e.g., 'rough-shower-diverter-basic')
-- `category_id` (TEXT, FOREIGN KEY) - References service_categories(id)
-- `name` (TEXT) - Display name (e.g., 'Shower Diverter (Basic)')
-- `description` (TEXT) - Item description
-- `unit_price` (INTEGER) - Price in dollars
-- `parts_extra` (BOOLEAN) - Whether parts are extra cost
-- `parts_price` (INTEGER) - Additional parts cost
-- `estimated_duration` (INTEGER) - Estimated duration in minutes
-- `display_order` (INTEGER) - Order for sorting within category
-- `is_active` (BOOLEAN) - Active/inactive status
-- `created_at` (TIMESTAMP)
-- `updated_at` (TIMESTAMP)
-
-## API Routes
-
-### Public Routes
-
-#### `GET /api/services`
-Fetches all active service categories with their items
-
-**Response:**
-```json
-{
-  "success": true,
-  "data": [
-    {
-      "id": "bathroom-rough-in",
-      "name": "Bathroom Rough-In",
-      "description": "Complete plumbing installation...",
-      "category": "rough-in",
-      "priceRangeMin": 50,
-      "priceRangeMax": 3000,
-      "estimatedDuration": 240,
-      "displayOrder": 1,
-      "items": [...]
-    }
-  ]
-}
-```
-
-### Admin Routes
-
-#### `GET /api/admin/services/categories`
-Get all categories (including inactive)
-
-#### `POST /api/admin/services/categories`
-Create a new category
-
-**Body:**
-```json
-{
-  "id": "new-category",
-  "name": "New Category",
-  "description": "Description",
-  "category": "repair",
-  "price_range_min": 100,
-  "price_range_max": 500,
-  "estimated_duration": 120,
-  "display_order": 6
-}
-```
-
-#### `PUT /api/admin/services/categories`
-Update an existing category
-
-**Body:**
-```json
-{
-  "id": "bathroom-rough-in",
-  "name": "Updated Name",
-  "price_range_max": 3500
-}
-```
-
-#### `DELETE /api/admin/services/categories?id=category-id`
-Soft-delete a category (sets is_active to false)
-
-#### Service Items Routes
-Same pattern for service items:
-- `GET /api/admin/services/items?category_id=optional`
-- `POST /api/admin/services/items`
-- `PUT /api/admin/services/items`
-- `DELETE /api/admin/services/items?id=item-id`
-
-## How to Manage Services
-
-### Option 1: Using the Supabase Dashboard
-
-1. Go to https://supabase.com/dashboard
-2. Select your project: **bluemenplumbing**
-3. Navigate to **Table Editor** in the left sidebar
-4. Select either `service_categories` or `service_items`
-5. Add, edit, or delete rows directly in the UI
-
-### Option 2: Using SQL
-
-1. Go to **SQL Editor** in Supabase Dashboard
-2. Run queries to modify data:
-
-**Add a new service category:**
-```sql
-INSERT INTO service_categories (
-  id, name, description, category, 
-  price_range_min, price_range_max, 
-  estimated_duration, display_order
-) VALUES (
-  'hvac-services',
-  'HVAC Services',
-  'Heating, ventilation, and air conditioning',
-  'maintenance',
-  150, 800, 180, 6
-);
-```
-
-**Add a new service item:**
-```sql
-INSERT INTO service_items (
-  id, category_id, name, description, 
-  unit_price, parts_extra, estimated_duration, display_order
-) VALUES (
-  'hvac-thermostat-install',
-  'hvac-services',
-  'Thermostat Installation',
-  'Install and configure new thermostat',
-  125, false, 60, 1
-);
-```
-
-**Update a price:**
-```sql
-UPDATE service_items 
-SET unit_price = 150 
-WHERE id = 'rough-shower-diverter-basic';
-```
-
-**Deactivate a service (soft delete):**
-```sql
-UPDATE service_items 
-SET is_active = false 
-WHERE id = 'service-to-hide';
-```
-
-### Option 3: Using API Routes (Programmatically)
-
-Use tools like Postman or curl to hit the admin API routes:
+4. **Update Your `.env.local` File**
 
 ```bash
-# Create a new service item
-curl -X POST https://your-domain.com/api/admin/services/items \
-  -H "Content-Type: application/json" \
-  -d '{
-    "id": "new-service",
-    "category_id": "repairs-troubleshooting",
-    "name": "New Service",
-    "unit_price": 95,
-    "parts_extra": false,
-    "estimated_duration": 60,
-    "display_order": 5
-  }'
+# Replace these with your NEW project credentials
+NEXT_PUBLIC_SUPABASE_URL=https://YOUR_NEW_PROJECT_ID.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJI...YOUR_NEW_ANON_KEY_HERE
+
+# Keep your email settings
+RESEND_API_KEY=your_api_key_here
+RESEND_FROM_EMAIL=onboarding@resend.dev
+RESEND_TO_EMAIL=searahmad22@gmail.com
 ```
 
-## Security
+### Step 3: Set Up Database Tables
 
-- **Row Level Security (RLS)** is enabled on both tables
-- Public users can only **read** active services
-- **Insert/Update/Delete** operations require authentication
-- For production, you should implement proper authentication and admin roles
+Your application needs the following tables. Run these SQL commands in Supabase SQL Editor:
 
-## How It Works
+1. **Go to SQL Editor**
+   - In your Supabase dashboard
+   - Click "SQL Editor" in the left sidebar
+   - Click "New Query"
 
-1. User opens the quote generator
-2. The `ServiceSelectorTwoTier` component fetches services from `/api/services`
-3. Services are loaded from Supabase in real-time
-4. Any changes you make in the database instantly reflect in the app (after refresh)
+2. **Create Tables** - Copy and paste this SQL:
 
-## Current Data
+```sql
+-- Create service_categories table
+CREATE TABLE IF NOT EXISTS public.service_categories (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    name TEXT NOT NULL,
+    description TEXT,
+    category TEXT NOT NULL CHECK (category IN ('rough-in', 'finishing', 'kitchen', 'laundry', 'repair', 'maintenance')),
+    price_range_min NUMERIC DEFAULT 0,
+    price_range_max NUMERIC DEFAULT 0,
+    estimated_duration INTEGER DEFAULT 60,
+    display_order INTEGER DEFAULT 0,
+    is_active BOOLEAN DEFAULT true,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
 
-The database has been pre-populated with all your existing services:
+-- Create service_items table
+CREATE TABLE IF NOT EXISTS public.service_items (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    category_id UUID REFERENCES public.service_categories(id) ON DELETE CASCADE,
+    name TEXT NOT NULL,
+    description TEXT,
+    unit_price NUMERIC DEFAULT 0,
+    parts_extra BOOLEAN DEFAULT false,
+    parts_price NUMERIC DEFAULT 0,
+    estimated_duration INTEGER DEFAULT 60,
+    display_order INTEGER DEFAULT 0,
+    is_active BOOLEAN DEFAULT true,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
 
-- **Bathroom Rough-In** (12 items)
-- **Bathroom Finishing** (9 items)
-- **Kitchen Plumbing** (3 items)
-- **Laundry Connections** (2 items)
-- **Repairs & Troubleshooting** (4 items)
+-- Create quotes table
+CREATE TABLE IF NOT EXISTS public.quotes (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    quote_id TEXT NOT NULL UNIQUE,
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    phone TEXT NOT NULL,
+    property_type TEXT,
+    address_street TEXT,
+    address_city TEXT,
+    address_state TEXT,
+    address_zip TEXT,
+    selected_services JSONB DEFAULT '[]'::jsonb,
+    selected_categories JSONB DEFAULT '[]'::jsonb,
+    custom_service TEXT,
+    problem_description TEXT,
+    urgency TEXT DEFAULT 'standard',
+    estimated_price NUMERIC DEFAULT 0,
+    estimated_duration INTEGER DEFAULT 120,
+    status TEXT DEFAULT 'submitted' CHECK (status IN ('draft', 'submitted', 'contacted', 'approved', 'completed', 'cancelled')),
+    access_notes TEXT,
+    preferred_datetime TIMESTAMP WITH TIME ZONE,
+    photos JSONB DEFAULT '[]'::jsonb,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
 
-Total: **5 categories, 30 service items**
+-- Create indexes for better performance
+CREATE INDEX IF NOT EXISTS idx_service_items_category_id ON public.service_items(category_id);
+CREATE INDEX IF NOT EXISTS idx_quotes_email ON public.quotes(email);
+CREATE INDEX IF NOT EXISTS idx_quotes_quote_id ON public.quotes(quote_id);
+CREATE INDEX IF NOT EXISTS idx_quotes_status ON public.quotes(status);
+CREATE INDEX IF NOT EXISTS idx_quotes_created_at ON public.quotes(created_at DESC);
 
-## Next Steps
+-- Enable Row Level Security (RLS)
+ALTER TABLE public.service_categories ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.service_items ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.quotes ENABLE ROW LEVEL SECURITY;
 
-1. **Add Environment Variables**: Copy the variables to your `.env.local` file
-2. **Test the Integration**: Start your dev server and open the quote generator
-3. **Customize Services**: Add, edit, or remove services using any of the methods above
-4. **Set Up Authentication** (Optional): Implement auth for the admin routes
-5. **Build Admin UI** (Optional): Create a management dashboard for easier service editing
+-- Create policies for public read access
+CREATE POLICY "Allow public read access to service_categories"
+    ON public.service_categories FOR SELECT
+    USING (true);
+
+CREATE POLICY "Allow public read access to service_items"
+    ON public.service_items FOR SELECT
+    USING (true);
+
+-- Create policy for public quote insertion
+CREATE POLICY "Allow public insert access to quotes"
+    ON public.quotes FOR INSERT
+    WITH CHECK (true);
+
+-- Create policy for authenticated read access to quotes
+CREATE POLICY "Allow authenticated read access to quotes"
+    ON public.quotes FOR SELECT
+    USING (auth.role() = 'authenticated');
+
+-- Create updated_at trigger function
+CREATE OR REPLACE FUNCTION public.handle_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = timezone('utc'::text, now());
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Create triggers for updated_at
+CREATE TRIGGER set_service_categories_updated_at
+    BEFORE UPDATE ON public.service_categories
+    FOR EACH ROW
+    EXECUTE FUNCTION public.handle_updated_at();
+
+CREATE TRIGGER set_service_items_updated_at
+    BEFORE UPDATE ON public.service_items
+    FOR EACH ROW
+    EXECUTE FUNCTION public.handle_updated_at();
+
+CREATE TRIGGER set_quotes_updated_at
+    BEFORE UPDATE ON public.quotes
+    FOR EACH ROW
+    EXECUTE FUNCTION public.handle_updated_at();
+```
+
+3. **Click "Run"** to execute the SQL
+
+### Step 4: Test Your Connection
+
+```bash
+# Run the diagnostic tool
+node test-supabase-connection.cjs
+
+# If it passes, restart your dev server
+npm run dev
+```
+
+### Step 5: Populate Sample Data (Optional)
+
+If you want some test data, run this in the SQL Editor:
+
+```sql
+-- Insert sample service categories
+INSERT INTO public.service_categories (id, name, description, category, price_range_min, price_range_max, estimated_duration, display_order) VALUES
+('rough-in-plumbing', 'Rough-In Plumbing', 'New construction and renovation plumbing installation', 'rough-in', 150, 500, 180, 1),
+('finishing-plumbing', 'Finishing Plumbing', 'Final fixture installation and connections', 'finishing', 100, 400, 120, 2),
+('kitchen-plumbing', 'Kitchen Plumbing', 'Kitchen sink, dishwasher, and appliance connections', 'kitchen', 125, 450, 150, 3),
+('laundry-plumbing', 'Laundry Plumbing', 'Washer/dryer hookups and utility room plumbing', 'laundry', 100, 350, 120, 4),
+('repair-services', 'Repair Services', 'Fix leaks, clogs, and plumbing issues', 'repair', 75, 300, 90, 5),
+('maintenance', 'Maintenance', 'Regular maintenance and inspection services', 'maintenance', 80, 250, 60, 6);
+
+-- Insert sample service items
+INSERT INTO public.service_items (category_id, name, description, unit_price, parts_extra, estimated_duration, display_order) VALUES
+('rough-in-plumbing', 'Rough-in for bathroom', 'Complete rough-in plumbing for new bathroom', 350, true, 240, 1),
+('rough-in-plumbing', 'Rough-in for kitchen', 'Complete rough-in plumbing for new kitchen', 400, true, 300, 2),
+('finishing-plumbing', 'Install toilet', 'Standard toilet installation', 150, false, 60, 1),
+('finishing-plumbing', 'Install sink and faucet', 'Bathroom or kitchen sink installation', 200, false, 90, 2),
+('kitchen-plumbing', 'Install garbage disposal', 'Garbage disposal installation', 175, false, 75, 1),
+('kitchen-plumbing', 'Connect dishwasher', 'Dishwasher water line and drain connection', 150, false, 60, 2),
+('laundry-plumbing', 'Washer hookup', 'Connect washing machine water lines and drain', 125, false, 60, 1),
+('repair-services', 'Fix leaky faucet', 'Repair or replace leaking faucet', 100, true, 45, 1),
+('repair-services', 'Unclog drain', 'Clear clogged drains', 125, false, 60, 2),
+('repair-services', 'Fix running toilet', 'Repair toilet that runs constantly', 100, true, 45, 3),
+('maintenance', 'Water heater flush', 'Drain and flush water heater', 125, false, 60, 1);
+```
 
 ## Troubleshooting
 
-**Services not loading?**
-- Check that environment variables are set correctly
-- Ensure the dev server was restarted after adding .env.local
-- Check browser console for errors
+### Connection still fails after setup
+1. Wait 2-3 minutes for DNS propagation
+2. Clear your browser cache
+3. Restart your dev server
+4. Run: `node test-supabase-connection.cjs`
 
-**Can't modify services from dashboard?**
-- Verify you're logged into the correct Supabase project
-- Check that RLS policies allow your operations
+### Tables not showing up
+1. Check you ran the SQL in the correct project
+2. Refresh the Table Editor page
+3. Check for SQL errors in the query output
 
-**Need help?**
-- Check Supabase logs in the dashboard
-- Review the Network tab in browser DevTools
-- Check the server console for error messages
+### Authentication errors
+1. Verify you copied the correct anon/public key (not the service_role key)
+2. Check that RLS policies are created
+3. Ensure `.env.local` has no extra spaces or quotes
 
-## Resources
+## Support
 
-- [Supabase Documentation](https://supabase.com/docs)
-- [Supabase Dashboard](https://supabase.com/dashboard/project/elqkduzhcjsgsoksastu)
-- [SQL Reference](https://supabase.com/docs/guides/database/overview)
+- Supabase Documentation: [https://supabase.com/docs](https://supabase.com/docs)
+- Supabase Discord: [https://discord.supabase.com](https://discord.supabase.com)
+- Check Supabase Status: [https://status.supabase.com](https://status.supabase.com)
 
+## Next Steps
+
+After Supabase is working:
+1. Configure Resend for email notifications (see QUOTE_SYSTEM_SETUP.md)
+2. Test the quote submission form
+3. Check the Supabase dashboard to see submitted quotes

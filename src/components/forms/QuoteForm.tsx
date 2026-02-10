@@ -74,6 +74,7 @@ const QuoteForm = () => {
             address={formData.address}
             accessNotes={formData.accessNotes}
             preferredDateTime={formData.preferredDateTime}
+            pipedaConsent={formData.pipedaConsent}
             onUpdate={updateFormData}
             isCustomServiceOnly={isCustomOnly}
           />

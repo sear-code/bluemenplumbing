@@ -29,6 +29,7 @@ export const useQuoteForm = () => {
       email: '',
       phone: '',
     },
+    pipedaConsent: false,
     status: 'draft',
   });
 
@@ -129,6 +130,12 @@ export const useQuoteForm = () => {
           return false;
         }
         
+        // PIPEDA consent validation
+        if (!formData.pipedaConsent) {
+          setError('You must consent to the collection and use of your personal information to submit a quote request');
+          return false;
+        }
+        
         // For custom service requests, address is optional (we'll get it during follow-up)
         const hasOnlyCustomService = 
           formData.selectedServices.length === 0 && 
@@ -205,6 +212,7 @@ export const useQuoteForm = () => {
         email: '',
         phone: '',
       },
+      pipedaConsent: false,
       status: 'draft',
     });
     setCurrentStep(1);

@@ -62,6 +62,9 @@ export interface QuoteRequest {
   preferredDateTime?: string;
   photos?: File[];
   
+  // Privacy consent
+  pipedaConsent?: boolean;
+  
   // Calculated
   estimatedPrice?: number;
   status: 'draft' | 'submitted' | 'pending' | 'reviewed';

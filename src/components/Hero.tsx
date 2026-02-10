@@ -39,12 +39,14 @@ const Hero = () => {
               <Button 
                 variant="cta" 
                 size="lg"
-                onClick={scrollToContact}
+                asChild
                 className="animate-slide-up"
                 style={{ animationDelay: '0.2s' }}
               >
-                <Phone className="h-5 w-5" />
-                {t('hero.call')}
+                <a href="tel:+16475007989">
+                  <Phone className="h-5 w-5" />
+                  {t('hero.call')}
+                </a>
               </Button>
             </div>
 

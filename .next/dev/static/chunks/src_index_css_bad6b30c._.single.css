@@ -1528,10 +1528,6 @@ body {
   border-color: #fff3;
 }
 
-.border-white\/30 {
-  border-color: #ffffff4d;
-}
-
 .border-l-transparent {
   border-left-color: #0000;
 }
@@ -1679,10 +1675,6 @@ body {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
-}
-
-.bg-white\/20 {
-  background-color: #fff3;
 }
 
 .bg-gradient-card {
@@ -2086,6 +2078,10 @@ body {
 
 .leading-tight {
   line-height: 1.25;
+}
+
+.leading-relaxed {
+  line-height: 1.625;
 }
 
 .tracking-tight {
@@ -2782,22 +2778,12 @@ body {
   background-color: hsl(var(--sidebar-accent));
 }
 
-.hover\:bg-white:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
-}
-
 .hover\:text-\[\#FF8C00\]\/80:hover {
   color: #ff8c00cc;
 }
 
 .hover\:text-accent-foreground:hover {
   color: hsl(var(--accent-foreground));
-}
-
-.hover\:text-black:hover {
-  --tw-text-opacity: 1;
-  color: rgb(0 0 0 / var(--tw-text-opacity, 1));
 }
 
 .hover\:text-foreground:hover {

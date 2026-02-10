@@ -6,6 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
 import { useState } from 'react';
@@ -25,6 +26,7 @@ interface ContactInfoProps {
   };
   accessNotes?: string;
   preferredDateTime?: string;
+  pipedaConsent?: boolean;
   onUpdate: (updates: any) => void;
   isCustomServiceOnly?: boolean;
 }
@@ -34,6 +36,7 @@ const ContactInfo = ({
   address,
   accessNotes,
   preferredDateTime,
+  pipedaConsent = false,
   onUpdate,
   isCustomServiceOnly = false,
 }: ContactInfoProps) => {
@@ -228,6 +231,32 @@ const ContactInfo = ({
             </div>
           </div>
           )}
+        </div>
+      </div>
+
+      {/* PIPEDA Privacy Consent */}
+      <div className="pt-6 border-t border-gray-200">
+        <div className="flex items-start space-x-3">
+          <Checkbox
+            id="pipedaConsent"
+            checked={pipedaConsent}
+            onCheckedChange={(checked) => onUpdate({ pipedaConsent: checked === true })}
+            className="mt-1"
+          />
+          <div className="flex-1">
+            <Label
+              htmlFor="pipedaConsent"
+              className="text-sm font-medium leading-relaxed cursor-pointer"
+            >
+              I consent to the collection, use, and disclosure of my personal information *
+            </Label>
+            <p className="text-xs text-gray-600 mt-2 leading-relaxed">
+              By checking this box, I consent to Blue Men Plumbing collecting, using, and disclosing my personal information 
+              (including name, contact details, address, and service request details) for the purposes of processing my quote 
+              request, providing plumbing services, and communicating with me about my service needs. You may withdraw your 
+              consent at any time by contacting us directly.
+            </p>
+          </div>
         </div>
       </div>
 
