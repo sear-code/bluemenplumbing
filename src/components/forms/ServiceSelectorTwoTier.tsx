@@ -1,68 +1,61 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { CheckCircle2, ChevronRight, ChevronLeft, Upload, X, Loader2 } from 'lucide-react';
+import { CheckCircle2, ChevronDown, Loader2 } from 'lucide-react';
 import { ServiceCategory } from '@/models/Quote';
 import { applyPriceMarkup } from '@/lib/utils';
 
 interface ServiceSelectorTwoTierProps {
   selectedServices: string[];
   urgency: string;
+  customService?: string;
   onUpdate: (updates: any) => void;
 }
 
 const ServiceSelectorTwoTier = ({
   selectedServices,
   urgency,
+  customService: initialCustomService = '',
   onUpdate,
 }: ServiceSelectorTwoTierProps) => {
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [customService, setCustomService] = useState<string>('');
-  const [customPhotos, setCustomPhotos] = useState<File[]>([]);
+  const [customService, setCustomService] = useState<string>(initialCustomService);
   const [serviceCategories, setServiceCategories] = useState<ServiceCategory[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [dataSource, setDataSource] = useState<'database' | 'local' | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const fetchServices = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await fetch('/api/services');
+      const result = await response.json();
+
+      if (result.success && result.data) {
+        setServiceCategories(result.data);
+        setDataSource(result.source || 'local');
+      } else {
+        setError('Failed to load services. Please try again.');
+      }
+    } catch (err) {
+      console.error('Error fetching services:', err);
+      setError('Failed to load services. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Fetch services from API on component mount
   useEffect(() => {
-    const fetchServices = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        
-        const response = await fetch('/api/services');
-        const result = await response.json();
-        
-        if (result.success && result.data) {
-          setServiceCategories(result.data);
-          setDataSource(result.source || 'local');
-          
-          // Log info for debugging
-          if (result.source === 'local') {
-            console.info('Using local service data - Set up Supabase for dynamic management');
-          } else if (result.source === 'database') {
-            console.info('Successfully loaded services from Supabase');
-          }
-        } else {
-          setError('Failed to load services. Please try again.');
-        }
-      } catch (err) {
-        console.error('Error fetching services:', err);
-        setError('Failed to load services. Please try again.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchServices();
   }, []);
 
@@ -104,21 +97,6 @@ const ServiceSelectorTwoTier = ({
     onUpdate({ customService: value });
   };
 
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (files) {
-      const newPhotos = Array.from(files);
-      const updatedPhotos = [...customPhotos, ...newPhotos];
-      setCustomPhotos(updatedPhotos);
-      onUpdate({ photos: updatedPhotos });
-    }
-  };
-
-  const handleRemovePhoto = (index: number) => {
-    const updatedPhotos = customPhotos.filter((_, i) => i !== index);
-    setCustomPhotos(updatedPhotos);
-    onUpdate({ photos: updatedPhotos });
-  };
 
   // Show loading state
   if (loading) {
@@ -137,8 +115,8 @@ const ServiceSelectorTwoTier = ({
     return (
       <div className="text-center py-12">
         <p className="text-red-600 mb-4">{error}</p>
-        <Button 
-          onClick={() => window.location.reload()} 
+        <Button
+          onClick={() => fetchServices()}
           variant="outline"
           className="border-[#4492AC] text-[#4492AC] hover:bg-[#4492AC] hover:text-white"
         >
@@ -203,11 +181,7 @@ const ServiceSelectorTwoTier = ({
                       {hasSelectedItems && (
                         <CheckCircle2 className="w-6 h-6 text-[#4492AC]" />
                       )}
-                      {isExpanded ? (
-                        <ChevronLeft className="w-5 h-5 text-gray-400" />
-                      ) : (
-                        <ChevronRight className="w-5 h-5 text-gray-400" />
-                      )}
+                      <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} />
                     </div>
                   </div>
                 </Card>
@@ -317,11 +291,7 @@ const ServiceSelectorTwoTier = ({
                   {customService.trim().length > 0 && (
                     <CheckCircle2 className="w-6 h-6 text-[#4492AC]" />
                   )}
-                  {expandedCategory === 'other' ? (
-                    <ChevronLeft className="w-5 h-5 text-gray-400" />
-                  ) : (
-                    <ChevronRight className="w-5 h-5 text-gray-400" />
-                  )}
+                  <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${expandedCategory === 'other' ? 'rotate-180' : ''}`} />
                 </div>
               </div>
             </Card>
@@ -342,72 +312,9 @@ const ServiceSelectorTwoTier = ({
                   />
                 </div>
 
-                {/* Photo Upload Section */}
-                <div onClick={(e) => e.stopPropagation()}>
-                  <p className="text-sm font-medium text-gray-700 mb-2">
-                    Add Photos (Optional)
-                  </p>
-                  <p className="text-xs text-gray-500 mb-3">
-                    Photos help us understand your needs better and provide a more accurate quote
-                  </p>
-                  
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    onChange={handleFileSelect}
-                    className="hidden"
-                  />
-                  
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => fileInputRef.current?.click()}
-                    className="w-full"
-                  >
-                    <Upload className="w-4 h-4 mr-2" />
-                    Upload Photos
-                  </Button>
-
-                  {/* Photo Preview */}
-                  {customPhotos.length > 0 && (
-                    <div className="mt-3 space-y-2">
-                      <p className="text-xs font-medium text-gray-700">
-                        {customPhotos.length} photo{customPhotos.length !== 1 ? 's' : ''} uploaded
-                      </p>
-                      <div className="grid grid-cols-2 gap-2">
-                        {customPhotos.map((photo, index) => (
-                          <div
-                            key={index}
-                            className="relative group border border-gray-200 rounded-lg p-2"
-                          >
-                            <div className="flex items-center gap-2">
-                              <div className="w-10 h-10 bg-gray-100 rounded flex items-center justify-center flex-shrink-0">
-                                <Upload className="w-4 h-4 text-gray-400" />
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <p className="text-xs text-gray-700 truncate">
-                                  {photo.name}
-                                </p>
-                                <p className="text-xs text-gray-500">
-                                  {(photo.size / 1024).toFixed(1)} KB
-                                </p>
-                              </div>
-                              <button
-                                type="button"
-                                onClick={() => handleRemovePhoto(index)}
-                                className="p-1 hover:bg-gray-100 rounded"
-                              >
-                                <X className="w-4 h-4 text-gray-500" />
-                              </button>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
+                <p className="text-xs text-gray-500 mt-2">
+                  You can add photos in the next step to help us understand your needs better.
+                </p>
 
                 <p className="text-xs text-gray-500">
                   Our team will review your request and contact you with a detailed custom quote.

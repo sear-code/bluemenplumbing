@@ -1,40 +1,58 @@
 import { ServiceCategory, ServiceItem } from '@/models/Quote';
-import { serviceCategories as initialServiceCategories } from './serviceData';
 
-let cachedCategories: ServiceCategory[] = [...initialServiceCategories];
+const ADMIN_API_BASE = '/api/admin/services';
 
-const STORAGE_KEY = 'bluemen_service_categories';
-
-const loadFromStorage = (): ServiceCategory[] => {
-  if (typeof window === 'undefined') return cachedCategories;
-  
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      cachedCategories = parsed;
-      return parsed;
-    }
-  } catch (error) {
-    console.error('Error loading from storage:', error);
-  }
-  return cachedCategories;
+const getAuthHeaders = (): HeadersInit => {
+  const token = typeof window !== 'undefined'
+    ? localStorage.getItem('admin_api_token') || ''
+    : '';
+  return {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${token}`,
+  };
 };
 
-const saveToStorage = (categories: ServiceCategory[]) => {
-  if (typeof window === 'undefined') return;
-  
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(categories));
-    cachedCategories = categories;
-  } catch (error) {
-    console.error('Error saving to storage:', error);
+const handleResponse = async (response: Response) => {
+  const data = await response.json();
+  if (!response.ok || !data.success) {
+    throw new Error(data.error || 'Request failed');
   }
+  return data;
 };
 
 export const fetchServices = async (): Promise<ServiceCategory[]> => {
-  await new Promise(resolve => setTimeout(resolve, 300));
-  return loadFromStorage();
+  const [catRes, itemRes] = await Promise.all([
+    fetch(`${ADMIN_API_BASE}/categories`, { headers: getAuthHeaders() }),
+    fetch(`${ADMIN_API_BASE}/items`, { headers: getAuthHeaders() }),
+  ]);
+
+  const catData = await handleResponse(catRes);
+  const itemData = await handleResponse(itemRes);
+
+  const categories: ServiceCategory[] = (catData.data || []).map((cat: Record<string, unknown>) => ({
+    id: cat.id as string,
+    name: cat.name as string,
+    description: (cat.description as string) || '',
+    category: cat.category as string,
+    priceRangeMin: cat.price_range_min as number,
+    priceRangeMax: cat.price_range_max as number,
+    estimatedDuration: cat.estimated_duration as number,
+    displayOrder: cat.display_order as number,
+    items: (itemData.data || [])
+      .filter((item: Record<string, unknown>) => item.category_id === cat.id)
+      .map((item: Record<string, unknown>) => ({
+        id: item.id as string,
+        name: item.name as string,
+        description: (item.description as string) || undefined,
+        unitPrice: item.unit_price as number,
+        partsExtra: item.parts_extra as boolean,
+        partsPrice: (item.parts_price as number) || undefined,
+        estimatedDuration: item.estimated_duration as number,
+        displayOrder: item.display_order as number,
+      })),
+  }));
+
+  return categories;
 };
 
 export const createCategory = async (data: {
@@ -45,25 +63,34 @@ export const createCategory = async (data: {
   priceRangeMax: number;
   estimatedDuration: number;
 }): Promise<ServiceCategory> => {
-  await new Promise(resolve => setTimeout(resolve, 300));
-  
-  const categories = loadFromStorage();
-  const newCategory: ServiceCategory = {
-    id: `category-${Date.now()}`,
-    name: data.name,
-    description: data.description,
-    category: data.category,
-    priceRangeMin: data.priceRangeMin,
-    priceRangeMax: data.priceRangeMax,
-    estimatedDuration: data.estimatedDuration,
+  const response = await fetch(`${ADMIN_API_BASE}/categories`, {
+    method: 'POST',
+    headers: getAuthHeaders(),
+    body: JSON.stringify({
+      id: crypto.randomUUID(),
+      name: data.name,
+      description: data.description,
+      category: data.category,
+      price_range_min: data.priceRangeMin,
+      price_range_max: data.priceRangeMax,
+      estimated_duration: data.estimatedDuration,
+    }),
+  });
+
+  const result = await handleResponse(response);
+  const cat = result.data;
+
+  return {
+    id: cat.id,
+    name: cat.name,
+    description: cat.description || '',
+    category: cat.category,
+    priceRangeMin: cat.price_range_min,
+    priceRangeMax: cat.price_range_max,
+    estimatedDuration: cat.estimated_duration,
     items: [],
-    displayOrder: categories.length + 1,
+    displayOrder: cat.display_order,
   };
-  
-  const updatedCategories = [...categories, newCategory];
-  saveToStorage(updatedCategories);
-  
-  return newCategory;
 };
 
 export const updateCategory = async (
@@ -77,38 +104,42 @@ export const updateCategory = async (
     estimatedDuration: number;
   }
 ): Promise<ServiceCategory> => {
-  await new Promise(resolve => setTimeout(resolve, 300));
-  
-  const categories = loadFromStorage();
-  const categoryIndex = categories.findIndex(cat => cat.id === categoryId);
-  
-  if (categoryIndex === -1) {
-    throw new Error('Category not found');
-  }
-  
-  const updatedCategory: ServiceCategory = {
-    ...categories[categoryIndex],
-    name: data.name,
-    description: data.description,
-    category: data.category,
-    priceRangeMin: data.priceRangeMin,
-    priceRangeMax: data.priceRangeMax,
-    estimatedDuration: data.estimatedDuration,
+  const response = await fetch(`${ADMIN_API_BASE}/categories`, {
+    method: 'PUT',
+    headers: getAuthHeaders(),
+    body: JSON.stringify({
+      id: categoryId,
+      name: data.name,
+      description: data.description,
+      category: data.category,
+      price_range_min: data.priceRangeMin,
+      price_range_max: data.priceRangeMax,
+      estimated_duration: data.estimatedDuration,
+    }),
+  });
+
+  const result = await handleResponse(response);
+  const cat = result.data;
+
+  return {
+    id: cat.id,
+    name: cat.name,
+    description: cat.description || '',
+    category: cat.category,
+    priceRangeMin: cat.price_range_min,
+    priceRangeMax: cat.price_range_max,
+    estimatedDuration: cat.estimated_duration,
+    items: [],
+    displayOrder: cat.display_order,
   };
-  
-  const updatedCategories = [...categories];
-  updatedCategories[categoryIndex] = updatedCategory;
-  saveToStorage(updatedCategories);
-  
-  return updatedCategory;
 };
 
 export const deleteCategory = async (categoryId: string): Promise<void> => {
-  await new Promise(resolve => setTimeout(resolve, 300));
-  
-  const categories = loadFromStorage();
-  const updatedCategories = categories.filter(cat => cat.id !== categoryId);
-  saveToStorage(updatedCategories);
+  const response = await fetch(`${ADMIN_API_BASE}/categories?id=${categoryId}`, {
+    method: 'DELETE',
+    headers: getAuthHeaders(),
+  });
+  await handleResponse(response);
 };
 
 export const createItem = async (data: {
@@ -119,34 +150,32 @@ export const createItem = async (data: {
   partsExtra: boolean;
   estimatedDuration: number;
 }): Promise<ServiceItem> => {
-  await new Promise(resolve => setTimeout(resolve, 300));
-  
-  const categories = loadFromStorage();
-  const categoryIndex = categories.findIndex(cat => cat.id === data.categoryId);
-  
-  if (categoryIndex === -1) {
-    throw new Error('Category not found');
-  }
-  
-  const newItem: ServiceItem = {
-    id: `item-${Date.now()}`,
-    name: data.name,
-    description: data.description,
-    unitPrice: data.unitPrice,
-    partsExtra: data.partsExtra,
-    estimatedDuration: data.estimatedDuration,
-    displayOrder: categories[categoryIndex].items.length + 1,
+  const response = await fetch(`${ADMIN_API_BASE}/items`, {
+    method: 'POST',
+    headers: getAuthHeaders(),
+    body: JSON.stringify({
+      id: crypto.randomUUID(),
+      category_id: data.categoryId,
+      name: data.name,
+      description: data.description || null,
+      unit_price: data.unitPrice,
+      parts_extra: data.partsExtra,
+      estimated_duration: data.estimatedDuration,
+    }),
+  });
+
+  const result = await handleResponse(response);
+  const item = result.data;
+
+  return {
+    id: item.id,
+    name: item.name,
+    description: item.description || undefined,
+    unitPrice: item.unit_price,
+    partsExtra: item.parts_extra,
+    estimatedDuration: item.estimated_duration,
+    displayOrder: item.display_order,
   };
-  
-  const updatedCategories = [...categories];
-  updatedCategories[categoryIndex] = {
-    ...updatedCategories[categoryIndex],
-    items: [...updatedCategories[categoryIndex].items, newItem],
-  };
-  
-  saveToStorage(updatedCategories);
-  
-  return newItem;
 };
 
 export const updateItem = async (
@@ -160,78 +189,38 @@ export const updateItem = async (
     estimatedDuration: number;
   }
 ): Promise<ServiceItem> => {
-  await new Promise(resolve => setTimeout(resolve, 300));
-  
-  const categories = loadFromStorage();
-  
-  let oldCategoryIndex = -1;
-  let itemIndex = -1;
-  
-  for (let i = 0; i < categories.length; i++) {
-    const idx = categories[i].items.findIndex(item => item.id === itemId);
-    if (idx !== -1) {
-      oldCategoryIndex = i;
-      itemIndex = idx;
-      break;
-    }
-  }
-  
-  if (oldCategoryIndex === -1 || itemIndex === -1) {
-    throw new Error('Item not found');
-  }
-  
-  const updatedItem: ServiceItem = {
-    ...categories[oldCategoryIndex].items[itemIndex],
-    name: data.name,
-    description: data.description,
-    unitPrice: data.unitPrice,
-    partsExtra: data.partsExtra,
-    estimatedDuration: data.estimatedDuration,
+  const response = await fetch(`${ADMIN_API_BASE}/items`, {
+    method: 'PUT',
+    headers: getAuthHeaders(),
+    body: JSON.stringify({
+      id: itemId,
+      category_id: data.categoryId,
+      name: data.name,
+      description: data.description || null,
+      unit_price: data.unitPrice,
+      parts_extra: data.partsExtra,
+      estimated_duration: data.estimatedDuration,
+    }),
+  });
+
+  const result = await handleResponse(response);
+  const item = result.data;
+
+  return {
+    id: item.id,
+    name: item.name,
+    description: item.description || undefined,
+    unitPrice: item.unit_price,
+    partsExtra: item.parts_extra,
+    estimatedDuration: item.estimated_duration,
+    displayOrder: item.display_order,
   };
-  
-  const updatedCategories = [...categories];
-  
-  if (categories[oldCategoryIndex].id === data.categoryId) {
-    updatedCategories[oldCategoryIndex] = {
-      ...updatedCategories[oldCategoryIndex],
-      items: [
-        ...updatedCategories[oldCategoryIndex].items.slice(0, itemIndex),
-        updatedItem,
-        ...updatedCategories[oldCategoryIndex].items.slice(itemIndex + 1),
-      ],
-    };
-  } else {
-    const newCategoryIndex = categories.findIndex(cat => cat.id === data.categoryId);
-    if (newCategoryIndex === -1) {
-      throw new Error('Target category not found');
-    }
-    
-    updatedCategories[oldCategoryIndex] = {
-      ...updatedCategories[oldCategoryIndex],
-      items: updatedCategories[oldCategoryIndex].items.filter(item => item.id !== itemId),
-    };
-    
-    updatedCategories[newCategoryIndex] = {
-      ...updatedCategories[newCategoryIndex],
-      items: [...updatedCategories[newCategoryIndex].items, updatedItem],
-    };
-  }
-  
-  saveToStorage(updatedCategories);
-  
-  return updatedItem;
 };
 
 export const deleteItem = async (itemId: string): Promise<void> => {
-  await new Promise(resolve => setTimeout(resolve, 300));
-  
-  const categories = loadFromStorage();
-  
-  const updatedCategories = categories.map(category => ({
-    ...category,
-    items: category.items.filter(item => item.id !== itemId),
-  }));
-  
-  saveToStorage(updatedCategories);
+  const response = await fetch(`${ADMIN_API_BASE}/items?id=${itemId}`, {
+    method: 'DELETE',
+    headers: getAuthHeaders(),
+  });
+  await handleResponse(response);
 };
-

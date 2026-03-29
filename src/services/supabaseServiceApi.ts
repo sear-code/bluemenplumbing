@@ -132,6 +132,7 @@ export const fetchServiceItemById = async (itemId: string): Promise<{ category: 
 
 /**
  * Calculate total price for selected service items
+ * Uses a single query instead of N+1
  */
 export const calculateTotalPriceFromSupabase = async (
   selectedItemIds: string[],
@@ -139,21 +140,20 @@ export const calculateTotalPriceFromSupabase = async (
   propertyType: string
 ): Promise<number> => {
   try {
-    let baseTotal = 0;
+    if (selectedItemIds.length === 0) return 0;
 
-    // Fetch all selected items
-    for (const itemId of selectedItemIds) {
-      const { data: item, error } = await supabase
-        .from('service_items')
-        .select('unit_price')
-        .eq('id', itemId)
-        .eq('is_active', true)
-        .single();
+    const { data: items, error } = await supabase
+      .from('service_items')
+      .select('unit_price')
+      .in('id', selectedItemIds)
+      .eq('is_active', true);
 
-      if (!error && item) {
-        baseTotal += item.unit_price;
-      }
+    if (error || !items) {
+      console.error('Error fetching item prices:', error);
+      return 0;
     }
+
+    const baseTotal = items.reduce((sum, item) => sum + item.unit_price, 0);
 
     // Apply multipliers based on urgency and property type
     let multiplier = 1.0;
@@ -172,26 +172,24 @@ export const calculateTotalPriceFromSupabase = async (
 
 /**
  * Calculate total estimated duration
+ * Uses a single query instead of N+1
  */
 export const calculateTotalDurationFromSupabase = async (selectedItemIds: string[]): Promise<number> => {
   try {
-    let totalDuration = 0;
+    if (selectedItemIds.length === 0) return 0;
 
-    // Fetch all selected items
-    for (const itemId of selectedItemIds) {
-      const { data: item, error } = await supabase
-        .from('service_items')
-        .select('estimated_duration')
-        .eq('id', itemId)
-        .eq('is_active', true)
-        .single();
+    const { data: items, error } = await supabase
+      .from('service_items')
+      .select('estimated_duration')
+      .in('id', selectedItemIds)
+      .eq('is_active', true);
 
-      if (!error && item) {
-        totalDuration += item.estimated_duration;
-      }
+    if (error || !items) {
+      console.error('Error fetching item durations:', error);
+      return 0;
     }
 
-    return totalDuration;
+    return items.reduce((sum, item) => sum + item.estimated_duration, 0);
   } catch (error) {
     console.error('Error calculating total duration:', error);
     return 0;

@@ -2,8 +2,7 @@
 
 import { useQuoteForm } from '@/viewmodels/useQuoteForm';
 import ServiceSelectorTwoTier from './ServiceSelectorTwoTier';
-import ProblemDetails from './ProblemDetails';
-import PropertyInfo from './PropertyInfo';
+import JobDetails from './ProblemDetails';
 import ContactInfo from './ContactInfo';
 import QuoteEstimate from './QuoteEstimate';
 import QuoteConfirmation from './QuoteConfirmation';
@@ -22,19 +21,34 @@ const QuoteForm = () => {
     handleNextStep,
     handlePreviousStep,
     handleSubmit,
+    goToStep,
+    isCustomOnly,
+    fieldErrors,
+    validateField,
+    clearFieldError,
+    hasDraft,
+    resumeDraft,
+    dismissDraft,
   } = useQuoteForm();
 
-  const totalSteps = 6;
-  const progress = (currentStep / totalSteps) * 100;
+  const totalSteps = 5;
+  // Exclude confirmation step from progress — so step 4 (last input) = 100%
+  const userSteps = totalSteps - 1;
+  const progress = Math.min((currentStep / userSteps) * 100, 100);
 
-  const stepTitles = [
+  const allStepTitles = [
     'Select Services',
-    'Property Info',
-    'Describe Problem',
+    'Job Details',
     'Your Quote',
     'Contact Details',
     'Confirmation',
   ];
+
+  // For custom-only flow, applicable steps are [1, 4] (services + contact)
+  const customOnly = isCustomOnly();
+  const applicableSteps = customOnly ? [1, 4] : [1, 2, 3, 4];
+  const currentApplicableIndex = applicableSteps.indexOf(currentStep) + 1;
+  const applicableTotal = applicableSteps.length;
 
   const renderStep = () => {
     switch (currentStep) {
@@ -43,12 +57,15 @@ const QuoteForm = () => {
           <ServiceSelectorTwoTier
             selectedServices={formData.selectedServices}
             urgency={formData.urgency}
+            customService={formData.customService}
             onUpdate={updateFormData}
           />
         );
       case 2:
         return (
-          <PropertyInfo
+          <JobDetails
+            description={formData.problemDescription}
+            photos={formData.photos}
             propertyType={formData.propertyType}
             address={formData.address}
             onUpdate={updateFormData}
@@ -56,18 +73,13 @@ const QuoteForm = () => {
         );
       case 3:
         return (
-          <ProblemDetails
-            description={formData.problemDescription}
-            photos={formData.photos}
+          <QuoteEstimate
+            quoteData={formData}
             onUpdate={updateFormData}
+            onGoToStep={goToStep}
           />
         );
       case 4:
-        return <QuoteEstimate quoteData={formData} />;
-      case 5:
-        const isCustomOnly = formData.selectedServices.length === 0 && 
-                            formData.customService && 
-                            formData.customService.trim().length > 0;
         return (
           <ContactInfo
             customerInfo={formData.customerInfo}
@@ -76,10 +88,13 @@ const QuoteForm = () => {
             preferredDateTime={formData.preferredDateTime}
             pipedaConsent={formData.pipedaConsent}
             onUpdate={updateFormData}
-            isCustomServiceOnly={isCustomOnly}
+            isCustomServiceOnly={customOnly}
+            fieldErrors={fieldErrors}
+            validateField={validateField}
+            clearFieldError={clearFieldError}
           />
         );
-      case 6:
+      case 5:
         return <QuoteConfirmation quoteData={formData} />;
       default:
         return null;
@@ -87,75 +102,132 @@ const QuoteForm = () => {
   };
 
   const getButtonText = () => {
-    if (currentStep === 4) return 'Proceed';
-    if (currentStep === 5) return 'Submit Quote Request';
+    if (currentStep === 3) return 'Proceed';
+    if (currentStep === 4) return 'Submit Quote Request';
     return 'Next';
   };
 
   const getButtonIcon = () => {
-    if (currentStep === 4) return <CheckCircle className="w-4 h-4 ml-2" />;
-    if (currentStep === 5) return null;
+    if (currentStep === 3) return <CheckCircle className="w-4 h-4 ml-2" />;
+    if (currentStep === 4) return null;
     return <ArrowRight className="w-4 h-4 ml-2" />;
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-4 md:p-6">
-      {/* Header */}
-      {currentStep < 6 && (
-        <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+    <div className="flex flex-col flex-1 min-h-0 max-w-4xl mx-auto w-full">
+      {/* Sticky Header */}
+      {currentStep < 5 && (
+        <div className="sticky top-0 z-10 bg-white px-4 md:px-6 pt-4 md:pt-6 pb-4 border-b border-gray-100">
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
             Request a Free Quote
           </h1>
-          <p className="text-gray-600 mb-4">
-            Step {currentStep} of {totalSteps - 1}: {stepTitles[currentStep - 1]}
-          </p>
-          <Progress value={progress} className="h-2" />
+
+          {/* Step Indicator Dots */}
+          <div className="flex items-center gap-2 mb-3">
+            {applicableSteps.map((step, idx) => {
+              const isCompleted = currentApplicableIndex > idx + 1;
+              const isCurrent = currentApplicableIndex === idx + 1;
+              return (
+                <div key={step} className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => isCompleted ? goToStep(step) : undefined}
+                    disabled={!isCompleted}
+                    aria-current={isCurrent ? 'step' : undefined}
+                    className={`flex items-center gap-1.5 text-xs font-medium transition-colors ${
+                      isCurrent
+                        ? 'text-accent'
+                        : isCompleted
+                        ? 'text-accent cursor-pointer hover:underline'
+                        : 'text-gray-400'
+                    }`}
+                  >
+                    <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-colors ${
+                      isCurrent
+                        ? 'border-[#4492AC] bg-[#4492AC] text-white'
+                        : isCompleted
+                        ? 'border-[#4492AC] bg-[#4492AC]/10 text-[#4492AC]'
+                        : 'border-gray-300 text-gray-400'
+                    }`}>
+                      {isCompleted ? '✓' : idx + 1}
+                    </span>
+                    <span className="hidden md:inline">{allStepTitles[step - 1]}</span>
+                  </button>
+                  {idx < applicableSteps.length - 1 && (
+                    <div className={`w-6 md:w-10 h-0.5 ${isCompleted ? 'bg-[#4492AC]' : 'bg-gray-200'}`} />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          <Progress value={(currentApplicableIndex / applicableTotal) * 100} className="h-1.5" />
         </div>
       )}
 
-      {/* Error Alert */}
-      {error && (
-        <Alert variant="destructive" className="mb-6">
-          <AlertCircle className="h-4 w-4" />
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
+      {/* Scrollable Content */}
+      <div className="flex-1 min-h-0 overflow-y-auto px-4 md:px-6 py-4">
+        {/* Draft Resume Banner */}
+        {hasDraft && currentStep === 1 && (
+          <div className="mb-6 p-4 bg-blue-50 border border-[#4492AC] rounded-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+            <p className="text-sm text-gray-700">You have an unfinished quote. Continue where you left off?</p>
+            <div className="flex gap-2 flex-shrink-0">
+              <Button size="sm" onClick={resumeDraft} className="bg-[#4492AC] hover:bg-[#4492AC]/90">
+                Resume
+              </Button>
+              <Button size="sm" variant="outline" onClick={dismissDraft}>
+                Start Fresh
+              </Button>
+            </div>
+          </div>
+        )}
 
-      {/* Form Content */}
-      <div className="bg-white rounded-lg shadow-lg p-6 md:p-8 mb-6">
-        {renderStep()}
+        {/* Error Alert */}
+        {error && (
+          <Alert variant="destructive" className="mb-6">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
+
+        {/* Form Content */}
+        <div className="bg-white rounded-lg shadow-lg p-6 md:p-8">
+          {renderStep()}
+        </div>
       </div>
 
-      {/* Navigation Buttons */}
-      {currentStep < 6 && (
-        <div className="flex justify-between items-center gap-4">
-          <Button
-            variant="outline"
-            onClick={handlePreviousStep}
-            disabled={currentStep === 1}
-            className="px-6"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Previous
-          </Button>
+      {/* Sticky Footer Navigation */}
+      {currentStep < 5 && (
+        <div className="sticky bottom-0 z-10 bg-white px-4 md:px-6 py-4 border-t border-gray-100">
+          <div className="flex flex-col-reverse md:flex-row justify-between items-stretch md:items-center gap-3">
+            <Button
+              variant="outline"
+              onClick={handlePreviousStep}
+              disabled={currentStep === 1}
+              className="min-h-[48px] w-full md:w-auto px-6"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Previous
+            </Button>
 
-          {currentStep < 5 ? (
-            <Button
-              onClick={handleNextStep}
-              className="px-6 bg-[#4492AC] hover:bg-[#4492AC]/90"
-            >
-              {getButtonText()}
-              {getButtonIcon()}
-            </Button>
-          ) : (
-            <Button
-              onClick={handleSubmit}
-              disabled={isSubmitting}
-              className="px-6 bg-[#4492AC] hover:bg-[#4492AC]/90"
-            >
-              {isSubmitting ? 'Submitting...' : 'Submit Quote Request'}
-            </Button>
-          )}
+            {currentStep < 4 ? (
+              <Button
+                onClick={handleNextStep}
+                className="min-h-[48px] w-full md:w-auto px-6 bg-[#4492AC] hover:bg-[#4492AC]/90"
+              >
+                {getButtonText()}
+                {getButtonIcon()}
+              </Button>
+            ) : (
+              <Button
+                onClick={handleSubmit}
+                disabled={isSubmitting}
+                className="min-h-[48px] w-full md:w-auto px-6 bg-[#4492AC] hover:bg-[#4492AC]/90"
+              >
+                {isSubmitting ? 'Submitting...' : 'Submit Quote Request'}
+              </Button>
+            )}
+          </div>
         </div>
       )}
     </div>

@@ -88,7 +88,9 @@
   "nav": {
     "quote": "Quote",
     "services": "Services",
+    "about": "About",
     "reviews": "Reviews",
+    "testimonials": "Testimonials",
     "contact": "Contact"
   },
   "footer": {

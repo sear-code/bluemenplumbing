@@ -175,6 +175,31 @@ const QuoteConfirmation = ({ quoteData }: QuoteConfirmationProps) => {
         </div>
       </Card>
 
+      {/* What's Included */}
+      <Card className="p-6">
+        <h3 className="font-semibold text-lg text-gray-900 mb-3">
+          What's Included
+        </h3>
+        <ul className="space-y-2 text-gray-700">
+          <li className="flex items-start gap-2">
+            <span className="text-[#4492AC] font-bold">✓</span>
+            <span>Professional licensed plumbers</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-[#4492AC] font-bold">✓</span>
+            <span>All necessary tools and equipment</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-[#4492AC] font-bold">✓</span>
+            <span>Cleanup after service completion</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-[#4492AC] font-bold">✓</span>
+            <span>Satisfaction guarantee</span>
+          </li>
+        </ul>
+      </Card>
+
       <div className="text-center pt-4">
         <p className="text-gray-600 mb-4">
           Need immediate assistance?

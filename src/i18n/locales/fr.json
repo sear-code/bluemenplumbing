@@ -61,17 +61,17 @@
     "subtitle": "Vrais avis de nos clients satisfaits",
     "googleLink": "https://share.google/B88kLmpVaa9flScJr",
     "review1": {
-      "text": "Ali, is very professional, friendly and reliable. He and his brother are amazing and do not over charge or scam in any way. I recommend them for all your plumbing needs.",
+      "text": "Ali est très professionnel, sympathique et fiable. Lui et son frère sont formidables et ne surfacturent pas. Je les recommande pour tous vos besoins en plomberie.",
       "author": "E Prab",
       "platform": "Google"
     },
     "review2": {
-      "text": "Had a great experience with them. All came right on time on a saturday morning, and he quickly fixed 3-4 problems in my apartment unit such as fixing a sliding mirror door, re-installing a door and a few other minor problems. Will highly recommend them.",
+      "text": "Excellente expérience avec eux. Ils sont arrivés à l'heure un samedi matin et ont rapidement réglé 3-4 problèmes dans mon appartement, comme la réparation d'une porte miroir coulissante et la réinstallation d'une porte. Je les recommande vivement.",
       "author": "Sogl Nasab",
       "platform": "Google"
     },
     "review3": {
-      "text": "I was so fortunate to come across and use Blue Men Plumbing. They were prompt, efficient and did great work. Their quote and final price was lower than I expected. Anyone needing a professional plumber for a small or an extensive large job; they are who to call and you won't be disappointed.",
+      "text": "J'ai eu la chance de découvrir Blue Men Plumbing. Ils étaient ponctuels, efficaces et ont fait un excellent travail. Leur devis et le prix final étaient inférieurs à ce que j'attendais. Pour tous vos besoins en plomberie, petits ou grands, c'est eux qu'il faut appeler.",
       "author": "Michael Masse",
       "platform": "Google"
     },
@@ -88,7 +88,9 @@
   "nav": {
     "quote": "Devis",
     "services": "Services",
+    "about": "À Propos",
     "reviews": "Avis",
+    "testimonials": "Témoignages",
     "contact": "Contact"
   },
   "footer": {
@@ -96,4 +98,4 @@
     "privacy": "Politique de Confidentialité",
     "terms": "Conditions d'Utilisation"
   }
-} 
+}

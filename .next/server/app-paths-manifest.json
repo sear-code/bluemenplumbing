@@ -1,10 +1,16 @@
 {
   "/_global-error/page": "app/_global-error/page.js",
   "/_not-found/page": "app/_not-found/page.js",
+  "/about/page": "app/about/page.js",
   "/api/admin/services/categories/route": "app/api/admin/services/categories/route.js",
   "/api/admin/services/items/route": "app/api/admin/services/items/route.js",
   "/api/google-reviews/route": "app/api/google-reviews/route.js",
   "/api/quotes/route": "app/api/quotes/route.js",
   "/api/services/route": "app/api/services/route.js",
-  "/page": "app/page.js"
+  "/page": "app/page.js",
+  "/privacy/page": "app/privacy/page.js",
+  "/services/[slug]/page": "app/services/[slug]/page.js",
+  "/services/page": "app/services/page.js",
+  "/sitemap.xml/route": "app/sitemap.xml/route.js",
+  "/terms/page": "app/terms/page.js"
 }

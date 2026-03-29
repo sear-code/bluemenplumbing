@@ -1083,28 +1083,30 @@ const useQuoteForm = ()=>{
         });
         return estimate;
     };
+    const isCustomOnly = ()=>{
+        return formData.selectedServices.length === 0 && formData.customService && formData.customService.trim().length > 0;
+    };
+    const goToStep = (step)=>{
+        setCurrentStep(step);
+        setError(null);
+    };
     const handleNextStep = ()=>{
         if (validateCurrentStep()) {
-            // Check if only custom service is selected (no predefined services)
-            const hasOnlyCustomService = formData.selectedServices.length === 0 && formData.customService && formData.customService.trim().length > 0;
-            if (currentStep === 1 && hasOnlyCustomService) {
-                // Skip property info, problem description, and quote estimate
-                // Go straight to contact info (step 5)
-                setCurrentStep(5);
+            if (currentStep === 1 && isCustomOnly()) {
+                // Skip job details and estimate — go straight to contact (step 4)
+                setCurrentStep(4);
             } else {
-                setCurrentStep((prev)=>Math.min(prev + 1, 6));
-                // Calculate estimate after problem description step (step 3)
-                if (currentStep === 3) {
+                setCurrentStep((prev)=>Math.min(prev + 1, 5));
+                // Calculate estimate after job details step (step 2)
+                if (currentStep === 2) {
                     calculateEstimate();
                 }
             }
         }
     };
     const handlePreviousStep = ()=>{
-        // Check if only custom service is selected
-        const hasOnlyCustomService = formData.selectedServices.length === 0 && formData.customService && formData.customService.trim().length > 0;
-        if (currentStep === 5 && hasOnlyCustomService) {
-            // If on contact info and only custom service, go back to service selection (step 1)
+        if (currentStep === 4 && isCustomOnly()) {
+            // If on contact and only custom service, go back to service selection (step 1)
             setCurrentStep(1);
         } else {
             setCurrentStep((prev)=>Math.max(prev - 1, 1));
@@ -1124,24 +1126,21 @@ const useQuoteForm = ()=>{
                 }
                 return true;
             case 2:
-                // Step 2: Property Info (only city required)
+                // Step 2: Job Details (property type, city, problem description, photos)
                 if (!formData.address.city || formData.address.city.trim().length === 0) {
                     setError('Please enter your city');
                     return false;
                 }
-                return true;
-            case 3:
-                // Step 3: Problem Description
                 if (formData.problemDescription.trim().length < 10) {
                     setError('Please provide a detailed description (at least 10 characters)');
                     return false;
                 }
                 return true;
-            case 4:
-                // Step 4: Quote Estimate (no validation needed, just viewing)
+            case 3:
+                // Step 3: Quote Estimate (no validation needed, just viewing)
                 return true;
-            case 5:
-                // Step 5: Contact Info with full address
+            case 4:
+                // Step 4: Contact Info with full address
                 const { firstName, lastName, email, phone } = formData.customerInfo;
                 if (!firstName || !lastName || !email || !phone) {
                     setError('Please fill in all required personal information fields');
@@ -1158,10 +1157,8 @@ const useQuoteForm = ()=>{
                     setError('You must consent to the collection and use of your personal information to submit a quote request');
                     return false;
                 }
-                // For custom service requests, address is optional (we'll get it during follow-up)
-                const hasOnlyCustomService = formData.selectedServices.length === 0 && formData.customService && formData.customService.trim().length > 0;
                 // Validate full address only if NOT a custom-only service request
-                if (!hasOnlyCustomService) {
+                if (!isCustomOnly()) {
                     if (!formData.address.street || !formData.address.city || !formData.address.state || !formData.address.zipCode) {
                         setError('Please fill in all required address fields');
                         return false;
@@ -1190,7 +1187,7 @@ const useQuoteForm = ()=>{
                 // Add flag to indicate custom service request
                 isCustomServiceRequest: hasOnlyCustomService
             });
-            setCurrentStep(6); // Show confirmation
+            setCurrentStep(5); // Show confirmation
             return response;
         } catch (err) {
             setError('Failed to submit quote. Please try again.');
@@ -1236,7 +1233,9 @@ const useQuoteForm = ()=>{
         handleSubmit,
         calculateEstimate,
         validateCurrentStep,
-        resetForm
+        resetForm,
+        goToStep,
+        isCustomOnly
     };
 };
 _s(useQuoteForm, "Py1b/+Q0ooYbQXriJxSNMXnxH5g=");

@@ -81,6 +81,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$providers$2e$tsx__$5b
 ;
 ;
 const metadata = {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://bluemenplumbing.com'),
     title: 'Blue Men Plumbing - Professional Plumbing Services in GTA',
     description: 'Quality plumbing services at affordable prices. Emergency repairs, bathroom renovations, drain cleaning, and more. Why pay more when you can pay less!',
     keywords: [
@@ -98,43 +99,182 @@ const metadata = {
             name: 'Blue Men Plumbing'
         }
     ],
+    alternates: {
+        canonical: '/'
+    },
     openGraph: {
         title: 'Blue Men Plumbing - Professional Plumbing Services',
         description: 'Quality plumbing services at affordable prices in GTA',
         type: 'website',
         locale: 'en_CA',
-        alternateLocale: 'fr_CA'
+        url: '/',
+        siteName: 'Blue Men Plumbing',
+        images: [
+            {
+                url: '/og-image.jpg',
+                width: 1200,
+                height: 630,
+                alt: 'Blue Men Plumbing - Professional Plumbing Services in GTA'
+            }
+        ]
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Blue Men Plumbing - Professional Plumbing Services',
+        description: 'Quality plumbing services at affordable prices in GTA',
+        images: [
+            '/og-image.jpg'
+        ]
     },
     robots: {
         index: true,
         follow: true
+    },
+    other: {
+        'theme-color': '#045372'
     }
 };
 const viewport = {
     width: 'device-width',
-    initialScale: 1
+    initialScale: 1,
+    themeColor: '#045372'
+};
+const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Plumber',
+    name: 'Blue Men Plumbing',
+    description: 'Professional plumbing services in the Greater Toronto Area. Emergency repairs, bathroom renovations, drain cleaning, and more.',
+    url: 'https://bluemenplumbing.com',
+    telephone: '+16475007989',
+    email: 'info@bluemenplumbing.com',
+    address: {
+        '@type': 'PostalAddress',
+        streetAddress: '65 Canadian Rd',
+        addressLocality: 'Scarborough',
+        addressRegion: 'ON',
+        postalCode: 'M1R 5G2',
+        addressCountry: 'CA'
+    },
+    geo: {
+        '@type': 'GeoCoordinates',
+        latitude: 43.7615,
+        longitude: -79.2628
+    },
+    areaServed: {
+        '@type': 'GeoCircle',
+        geoMidpoint: {
+            '@type': 'GeoCoordinates',
+            latitude: 43.7615,
+            longitude: -79.2628
+        },
+        geoRadius: '50000'
+    },
+    openingHoursSpecification: {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: [
+            'Monday',
+            'Tuesday',
+            'Wednesday',
+            'Thursday',
+            'Friday',
+            'Saturday',
+            'Sunday'
+        ],
+        opens: '00:00',
+        closes: '23:59'
+    },
+    priceRange: '$$',
+    image: 'https://bluemenplumbing.com/og-image.jpg',
+    sameAs: [],
+    hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'Plumbing Services',
+        itemListElement: [
+            {
+                '@type': 'Offer',
+                itemOffered: {
+                    '@type': 'Service',
+                    name: 'Emergency Plumbing',
+                    description: '24/7 emergency plumbing repairs including burst pipes, severe leaks, and flooding.'
+                }
+            },
+            {
+                '@type': 'Offer',
+                itemOffered: {
+                    '@type': 'Service',
+                    name: 'Drain Cleaning',
+                    description: 'Professional drain cleaning and unclogging services for residential and commercial properties.'
+                }
+            },
+            {
+                '@type': 'Offer',
+                itemOffered: {
+                    '@type': 'Service',
+                    name: 'Bathroom Renovation',
+                    description: 'Complete bathroom plumbing for renovations including fixture installation and pipe work.'
+                }
+            },
+            {
+                '@type': 'Offer',
+                itemOffered: {
+                    '@type': 'Service',
+                    name: 'Kitchen Plumbing',
+                    description: 'Kitchen plumbing installation and repair including sink, dishwasher, and garbage disposal.'
+                }
+            }
+        ]
+    }
 };
 function RootLayout({ children }) {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("html", {
         lang: "en",
         suppressHydrationWarning: true,
-        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("body", {
-            className: __TURBOPACK__imported__module__$5b$next$5d2f$internal$2f$font$2f$google$2f$inter_5972bc34$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"].className,
-            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$providers$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Providers"], {
-                children: children
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("head", {
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("script", {
+                    type: "application/ld+json",
+                    dangerouslySetInnerHTML: {
+                        __html: JSON.stringify(jsonLd)
+                    }
+                }, void 0, false, {
+                    fileName: "[project]/app/layout.tsx",
+                    lineNumber: 141,
+                    columnNumber: 9
+                }, this)
             }, void 0, false, {
                 fileName: "[project]/app/layout.tsx",
-                lineNumber: 39,
-                columnNumber: 9
+                lineNumber: 140,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("body", {
+                className: __TURBOPACK__imported__module__$5b$next$5d2f$internal$2f$font$2f$google$2f$inter_5972bc34$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"].className,
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                        href: "#main-content",
+                        className: "sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:bg-white focus:px-4 focus:py-2 focus:rounded focus:text-primary focus:shadow-lg",
+                        children: "Skip to main content"
+                    }, void 0, false, {
+                        fileName: "[project]/app/layout.tsx",
+                        lineNumber: 147,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$providers$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Providers"], {
+                        children: children
+                    }, void 0, false, {
+                        fileName: "[project]/app/layout.tsx",
+                        lineNumber: 153,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/app/layout.tsx",
+                lineNumber: 146,
+                columnNumber: 7
             }, this)
-        }, void 0, false, {
-            fileName: "[project]/app/layout.tsx",
-            lineNumber: 38,
-            columnNumber: 7
-        }, this)
-    }, void 0, false, {
+        ]
+    }, void 0, true, {
         fileName: "[project]/app/layout.tsx",
-        lineNumber: 37,
+        lineNumber: 139,
         columnNumber: 5
     }, this);
 }

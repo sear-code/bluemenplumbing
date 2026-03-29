@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
+import { serviceItemCreateSchema, serviceItemUpdateSchema } from '@/lib/validations/service';
 
 /**
  * GET /api/admin/services/items
  * Fetch all service items (including inactive ones)
  * Optional query param: category_id to filter by category
+ * Protected by middleware.ts admin auth
  */
 export async function GET(request: NextRequest) {
   try {
@@ -43,14 +45,23 @@ export async function GET(request: NextRequest) {
 /**
  * POST /api/admin/services/items
  * Create a new service item
+ * Protected by middleware.ts admin auth
  */
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const rawBody = await request.json();
+    const parseResult = serviceItemCreateSchema.safeParse(rawBody);
+
+    if (!parseResult.success) {
+      return NextResponse.json(
+        { success: false, error: 'Validation failed', details: parseResult.error.flatten().fieldErrors },
+        { status: 400 }
+      );
+    }
 
     const { data, error } = await supabase
       .from('service_items')
-      .insert([body])
+      .insert([parseResult.data])
       .select()
       .single();
 
@@ -75,18 +86,21 @@ export async function POST(request: NextRequest) {
 /**
  * PUT /api/admin/services/items
  * Update an existing service item
+ * Protected by middleware.ts admin auth
  */
 export async function PUT(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { id, ...updates } = body;
+    const rawBody = await request.json();
+    const parseResult = serviceItemUpdateSchema.safeParse(rawBody);
 
-    if (!id) {
+    if (!parseResult.success) {
       return NextResponse.json(
-        { success: false, error: 'Item ID is required' },
+        { success: false, error: 'Validation failed', details: parseResult.error.flatten().fieldErrors },
         { status: 400 }
       );
     }
+
+    const { id, ...updates } = parseResult.data;
 
     const { data, error } = await supabase
       .from('service_items')
@@ -115,7 +129,8 @@ export async function PUT(request: NextRequest) {
 
 /**
  * DELETE /api/admin/services/items
- * Delete (or soft-delete) a service item
+ * Soft-delete a service item
+ * Protected by middleware.ts admin auth
  */
 export async function DELETE(request: NextRequest) {
   try {
@@ -129,7 +144,6 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    // Soft delete by setting is_active to false
     const { data, error } = await supabase
       .from('service_items')
       .update({ is_active: false })
@@ -154,4 +168,3 @@ export async function DELETE(request: NextRequest) {
     );
   }
 }
-

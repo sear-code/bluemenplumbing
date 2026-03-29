@@ -156,14 +156,13 @@ const fetchServiceItemById = async (itemId)=>{
 };
 const calculateTotalPriceFromSupabase = async (selectedItemIds, urgency, propertyType)=>{
     try {
-        let baseTotal = 0;
-        // Fetch all selected items
-        for (const itemId of selectedItemIds){
-            const { data: item, error } = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["supabase"].from('service_items').select('unit_price').eq('id', itemId).eq('is_active', true).single();
-            if (!error && item) {
-                baseTotal += item.unit_price;
-            }
+        if (selectedItemIds.length === 0) return 0;
+        const { data: items, error } = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["supabase"].from('service_items').select('unit_price').in('id', selectedItemIds).eq('is_active', true);
+        if (error || !items) {
+            console.error('Error fetching item prices:', error);
+            return 0;
         }
+        const baseTotal = items.reduce((sum, item)=>sum + item.unit_price, 0);
         // Apply multipliers based on urgency and property type
         let multiplier = 1.0;
         if (urgency === 'emergency') multiplier += 0.5;
@@ -177,15 +176,13 @@ const calculateTotalPriceFromSupabase = async (selectedItemIds, urgency, propert
 };
 const calculateTotalDurationFromSupabase = async (selectedItemIds)=>{
     try {
-        let totalDuration = 0;
-        // Fetch all selected items
-        for (const itemId of selectedItemIds){
-            const { data: item, error } = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["supabase"].from('service_items').select('estimated_duration').eq('id', itemId).eq('is_active', true).single();
-            if (!error && item) {
-                totalDuration += item.estimated_duration;
-            }
+        if (selectedItemIds.length === 0) return 0;
+        const { data: items, error } = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["supabase"].from('service_items').select('estimated_duration').in('id', selectedItemIds).eq('is_active', true);
+        if (error || !items) {
+            console.error('Error fetching item durations:', error);
+            return 0;
         }
-        return totalDuration;
+        return items.reduce((sum, item)=>sum + item.estimated_duration, 0);
     } catch (error) {
         console.error('Error calculating total duration:', error);
         return 0;

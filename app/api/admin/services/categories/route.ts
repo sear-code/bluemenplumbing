@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
+import { serviceCategoryCreateSchema, serviceCategoryUpdateSchema } from '@/lib/validations/service';
 
 /**
  * GET /api/admin/services/categories
  * Fetch all service categories (including inactive ones)
+ * Protected by middleware.ts admin auth
  */
 export async function GET() {
   try {
@@ -33,14 +35,23 @@ export async function GET() {
 /**
  * POST /api/admin/services/categories
  * Create a new service category
+ * Protected by middleware.ts admin auth
  */
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const rawBody = await request.json();
+    const parseResult = serviceCategoryCreateSchema.safeParse(rawBody);
+
+    if (!parseResult.success) {
+      return NextResponse.json(
+        { success: false, error: 'Validation failed', details: parseResult.error.flatten().fieldErrors },
+        { status: 400 }
+      );
+    }
 
     const { data, error } = await supabase
       .from('service_categories')
-      .insert([body])
+      .insert([parseResult.data])
       .select()
       .single();
 
@@ -65,18 +76,21 @@ export async function POST(request: NextRequest) {
 /**
  * PUT /api/admin/services/categories
  * Update an existing service category
+ * Protected by middleware.ts admin auth
  */
 export async function PUT(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { id, ...updates } = body;
+    const rawBody = await request.json();
+    const parseResult = serviceCategoryUpdateSchema.safeParse(rawBody);
 
-    if (!id) {
+    if (!parseResult.success) {
       return NextResponse.json(
-        { success: false, error: 'Category ID is required' },
+        { success: false, error: 'Validation failed', details: parseResult.error.flatten().fieldErrors },
         { status: 400 }
       );
     }
+
+    const { id, ...updates } = parseResult.data;
 
     const { data, error } = await supabase
       .from('service_categories')
@@ -105,7 +119,8 @@ export async function PUT(request: NextRequest) {
 
 /**
  * DELETE /api/admin/services/categories
- * Delete (or soft-delete) a service category
+ * Soft-delete a service category
+ * Protected by middleware.ts admin auth
  */
 export async function DELETE(request: NextRequest) {
   try {
@@ -119,7 +134,6 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    // Soft delete by setting is_active to false
     const { data, error } = await supabase
       .from('service_categories')
       .update({ is_active: false })
@@ -144,4 +158,3 @@ export async function DELETE(request: NextRequest) {
     );
   }
 }
-

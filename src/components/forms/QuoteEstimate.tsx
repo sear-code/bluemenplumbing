@@ -3,20 +3,30 @@
 import { QuoteRequest } from '@/models/Quote';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { getServiceItemById, calculateTotalDuration } from '@/services/serviceData';
-import { Clock, DollarSign, AlertCircle } from 'lucide-react';
+import { getServiceItemById, calculateTotalDuration, calculateTotalPrice } from '@/services/serviceData';
+import { Clock, DollarSign, AlertCircle, X, Pencil } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { applyPriceMarkup } from '@/lib/utils';
 
 interface QuoteEstimateProps {
   quoteData: QuoteRequest;
+  onUpdate?: (updates: Partial<QuoteRequest>) => void;
+  onGoToStep?: (step: number) => void;
 }
 
-const QuoteEstimate = ({ quoteData }: QuoteEstimateProps) => {
+const QuoteEstimate = ({ quoteData, onUpdate, onGoToStep }: QuoteEstimateProps) => {
   const selectedServiceDetails = quoteData.selectedServices
     .map((id) => getServiceItemById(id))
     .filter(Boolean);
 
   const totalDuration = calculateTotalDuration(quoteData.selectedServices);
+
+  // Calculate price live so it updates when services are removed
+  const livePrice = calculateTotalPrice(
+    quoteData.selectedServices,
+    quoteData.urgency,
+    quoteData.propertyType
+  );
 
   const getUrgencyLabel = (urgency: string) => {
     switch (urgency) {
@@ -49,7 +59,7 @@ const QuoteEstimate = ({ quoteData }: QuoteEstimateProps) => {
           <div className="flex items-center justify-center gap-2">
             <DollarSign className="w-8 h-8" />
             <span className="text-5xl font-bold">
-              {quoteData.estimatedPrice || 0}
+              {livePrice || 0}
             </span>
           </div>
           <p className="text-sm opacity-75 mt-3">
@@ -79,7 +89,7 @@ const QuoteEstimate = ({ quoteData }: QuoteEstimateProps) => {
                     key={item.id}
                     className="p-3 bg-gray-50 rounded-lg"
                   >
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-2">
                       <div className="flex-1">
                         <p className="text-xs text-gray-500 mb-1">
                           {category.name}
@@ -88,14 +98,30 @@ const QuoteEstimate = ({ quoteData }: QuoteEstimateProps) => {
                           {item.name}
                         </p>
                       </div>
-                      <div className="text-right">
-                        <span className="text-gray-900 font-semibold">
-                          ${applyPriceMarkup(item.unitPrice)}
-                        </span>
-                        {item.partsExtra && (
-                          <p className="text-xs text-orange-600 mt-1">
-                            + parts
-                          </p>
+                      <div className="text-right flex items-center gap-2">
+                        <div>
+                          <span className="text-gray-900 font-semibold">
+                            ${applyPriceMarkup(item.unitPrice)}
+                          </span>
+                          {item.partsExtra && (
+                            <p className="text-xs text-orange-600 mt-1">
+                              + parts
+                            </p>
+                          )}
+                        </div>
+                        {onUpdate && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const remaining = quoteData.selectedServices.filter(id => id !== item.id);
+                              const newPrice = calculateTotalPrice(remaining, quoteData.urgency, quoteData.propertyType);
+                              onUpdate({ selectedServices: remaining, estimatedPrice: newPrice });
+                            }}
+                            className="p-1 rounded-full hover:bg-red-100 text-gray-400 hover:text-red-500 transition-colors"
+                            aria-label={`Remove ${item.name}`}
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
                         )}
                       </div>
                     </div>
@@ -123,6 +149,16 @@ const QuoteEstimate = ({ quoteData }: QuoteEstimateProps) => {
                 </div>
               )}
             </div>
+            {onGoToStep && (
+              <Button
+                variant="link"
+                className="text-[#4492AC] p-0 h-auto mt-2"
+                onClick={() => onGoToStep(1)}
+              >
+                <Pencil className="w-3 h-3 mr-1" />
+                Edit Services
+              </Button>
+            )}
           </div>
 
           {/* Property & Location */}

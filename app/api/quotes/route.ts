@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { QuoteInsert } from '@/lib/supabase';
 import { Resend } from 'resend';
 import { createClient } from '@supabase/supabase-js';
+import { quoteSubmissionSchema } from '@/lib/validations/quote';
 
 // Validate environment variables
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -12,18 +13,53 @@ if (!supabaseUrl || !supabaseAnonKey) {
 }
 
 // Create Supabase client with proper error handling
-const supabase = supabaseUrl && supabaseAnonKey 
+const supabase = supabaseUrl && supabaseAnonKey
   ? createClient(supabaseUrl, supabaseAnonKey)
   : null;
 
 // Initialize Resend only if API key is provided
 const resendApiKey = process.env.RESEND_API_KEY;
-const resend = resendApiKey && resendApiKey !== 'your_api_key_here' 
-  ? new Resend(resendApiKey) 
+const resend = resendApiKey && resendApiKey !== 'your_api_key_here'
+  ? new Resend(resendApiKey)
   : null;
+
+// Simple in-memory rate limiting
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT_WINDOW = 15 * 60 * 1000; // 15 minutes
+const RATE_LIMIT_MAX = 5; // 5 submissions per window
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW });
+    return false;
+  }
+
+  entry.count++;
+  return entry.count > RATE_LIMIT_MAX;
+}
+
+function getClientIp(request: NextRequest): string {
+  return (
+    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    request.headers.get('x-real-ip') ||
+    'unknown'
+  );
+}
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting
+    const ip = getClientIp(request);
+    if (isRateLimited(ip)) {
+      return NextResponse.json(
+        { success: false, error: 'Too many requests. Please try again later.' },
+        { status: 429 }
+      );
+    }
+
     // Check if Supabase is properly configured
     if (!supabase) {
       console.error('Supabase not configured. Please check environment variables.');
@@ -36,11 +72,26 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const quoteData = await request.json();
-    
+    const rawData = await request.json();
+
+    // Validate input
+    const parseResult = quoteSubmissionSchema.safeParse(rawData);
+    if (!parseResult.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Validation failed',
+          details: parseResult.error.flatten().fieldErrors,
+        },
+        { status: 400 }
+      );
+    }
+
+    const quoteData = parseResult.data;
+
     // Generate unique quote ID
     const quoteId = `BMP-${Date.now()}`;
-    
+
     // Prepare data for database insertion
     const quoteInsert: QuoteInsert = {
       quote_id: quoteId,
@@ -53,17 +104,17 @@ export async function POST(request: NextRequest) {
       address_city: quoteData.address?.city || null,
       address_state: quoteData.address?.state || null,
       address_zip: quoteData.address?.zipCode || null,
-      selected_services: quoteData.selectedServices || [],
-      selected_categories: quoteData.selectedCategories || [],
+      selected_services: quoteData.selectedServices,
+      selected_categories: quoteData.selectedCategories,
       custom_service: quoteData.customService || null,
       problem_description: quoteData.problemDescription || null,
-      urgency: quoteData.urgency || 'standard',
-      estimated_price: quoteData.estimatedPrice || 0,
-      estimated_duration: quoteData.estimatedDuration || 120,
+      urgency: quoteData.urgency,
+      estimated_price: quoteData.estimatedPrice,
+      estimated_duration: quoteData.estimatedDuration,
       status: 'submitted',
       access_notes: quoteData.accessNotes || null,
       preferred_datetime: quoteData.preferredDateTime || null,
-      photos: quoteData.photos || [],
+      photos: quoteData.photos,
     };
 
     // Insert quote into database
@@ -75,14 +126,13 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       console.error('Supabase error:', error);
-      
-      // Provide more helpful error messages based on error type
+
       if (error.message && error.message.includes('ENOTFOUND')) {
         throw new Error('Unable to connect to database. Please check your internet connection or Supabase configuration.');
       } else if (error.message && error.message.includes('fetch failed')) {
         throw new Error('Database connection failed. The database service may be temporarily unavailable.');
       }
-      
+
       throw new Error(`Database error: ${error.message}`);
     }
 
@@ -96,16 +146,14 @@ export async function POST(request: NextRequest) {
       } else if (!toEmail) {
         console.warn('RESEND_TO_EMAIL not configured. Skipping email notification.');
       } else {
-        // Format services list
-        const servicesList = quoteData.selectedServices?.length > 0 
+        const servicesList = quoteData.selectedServices?.length > 0
           ? quoteData.selectedServices.join(', ')
           : quoteData.customService || 'N/A';
 
-        // Send notification email to business owner (privacy-focused - no customer info)
         await resend.emails.send({
           from: fromEmail,
           to: toEmail,
-          subject: `🔔 New Quote Request - ${quoteId}`,
+          subject: `New Quote Request - ${quoteId}`,
           html: `
             <!DOCTYPE html>
             <html>
@@ -136,33 +184,33 @@ export async function POST(request: NextRequest) {
                       <div class="label">Services Requested:</div>
                       <div class="value">${servicesList}</div>
                     </div>
-                    
+
                     <div class="info-row">
                       <div class="label">Urgency Level:</div>
                       <div class="value">
                         <span class="${quoteData.urgency === 'emergency' ? 'urgency-high' : 'urgency-standard'}">
-                          ${quoteData.urgency === 'emergency' ? '🚨 EMERGENCY' : '✅ STANDARD'}
+                          ${quoteData.urgency === 'emergency' ? 'EMERGENCY' : 'STANDARD'}
                         </span>
                       </div>
                     </div>
-                    
+
                     ${quoteData.problemDescription ? `
                     <div class="info-row">
                       <div class="label">Service Details:</div>
                       <div class="value">${quoteData.problemDescription}</div>
                     </div>
                     ` : ''}
-                    
+
                     <div class="info-row">
                       <div class="label">Estimated Price:</div>
                       <div class="price-highlight">$${quoteData.estimatedPrice || 0}</div>
                     </div>
-                    
+
                     <div class="info-row">
                       <div class="label">Estimated Duration:</div>
                       <div class="value">${quoteData.estimatedDuration || 120} minutes</div>
                     </div>
-                    
+
                     <div class="footer">
                       <p>This is an automated notification from Blue Men Plumbing quote system.</p>
                       <p>View full customer details in your Supabase dashboard using Quote ID: <strong>${quoteId}</strong></p>
@@ -174,7 +222,6 @@ export async function POST(request: NextRequest) {
           `,
         });
 
-        // Send confirmation email to customer
         await resend.emails.send({
           from: fromEmail,
           to: quoteData.customerInfo.email,
@@ -201,31 +248,31 @@ export async function POST(request: NextRequest) {
                   </div>
                   <div class="content">
                     <p>Hi ${quoteData.customerInfo.firstName},</p>
-                    
+
                     <p>Thank you for choosing Blue Men Plumbing! We've received your quote request and our team will review it shortly.</p>
-                    
+
                     <div class="highlight">
                       <p style="margin: 0;"><strong>Your Quote ID:</strong></p>
                       <p style="font-size: 24px; color: #4492AC; margin: 10px 0;"><strong>${quoteId}</strong></p>
                       <p style="margin: 0;"><strong>Estimated Price:</strong> $${quoteData.estimatedPrice || 0}</p>
                       <p style="margin: 10px 0 0 0;"><strong>Services:</strong> ${servicesList}</p>
                     </div>
-                    
+
                     <h3 style="color: #4492AC;">What happens next?</h3>
                     <ul>
                       <li>Our team will review your request within 24 hours</li>
                       <li>We'll contact you using the information you provided</li>
                       <li>We'll schedule a convenient time for service</li>
                     </ul>
-                    
+
                     <p>If you have any questions or need to make changes to your request, please don't hesitate to contact us.</p>
-                    
+
                     <p style="margin-top: 30px;">Best regards,<br>
                     <strong>The Blue Men Plumbing Team</strong></p>
-                    
+
                     <div class="footer">
                       <p>This is an automated confirmation email.</p>
-                      <p>© ${new Date().getFullYear()} Blue Men Plumbing. All rights reserved.</p>
+                      <p>&copy; ${new Date().getFullYear()} Blue Men Plumbing. All rights reserved.</p>
                     </div>
                   </div>
                 </div>
@@ -237,7 +284,6 @@ export async function POST(request: NextRequest) {
         console.log(`Email notifications sent successfully for quote ${quoteId}`);
       }
     } catch (emailError) {
-      // Log email errors but don't fail the quote submission
       console.error('Failed to send email notification:', emailError);
     }
 
@@ -247,8 +293,8 @@ export async function POST(request: NextRequest) {
 
     const responseData = {
       quoteId,
-      estimatedPrice: quoteData.estimatedPrice || 0,
-      estimatedDuration: quoteData.estimatedDuration || 120,
+      estimatedPrice: quoteData.estimatedPrice,
+      estimatedDuration: quoteData.estimatedDuration,
       validUntil,
       message: 'Your quote request has been received. We will contact you within 24 hours.',
     };
@@ -270,10 +316,26 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// GET endpoint to retrieve quotes (for admin use)
+// GET endpoint for admin use only (protected by middleware)
 export async function GET(request: NextRequest) {
   try {
-    // Check if Supabase is properly configured
+    // Admin auth is enforced by middleware.ts for /api/admin/* routes.
+    // This endpoint is at /api/quotes which is NOT under /api/admin,
+    // so we verify the admin token here explicitly.
+    const adminSecret = process.env.ADMIN_API_SECRET;
+    const authHeader = request.headers.get('authorization');
+    if (
+      !adminSecret ||
+      !authHeader ||
+      !authHeader.startsWith('Bearer ') ||
+      authHeader.slice(7) !== adminSecret
+    ) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
     if (!supabase) {
       console.error('Supabase not configured. Please check environment variables.');
       return NextResponse.json(
@@ -295,7 +357,6 @@ export async function GET(request: NextRequest) {
       .select('*')
       .order('created_at', { ascending: false });
 
-    // Apply filters if provided
     if (email) {
       query = query.eq('email', email);
     }
@@ -310,14 +371,13 @@ export async function GET(request: NextRequest) {
 
     if (error) {
       console.error('Supabase error:', error);
-      
-      // Provide more helpful error messages based on error type
+
       if (error.message && error.message.includes('ENOTFOUND')) {
         throw new Error('Unable to connect to database. Please check your internet connection or Supabase configuration.');
       } else if (error.message && error.message.includes('fetch failed')) {
         throw new Error('Database connection failed. The database service may be temporarily unavailable.');
       }
-      
+
       throw new Error(`Database error: ${error.message}`);
     }
 

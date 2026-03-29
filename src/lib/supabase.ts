@@ -123,8 +123,8 @@ export interface QuoteRow {
   address_city: string | null;
   address_state: string | null;
   address_zip: string | null;
-  selected_services: any; // JSONB
-  selected_categories: any; // JSONB
+  selected_services: string[];
+  selected_categories: string[];
   custom_service: string | null;
   problem_description: string | null;
   urgency: string;
@@ -133,7 +133,7 @@ export interface QuoteRow {
   status: 'draft' | 'submitted' | 'contacted' | 'approved' | 'completed' | 'cancelled';
   access_notes: string | null;
   preferred_datetime: string | null;
-  photos: any; // JSONB
+  photos: string[];
   created_at: string;
   updated_at: string;
 }
@@ -149,8 +149,8 @@ export interface QuoteInsert {
   address_city?: string | null;
   address_state?: string | null;
   address_zip?: string | null;
-  selected_services?: any;
-  selected_categories?: any;
+  selected_services?: string[];
+  selected_categories?: string[];
   custom_service?: string | null;
   problem_description?: string | null;
   urgency?: string;
@@ -159,7 +159,7 @@ export interface QuoteInsert {
   status?: 'draft' | 'submitted' | 'contacted' | 'approved' | 'completed' | 'cancelled';
   access_notes?: string | null;
   preferred_datetime?: string | null;
-  photos?: any;
+  photos?: string[];
 }
 
 export interface QuoteUpdate {
@@ -173,8 +173,8 @@ export interface QuoteUpdate {
   address_city?: string | null;
   address_state?: string | null;
   address_zip?: string | null;
-  selected_services?: any;
-  selected_categories?: any;
+  selected_services?: string[];
+  selected_categories?: string[];
   custom_service?: string | null;
   problem_description?: string | null;
   urgency?: string;
@@ -183,6 +183,6 @@ export interface QuoteUpdate {
   status?: 'draft' | 'submitted' | 'contacted' | 'approved' | 'completed' | 'cancelled';
   access_notes?: string | null;
   preferred_datetime?: string | null;
-  photos?: any;
+  photos?: string[];
 }
 

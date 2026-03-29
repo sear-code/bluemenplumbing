@@ -1,9 +1,11 @@
 1:"$Sreact.fragment"
-2:I[47257,["/_next/static/chunks/42879de7b8087bc9.js"],"ClientPageRoot"]
-3:I[31713,["/_next/static/chunks/bdf7ceb50aa07f55.js","/_next/static/chunks/e29f03936de1d059.js","/_next/static/chunks/8d641acfa7a5cabd.js","/_next/static/chunks/0bd93f1762c0b784.js","/_next/static/chunks/74a09d5752f190aa.js","/_next/static/chunks/48e8929f279923a6.js"],"default"]
-6:I[97367,["/_next/static/chunks/42879de7b8087bc9.js"],"OutletBoundary"]
-7:"$Sreact.suspense"
-0:{"buildId":"J-WPnE61HVYp0i4WFggUI","rsc":["$","$1","c",{"children":[["$","$L2",null,{"Component":"$3","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@4","$@5"]}}],[["$","script","script-0",{"src":"/_next/static/chunks/74a09d5752f190aa.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/48e8929f279923a6.js","async":true}]],["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"loading":null,"isPartial":false}
-4:{}
-5:"$0:rsc:props:children:0:props:serverProvidedParams:params"
-8:null
+2:I[2971,["/_next/static/chunks/9d7f99da02f3116c.js","/_next/static/chunks/e0ea470b82117987.js","/_next/static/chunks/14bc0317fccd619a.js","/_next/static/chunks/0c9e0f25c6d23db0.js","/_next/static/chunks/a9b630f6ad08103c.js"],"default"]
+3:I[2734,["/_next/static/chunks/9d7f99da02f3116c.js","/_next/static/chunks/e0ea470b82117987.js","/_next/static/chunks/14bc0317fccd619a.js","/_next/static/chunks/0c9e0f25c6d23db0.js","/_next/static/chunks/a9b630f6ad08103c.js"],"default"]
+4:I[27641,["/_next/static/chunks/9d7f99da02f3116c.js","/_next/static/chunks/e0ea470b82117987.js","/_next/static/chunks/14bc0317fccd619a.js","/_next/static/chunks/0c9e0f25c6d23db0.js","/_next/static/chunks/a9b630f6ad08103c.js"],"default"]
+5:I[25050,["/_next/static/chunks/9d7f99da02f3116c.js","/_next/static/chunks/e0ea470b82117987.js","/_next/static/chunks/14bc0317fccd619a.js","/_next/static/chunks/0c9e0f25c6d23db0.js","/_next/static/chunks/a9b630f6ad08103c.js"],"default"]
+6:I[75854,["/_next/static/chunks/9d7f99da02f3116c.js","/_next/static/chunks/e0ea470b82117987.js","/_next/static/chunks/14bc0317fccd619a.js","/_next/static/chunks/0c9e0f25c6d23db0.js","/_next/static/chunks/a9b630f6ad08103c.js"],"default"]
+7:I[13642,["/_next/static/chunks/9d7f99da02f3116c.js","/_next/static/chunks/e0ea470b82117987.js","/_next/static/chunks/14bc0317fccd619a.js","/_next/static/chunks/0c9e0f25c6d23db0.js","/_next/static/chunks/a9b630f6ad08103c.js"],"default"]
+8:I[97367,["/_next/static/chunks/ff1a16fafef87110.js","/_next/static/chunks/247eb132b7f7b574.js"],"OutletBoundary"]
+9:"$Sreact.suspense"
+0:{"buildId":"HwF2Gl7FUAcPRosxwyv2Q","rsc":["$","$1","c",{"children":[["$","div",null,{"className":"min-h-screen","children":[["$","$L2",null,{}],["$","section",null,{"className":"bg-accent py-6 mt-16 md:hidden","children":["$","div",null,{"className":"container mx-auto px-4","children":["$","h2",null,{"className":"text-2xl md:text-3xl lg:text-4xl font-bold text-center text-white [text-shadow:1px_1px_4px_rgba(68,146,172,0.6),-1px_-1px_2px_rgba(68,146,172,0.4)]","children":"Why Pay More, When You Can Pay Less!"}]}]}],["$","main",null,{"id":"main-content","children":[["$","$L3",null,{}],["$","$L4",null,{}],["$","$L5",null,{}],["$","$L6",null,{}]]}],["$","$L7",null,{}]]}],[["$","script","script-0",{"src":"/_next/static/chunks/0c9e0f25c6d23db0.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/a9b630f6ad08103c.js","async":true}]],["$","$L8",null,{"children":["$","$9",null,{"name":"Next.MetadataOutlet","children":"$@a"}]}]]}],"loading":null,"isPartial":false}
+a:null

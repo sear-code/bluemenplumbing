@@ -6,7 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import QuoteForm from '@/components/forms/QuoteForm';
 import { FileText, Clock, CheckCircle, ArrowRight } from 'lucide-react';
-import Lottie from 'lottie-react';
+import dynamic from 'next/dynamic';
+
+const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
 const QuoteGenerator = () => {
   const { t } = useTranslation();
@@ -62,9 +64,9 @@ const QuoteGenerator = () => {
                       <ArrowRight className="ml-2 w-5 h-5" />
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto p-0">
-                    <DialogHeader>
-                      <DialogTitle className="sr-only">Request a Free Quote</DialogTitle>
+                  <DialogContent className="max-w-5xl max-h-[90vh] !flex !flex-col overflow-hidden p-0 gap-0">
+                    <DialogHeader className="sr-only">
+                      <DialogTitle>Request a Free Quote</DialogTitle>
                     </DialogHeader>
                     <QuoteForm />
                   </DialogContent>
