@@ -5,7 +5,7 @@ type AppRoutes = "/" | "/about" | "/privacy" | "/services" | "/services/[slug]" 
 type AppRouteHandlerRoutes = "/api/admin/services/categories" | "/api/admin/services/items" | "/api/google-reviews" | "/api/quotes" | "/api/services"
 type PageRoutes = never
 type LayoutRoutes = "/"
-type RedirectRoutes = never
+type RedirectRoutes = "/services/bathroom-finishing" | "/services/bathroom-rough-in" | "/services/kitchen-plumbing" | "/services/laundry-connections" | "/services/repairs-troubleshooting"
 type RewriteRoutes = never
 type Routes = AppRoutes | PageRoutes | LayoutRoutes | RedirectRoutes | RewriteRoutes | AppRouteHandlerRoutes
 
@@ -21,6 +21,11 @@ interface ParamMap {
   "/privacy": {}
   "/services": {}
   "/services/[slug]": { "slug": string; }
+  "/services/bathroom-finishing": {}
+  "/services/bathroom-rough-in": {}
+  "/services/kitchen-plumbing": {}
+  "/services/laundry-connections": {}
+  "/services/repairs-troubleshooting": {}
   "/terms": {}
 }
 

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Star, Quote, ExternalLink } from 'lucide-react';
+import { COMPANY } from '@/lib/constants';
 
 const Testimonials = () => {
   const { t } = useTranslation();
@@ -13,18 +14,21 @@ const Testimonials = () => {
       text: t('testimonials.review1.text'),
       author: t('testimonials.review1.author'),
       platform: t('testimonials.review1.platform'),
+      date: t('testimonials.review1.date'),
       rating: 5
     },
     {
       text: t('testimonials.review2.text'),
       author: t('testimonials.review2.author'),
       platform: t('testimonials.review2.platform'),
+      date: t('testimonials.review2.date'),
       rating: 5
     },
     {
       text: t('testimonials.review3.text'),
       author: t('testimonials.review3.author'),
       platform: t('testimonials.review3.platform'),
+      date: t('testimonials.review3.date'),
       rating: 5
     }
   ];
@@ -40,9 +44,19 @@ const Testimonials = () => {
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
             {t('testimonials.title')}
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-4">
             {t('testimonials.subtitle')}
           </p>
+          {/* Aggregate Google Rating */}
+          <div className="flex items-center justify-center gap-2 mb-8">
+            <div className="flex">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="h-5 w-5 fill-accent text-accent" />
+              ))}
+            </div>
+            <span className="text-lg font-semibold text-foreground">{COMPANY.googleRating}</span>
+            <span className="text-muted-foreground">from {COMPANY.googleReviewCount}+ Google reviews</span>
+          </div>
           <Button 
             variant="outline" 
             onClick={handleViewAllReviews}
@@ -87,7 +101,7 @@ const Testimonials = () => {
                         {testimonial.author}
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        via {testimonial.platform}
+                        via {testimonial.platform} &middot; {testimonial.date}
                       </p>
                     </div>
                   </div>

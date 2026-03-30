@@ -50,7 +50,7 @@ const CategoryForm = ({
   categoryFormData: {
     name: string
     description: string
-    category: 'rough-in' | 'finishing' | 'kitchen' | 'laundry' | 'repair' | 'maintenance'
+    category: 'repair' | 'installation' | 'kitchen' | 'bathroom' | 'unclog' | 'filter' | 'maintenance'
     priceRangeMin: string
     priceRangeMax: string
     estimatedDuration: string
@@ -58,7 +58,7 @@ const CategoryForm = ({
   setCategoryFormData: React.Dispatch<React.SetStateAction<{
     name: string
     description: string
-    category: 'rough-in' | 'finishing' | 'kitchen' | 'laundry' | 'repair' | 'maintenance'
+    category: 'repair' | 'installation' | 'kitchen' | 'bathroom' | 'unclog' | 'filter' | 'maintenance'
     priceRangeMin: string
     priceRangeMax: string
     estimatedDuration: string
@@ -92,17 +92,18 @@ const CategoryForm = ({
       <Label htmlFor="cat-type">Category Type *</Label>
       <Select
         value={categoryFormData.category}
-        onValueChange={(value) => setCategoryFormData({ ...categoryFormData, category: value as 'rough-in' | 'finishing' | 'kitchen' | 'laundry' | 'repair' | 'maintenance' })}
+        onValueChange={(value) => setCategoryFormData({ ...categoryFormData, category: value as 'repair' | 'installation' | 'kitchen' | 'bathroom' | 'unclog' | 'filter' | 'maintenance' })}
       >
         <SelectTrigger className="mt-1">
           <SelectValue placeholder="Select category type" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="rough-in">Rough-In</SelectItem>
-          <SelectItem value="finishing">Finishing</SelectItem>
-          <SelectItem value="kitchen">Kitchen</SelectItem>
-          <SelectItem value="laundry">Laundry</SelectItem>
-          <SelectItem value="repair">Repair</SelectItem>
+          <SelectItem value="repair">Leak Repairs</SelectItem>
+          <SelectItem value="installation">Installations</SelectItem>
+          <SelectItem value="kitchen">Kitchen Plumbing</SelectItem>
+          <SelectItem value="bathroom">Bathroom Plumbing</SelectItem>
+          <SelectItem value="unclog">Unclog / Drain Clearing</SelectItem>
+          <SelectItem value="filter">Water Filtration</SelectItem>
           <SelectItem value="maintenance">Maintenance</SelectItem>
         </SelectContent>
       </Select>
@@ -288,7 +289,7 @@ const ServicesManagement = () => {
   const [categoryFormData, setCategoryFormData] = useState({
     name: '',
     description: '',
-    category: 'repair' as 'rough-in' | 'finishing' | 'kitchen' | 'laundry' | 'repair' | 'maintenance',
+    category: 'repair' as 'repair' | 'installation' | 'kitchen' | 'bathroom' | 'unclog' | 'filter' | 'maintenance',
     priceRangeMin: '',
     priceRangeMax: '',
     estimatedDuration: ''
@@ -449,7 +450,7 @@ const ServicesManagement = () => {
     setCategoryFormData({
       name: '',
       description: '',
-      category: 'repair' as 'rough-in' | 'finishing' | 'kitchen' | 'laundry' | 'repair' | 'maintenance',
+      category: 'repair' as 'repair' | 'installation' | 'kitchen' | 'bathroom' | 'unclog' | 'filter' | 'maintenance',
       priceRangeMin: '',
       priceRangeMax: '',
       estimatedDuration: ''

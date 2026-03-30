@@ -1,5 +1,7 @@
 import { supabase, ServiceCategoryRow, ServiceItemRow } from '@/lib/supabase';
 import { ServiceCategory, ServiceItem } from '@/models/Quote';
+import { EMERGENCY_FEE } from '@/lib/constants';
+import { applyPriceMarkup } from '@/lib/utils';
 
 /**
  * Fetch all active service categories with their items from Supabase
@@ -144,7 +146,7 @@ export const calculateTotalPriceFromSupabase = async (
 
     const { data: items, error } = await supabase
       .from('service_items')
-      .select('unit_price')
+      .select('unit_price, price_min')
       .in('id', selectedItemIds)
       .eq('is_active', true);
 
@@ -153,17 +155,23 @@ export const calculateTotalPriceFromSupabase = async (
       return 0;
     }
 
-    const baseTotal = items.reduce((sum, item) => sum + item.unit_price, 0);
+    let baseTotal = items.reduce((sum, item: { unit_price: number; price_min: number | null }) => {
+      const price = item.price_min ?? item.unit_price;
+      return sum + applyPriceMarkup(price);
+    }, 0);
 
-    // Apply multipliers based on urgency and property type
-    let multiplier = 1.0;
+    // Apply commercial multiplier
+    if (propertyType === 'commercial') {
+      baseTotal = Math.round(baseTotal * 1.3);
+    }
 
-    if (urgency === 'emergency') multiplier += 0.5;
-    else if (urgency === 'urgent') multiplier += 0.25;
+    // Emergency: $300 minimum floor (after markup)
+    if (urgency === 'emergency') {
+      const emergencyMin = applyPriceMarkup(EMERGENCY_FEE);
+      return Math.max(emergencyMin, baseTotal);
+    }
 
-    if (propertyType === 'commercial') multiplier += 0.3;
-
-    return Math.round(baseTotal * multiplier);
+    return Math.round(baseTotal);
   } catch (error) {
     console.error('Error calculating total price:', error);
     return 0;
@@ -220,6 +228,8 @@ const mapServiceItemRowToModel = (row: ServiceItemRow): ServiceItem => {
     name: row.name,
     description: row.description || undefined,
     unitPrice: row.unit_price,
+    priceMin: row.price_min ?? undefined,
+    priceMax: row.price_max ?? undefined,
     partsExtra: row.parts_extra,
     partsPrice: row.parts_price || undefined,
     estimatedDuration: row.estimated_duration,

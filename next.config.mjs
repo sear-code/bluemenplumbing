@@ -25,6 +25,35 @@ const nextConfig = {
   // Optimize for production
   compress: true,
   poweredByHeader: false,
+  async redirects() {
+    return [
+      {
+        source: '/services/bathroom-rough-in',
+        destination: '/services/bathroom-plumbing',
+        permanent: true,
+      },
+      {
+        source: '/services/bathroom-finishing',
+        destination: '/services/bathroom-plumbing',
+        permanent: true,
+      },
+      {
+        source: '/services/laundry-connections',
+        destination: '/services/installations',
+        permanent: true,
+      },
+      {
+        source: '/services/repairs-troubleshooting',
+        destination: '/services/leak-repairs',
+        permanent: true,
+      },
+      {
+        source: '/services/kitchen-plumbing',
+        destination: '/services/kitchen-plumbing-v2',
+        permanent: true,
+      },
+    ];
+  },
 }
 
 export default nextConfig

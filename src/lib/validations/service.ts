@@ -1,11 +1,12 @@
 import { z } from 'zod';
 
 const serviceCategoryTypes = [
-  'rough-in',
-  'finishing',
-  'kitchen',
-  'laundry',
   'repair',
+  'installation',
+  'kitchen',
+  'bathroom',
+  'unclog',
+  'filter',
   'maintenance',
 ] as const;
 
@@ -39,6 +40,8 @@ export const serviceItemCreateSchema = z.object({
   name: z.string().min(1, 'Name is required').max(200),
   description: z.string().max(1000).optional().nullable(),
   unit_price: z.number().min(0, 'Price must be positive').max(100000),
+  price_min: z.number().min(0).max(100000).optional().nullable(),
+  price_max: z.number().min(0).max(100000).optional().nullable(),
   parts_extra: z.boolean().optional(),
   parts_price: z.number().min(0).max(100000).optional(),
   estimated_duration: z.number().min(0).max(10000).optional(),
@@ -52,6 +55,8 @@ export const serviceItemUpdateSchema = z.object({
   name: z.string().min(1).max(200).optional(),
   description: z.string().max(1000).optional().nullable(),
   unit_price: z.number().min(0).max(100000).optional(),
+  price_min: z.number().min(0).max(100000).optional().nullable(),
+  price_max: z.number().min(0).max(100000).optional().nullable(),
   parts_extra: z.boolean().optional(),
   parts_price: z.number().min(0).max(100000).optional(),
   estimated_duration: z.number().min(0).max(10000).optional(),

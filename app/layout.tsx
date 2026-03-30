@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://bluemenplumbing.com'),
   title: 'Blue Men Plumbing - Professional Plumbing Services in GTA',
-  description: 'Quality plumbing services at affordable prices. Emergency repairs, bathroom renovations, drain cleaning, and more. Why pay more when you can pay less!',
+  description: 'Affordable, professional plumbing services in the GTA. Emergency repairs, bathroom renovations, drain cleaning, and more. Serving Toronto, Scarborough, and surrounding areas.',
   keywords: ['plumbing', 'GTA', 'Toronto', 'Scarborough', 'emergency plumber', 'drain cleaning', 'bathroom renovation', 'leak repair'],
   authors: [{ name: 'Blue Men Plumbing' }],
   alternates: {
@@ -88,8 +88,17 @@ const jsonLd = {
     closes: '23:59',
   },
   priceRange: '$$',
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '5.0',
+    reviewCount: '20',
+    bestRating: '5',
+    worstRating: '1',
+  },
   image: 'https://bluemenplumbing.com/og-image.jpg',
-  sameAs: [],
+  sameAs: [
+    'https://share.google/B88kLmpVaa9flScJr',
+  ],
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
     name: 'Plumbing Services',
@@ -138,6 +147,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link
+          rel="preload"
+          href="/assets/lotties/bluemen_lottie.json"
+          as="fetch"
+          crossOrigin="anonymous"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

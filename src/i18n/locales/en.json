@@ -26,26 +26,30 @@
       "button": "Request Free Quote",
       "note": "Or call us directly at"
     },
-    "trust": "Trusted by over 5,000 satisfied customers"
+    "trust": "Trusted by over 1,000 satisfied customers"
   },
   "services": {
-    "title": "Our Services",
-    "subtitle": "Comprehensive plumbing solutions for all your needs",
+    "title": "Did You Know?",
+    "subtitle": "Quick facts every homeowner should know",
     "emergency": {
       "title": "Emergency Repairs",
-      "description": "24/7 emergency plumbing services for urgent issues"
-    },
-    "installation": {
-      "title": "Pipe Installation",
-      "description": "Professional pipe installation and replacement services"
+      "stat": "1,500 L/hr",
+      "insight": "That's how much a burst pipe can dump. Know where your shutoff valve is."
     },
     "maintenance": {
       "title": "Drain Cleaning",
-      "description": "Thorough drain cleaning and maintenance services"
+      "stat": "11,000 L/yr",
+      "insight": "Wasted by a single dripping faucet — that's $200+ on your water bill."
+    },
+    "installation": {
+      "title": "Pipe Installation",
+      "stat": "80%",
+      "insight": "Of basement floods are preventable with properly installed plumbing."
     },
     "bathroom": {
       "title": "Bathroom Remodeling",
-      "description": "Complete bathroom renovation and fixture installation"
+      "stat": "70%",
+      "insight": "Average ROI on a bathroom renovation — one of the highest home upgrades."
     }
   },
   "about": {
@@ -57,33 +61,64 @@
     "available": "24/7 Availability"
   },
   "testimonials": {
-    "title": "What Our Customers Say",
+    "title": "Rated 5 Stars by Toronto Homeowners",
     "subtitle": "Real reviews from our satisfied customers",
     "googleLink": "https://share.google/B88kLmpVaa9flScJr",
     "review1": {
       "text": "Ali, is very professional, friendly and reliable. He and his brother are amazing and do not over charge or scam in any way. I recommend them for all your plumbing needs.",
       "author": "E Prab",
-      "platform": "Google"
+      "platform": "Google",
+      "date": "November 2025"
     },
     "review2": {
       "text": "Had a great experience with them. All came right on time on a saturday morning, and he quickly fixed 3-4 problems in my apartment unit such as fixing a sliding mirror door, re-installing a door and a few other minor problems. Will highly recommend them.",
       "author": "Sogl Nasab",
-      "platform": "Google"
+      "platform": "Google",
+      "date": "October 2025"
     },
     "review3": {
       "text": "I was so fortunate to come across and use Blue Men Plumbing. They were prompt, efficient and did great work. Their quote and final price was lower than I expected. Anyone needing a professional plumber for a small or an extensive large job; they are who to call and you won't be disappointed.",
       "author": "Michael Masse",
-      "platform": "Google"
+      "platform": "Google",
+      "date": "September 2025"
     },
     "viewAll": "View All Google Reviews"
   },
   "contact": {
-    "title": "Get In Touch",
+    "title": "Call Now -- We're Available 24/7 Across the GTA",
     "subtitle": "Ready to solve your plumbing problems? Contact us today!",
     "phone": "Call: 647-500-7989",
     "email": "info@bluemenplumbing.com",
     "address": "65 Canadian Rd, Scarborough, ON, M1R 5G2",
     "hours": "24/7 Emergency Service Available"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Everything you need to know about our plumbing services",
+    "q1": {
+      "question": "How much does a plumber cost in Toronto?",
+      "answer": "Our services range from $85 for basic repairs to $3,000+ for full bathroom rough-ins. We provide free, no-obligation quotes so you know the exact cost before any work begins. No hidden fees."
+    },
+    "q2": {
+      "question": "Do you offer free estimates?",
+      "answer": "Yes. Every quote is free with no obligation. Fill out our online form and we'll get back to you within 24 hours with a detailed estimate, or call us directly at 647-500-7989."
+    },
+    "q3": {
+      "question": "Are you available for emergencies on weekends and holidays?",
+      "answer": "Absolutely. We offer 24/7 emergency plumbing service, including weekends and holidays. Burst pipe at 2 AM on Christmas? We'll be there."
+    },
+    "q4": {
+      "question": "What areas do you serve in the GTA?",
+      "answer": "We serve the entire Greater Toronto Area including Scarborough, North York, Etobicoke, Markham, Mississauga, Brampton, and surrounding communities within a 50 km radius."
+    },
+    "q5": {
+      "question": "Are your plumbers licensed and insured?",
+      "answer": "Yes. All our plumbers are fully licensed and insured in Ontario. We carry comprehensive liability insurance for your peace of mind."
+    },
+    "q6": {
+      "question": "Do you offer any warranties on your work?",
+      "answer": "Yes. All our work comes with a satisfaction guarantee. If you're not happy with the results, we'll make it right at no extra charge."
+    }
   },
   "nav": {
     "quote": "Quote",

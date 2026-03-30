@@ -383,7 +383,7 @@ const ContactInfo = ({
           </Button>
 
           {calendarOpen && (
-            <div className="mt-2 border rounded-lg shadow-md bg-white w-fit">
+            <div className="mt-2 border rounded-lg shadow-md bg-white w-full md:w-fit overflow-x-auto">
               <Calendar
                 mode="single"
                 selected={date}

@@ -127,7 +127,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/services/bathroom-finishing": {
+    "/services/bathroom-plumbing": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -141,7 +141,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/services/[slug]",
-      "dataRoute": "/services/bathroom-finishing.rsc",
+      "dataRoute": "/services/bathroom-plumbing.rsc",
       "prefetchDataRoute": null,
       "allowHeader": [
         "host",
@@ -152,7 +152,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/services/bathroom-rough-in": {
+    "/services/filters": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -166,7 +166,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/services/[slug]",
-      "dataRoute": "/services/bathroom-rough-in.rsc",
+      "dataRoute": "/services/filters.rsc",
       "prefetchDataRoute": null,
       "allowHeader": [
         "host",
@@ -177,7 +177,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/services/kitchen-plumbing": {
+    "/services/installations": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -191,7 +191,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/services/[slug]",
-      "dataRoute": "/services/kitchen-plumbing.rsc",
+      "dataRoute": "/services/installations.rsc",
       "prefetchDataRoute": null,
       "allowHeader": [
         "host",
@@ -202,7 +202,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/services/laundry-connections": {
+    "/services/kitchen-plumbing-v2": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -216,7 +216,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/services/[slug]",
-      "dataRoute": "/services/laundry-connections.rsc",
+      "dataRoute": "/services/kitchen-plumbing-v2.rsc",
       "prefetchDataRoute": null,
       "allowHeader": [
         "host",
@@ -227,7 +227,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/services/repairs-troubleshooting": {
+    "/services/leak-repairs": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -241,7 +241,32 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/services/[slug]",
-      "dataRoute": "/services/repairs-troubleshooting.rsc",
+      "dataRoute": "/services/leak-repairs.rsc",
+      "prefetchDataRoute": null,
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/services/unclog": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/services/[slug]",
+      "dataRoute": "/services/unclog.rsc",
       "prefetchDataRoute": null,
       "allowHeader": [
         "host",

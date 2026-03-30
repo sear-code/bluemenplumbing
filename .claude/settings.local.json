@@ -5,7 +5,17 @@
       "Bash(npx skills:*)",
       "Bash(npx tsc:*)",
       "Bash(curl:*)",
-      "Bash(find /Users/searahmad/Documents/GitHub/bluemenplumbing/src/components/ui -name *.tsx -o -name *.ts)"
+      "Bash(find /Users/searahmad/Documents/GitHub/bluemenplumbing/src/components/ui -name *.tsx -o -name *.ts)",
+      "Bash(claude mcp:*)",
+      "mcp__supabase__execute_sql",
+      "Bash(grep -r \"lottie\\\\|Lottie\" /Users/searahmad/Documents/GitHub/bluemenplumbing/src --include=*.tsx --include=*.ts --include=*.jsx --include=*.js)",
+      "Bash(find /Users/searahmad/Documents/GitHub/bluemenplumbing/app -type f -name *.tsx -o -name *.ts)",
+      "Bash(find /Users/searahmad/Documents/GitHub/bluemenplumbing/public -type f -name *.jpg -o -name *.png -o -name *.webp)",
+      "Bash(ls:*)"
     ]
-  }
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "supabase"
+  ]
 }

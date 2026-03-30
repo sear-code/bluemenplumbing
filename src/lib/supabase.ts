@@ -36,7 +36,7 @@ export interface ServiceCategoryRow {
   id: string;
   name: string;
   description: string | null;
-  category: 'rough-in' | 'finishing' | 'kitchen' | 'laundry' | 'repair' | 'maintenance';
+  category: 'repair' | 'installation' | 'kitchen' | 'bathroom' | 'unclog' | 'filter' | 'maintenance';
   price_range_min: number;
   price_range_max: number;
   estimated_duration: number;
@@ -50,7 +50,7 @@ export interface ServiceCategoryInsert {
   id: string;
   name: string;
   description?: string | null;
-  category: 'rough-in' | 'finishing' | 'kitchen' | 'laundry' | 'repair' | 'maintenance';
+  category: 'repair' | 'installation' | 'kitchen' | 'bathroom' | 'unclog' | 'filter' | 'maintenance';
   price_range_min?: number;
   price_range_max?: number;
   estimated_duration?: number;
@@ -62,7 +62,7 @@ export interface ServiceCategoryUpdate {
   id?: string;
   name?: string;
   description?: string | null;
-  category?: 'rough-in' | 'finishing' | 'kitchen' | 'laundry' | 'repair' | 'maintenance';
+  category?: 'repair' | 'installation' | 'kitchen' | 'bathroom' | 'unclog' | 'filter' | 'maintenance';
   price_range_min?: number;
   price_range_max?: number;
   estimated_duration?: number;
@@ -76,6 +76,8 @@ export interface ServiceItemRow {
   name: string;
   description: string | null;
   unit_price: number;
+  price_min: number | null;
+  price_max: number | null;
   parts_extra: boolean;
   parts_price: number;
   estimated_duration: number;
@@ -91,6 +93,8 @@ export interface ServiceItemInsert {
   name: string;
   description?: string | null;
   unit_price: number;
+  price_min?: number | null;
+  price_max?: number | null;
   parts_extra?: boolean;
   parts_price?: number;
   estimated_duration?: number;
@@ -104,6 +108,8 @@ export interface ServiceItemUpdate {
   name?: string;
   description?: string | null;
   unit_price?: number;
+  price_min?: number | null;
+  price_max?: number | null;
   parts_extra?: boolean;
   parts_price?: number;
   estimated_duration?: number;

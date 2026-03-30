@@ -7,12 +7,23 @@ import { getServiceItemById, calculateTotalDuration, calculateTotalPrice } from 
 import { Clock, DollarSign, AlertCircle, X, Pencil } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { applyPriceMarkup } from '@/lib/utils';
+import { EMERGENCY_FEE } from '@/lib/constants';
 
 interface QuoteEstimateProps {
   quoteData: QuoteRequest;
   onUpdate?: (updates: Partial<QuoteRequest>) => void;
   onGoToStep?: (step: number) => void;
 }
+
+const formatItemPrice = (item: { unitPrice: number; priceMin?: number; priceMax?: number }): string => {
+  if (item.priceMin != null && item.priceMax != null) {
+    const min = applyPriceMarkup(item.priceMin);
+    const max = applyPriceMarkup(item.priceMax);
+    if (min === max) return `$${min}`;
+    return `$${min} - $${max}`;
+  }
+  return `$${applyPriceMarkup(item.unitPrice)}`;
+};
 
 const QuoteEstimate = ({ quoteData, onUpdate, onGoToStep }: QuoteEstimateProps) => {
   const selectedServiceDetails = quoteData.selectedServices
@@ -21,19 +32,28 @@ const QuoteEstimate = ({ quoteData, onUpdate, onGoToStep }: QuoteEstimateProps) 
 
   const totalDuration = calculateTotalDuration(quoteData.selectedServices);
 
-  // Calculate price live so it updates when services are removed
   const livePrice = calculateTotalPrice(
     quoteData.selectedServices,
     quoteData.urgency,
     quoteData.propertyType
   );
 
+  const isEmergency = quoteData.urgency === 'emergency';
+  const emergencyMin = applyPriceMarkup(EMERGENCY_FEE);
+
+  // Calculate base total (without emergency) to determine if emergency fee applies
+  const baseTotal = calculateTotalPrice(
+    quoteData.selectedServices,
+    'standard',
+    quoteData.propertyType
+  );
+
+  const emergencyFeeApplied = isEmergency && baseTotal < emergencyMin;
+
   const getUrgencyLabel = (urgency: string) => {
     switch (urgency) {
       case 'emergency':
         return { text: 'Emergency', color: 'bg-[#FF8C00] text-white' };
-      case 'urgent':
-        return { text: 'Urgent', color: 'bg-orange-500 text-white' };
       default:
         return { text: 'Standard', color: 'bg-[#2C5F7F] text-white' };
     }
@@ -101,7 +121,7 @@ const QuoteEstimate = ({ quoteData, onUpdate, onGoToStep }: QuoteEstimateProps) 
                       <div className="text-right flex items-center gap-2">
                         <div>
                           <span className="text-gray-900 font-semibold">
-                            ${applyPriceMarkup(item.unitPrice)}
+                            {formatItemPrice(item)}
                           </span>
                           {item.partsExtra && (
                             <p className="text-xs text-orange-600 mt-1">
@@ -128,6 +148,29 @@ const QuoteEstimate = ({ quoteData, onUpdate, onGoToStep }: QuoteEstimateProps) 
                   </div>
                 );
               })}
+
+              {/* Emergency Fee Line Item */}
+              {isEmergency && emergencyFeeApplied && (
+                <div className="p-3 bg-orange-50 rounded-lg border border-[#FF8C00]">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-xs text-[#FF8C00] font-medium mb-1">Emergency Service</p>
+                      <p className="text-gray-900 font-medium">Emergency Service Fee</p>
+                      <p className="text-xs text-gray-600 mt-1">Includes all selected services</p>
+                    </div>
+                    <span className="text-gray-900 font-semibold">${emergencyMin}</span>
+                  </div>
+                </div>
+              )}
+              {isEmergency && !emergencyFeeApplied && (
+                <div className="p-3 bg-orange-50 rounded-lg border border-[#FF8C00]">
+                  <div className="flex items-center gap-2">
+                    <Badge className="bg-[#FF8C00] text-white text-xs">Emergency</Badge>
+                    <span className="text-sm text-gray-700">Emergency priority — no additional charge</span>
+                  </div>
+                </div>
+              )}
+
               {/* Custom Service */}
               {quoteData.customService && quoteData.customService.trim().length > 0 && (
                 <div className="p-3 bg-blue-50 rounded-lg border border-[#4492AC]">
@@ -209,8 +252,8 @@ const QuoteEstimate = ({ quoteData, onUpdate, onGoToStep }: QuoteEstimateProps) 
           <AlertCircle className="w-5 h-5 text-[#4492AC] flex-shrink-0 mt-0.5" />
           <div>
             <p className="text-sm text-gray-700">
-              <strong>Next Step:</strong> To proceed with this quote and book your service, 
-              we'll need your contact information and full service address. Click "Proceed" 
+              <strong>Next Step:</strong> To proceed with this quote and book your service,
+              we'll need your contact information and full service address. Click "Proceed"
               below to continue.
             </p>
           </div>
@@ -224,19 +267,19 @@ const QuoteEstimate = ({ quoteData, onUpdate, onGoToStep }: QuoteEstimateProps) 
         </h3>
         <ul className="space-y-2 text-gray-700">
           <li className="flex items-start gap-2">
-            <span className="text-[#4492AC] font-bold">✓</span>
+            <span className="text-[#4492AC] font-bold">&#10003;</span>
             <span>Professional licensed plumbers</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-[#4492AC] font-bold">✓</span>
+            <span className="text-[#4492AC] font-bold">&#10003;</span>
             <span>All necessary tools and equipment</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-[#4492AC] font-bold">✓</span>
+            <span className="text-[#4492AC] font-bold">&#10003;</span>
             <span>Cleanup after service completion</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-[#4492AC] font-bold">✓</span>
+            <span className="text-[#4492AC] font-bold">&#10003;</span>
             <span>Satisfaction guarantee</span>
           </li>
         </ul>
@@ -246,4 +289,3 @@ const QuoteEstimate = ({ quoteData, onUpdate, onGoToStep }: QuoteEstimateProps) 
 };
 
 export default QuoteEstimate;
-

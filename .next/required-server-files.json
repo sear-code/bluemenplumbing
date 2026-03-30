@@ -305,7 +305,34 @@
     "turbopack": {
       "root": "/Users/searahmad/Documents/GitHub/bluemenplumbing"
     },
-    "distDirRoot": ".next"
+    "distDirRoot": ".next",
+    "_originalRedirects": [
+      {
+        "source": "/services/bathroom-rough-in",
+        "destination": "/services/bathroom-plumbing",
+        "permanent": true
+      },
+      {
+        "source": "/services/bathroom-finishing",
+        "destination": "/services/bathroom-plumbing",
+        "permanent": true
+      },
+      {
+        "source": "/services/laundry-connections",
+        "destination": "/services/installations",
+        "permanent": true
+      },
+      {
+        "source": "/services/repairs-troubleshooting",
+        "destination": "/services/leak-repairs",
+        "permanent": true
+      },
+      {
+        "source": "/services/kitchen-plumbing",
+        "destination": "/services/kitchen-plumbing-v2",
+        "permanent": true
+      }
+    ]
   },
   "appDir": "/Users/searahmad/Documents/GitHub/bluemenplumbing",
   "relativeAppDir": "",

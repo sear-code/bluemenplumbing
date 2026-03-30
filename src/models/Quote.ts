@@ -15,6 +15,8 @@ export interface ServiceItem {
   name: string;
   description?: string;
   unitPrice: number;
+  priceMin?: number;
+  priceMax?: number;
   partsExtra: boolean;
   partsPrice?: number;
   estimatedDuration: number;
@@ -25,7 +27,7 @@ export interface ServiceCategory {
   id: string;
   name: string;
   description: string;
-  category: 'rough-in' | 'finishing' | 'kitchen' | 'laundry' | 'repair' | 'maintenance';
+  category: 'repair' | 'installation' | 'kitchen' | 'bathroom' | 'unclog' | 'filter' | 'maintenance';
   priceRangeMin: number;
   priceRangeMax: number;
   estimatedDuration: number;
@@ -39,7 +41,7 @@ export interface QuoteRequest {
   selectedCategories: string[]; // Array of category IDs
   customService?: string; // Custom service description if not in list
   problemDescription: string;
-  urgency: 'standard' | 'urgent' | 'emergency';
+  urgency: 'standard' | 'emergency';
   
   // Property details
   propertyType: 'house' | 'apartment' | 'commercial';

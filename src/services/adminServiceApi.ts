@@ -58,7 +58,7 @@ export const fetchServices = async (): Promise<ServiceCategory[]> => {
 export const createCategory = async (data: {
   name: string;
   description: string;
-  category: 'rough-in' | 'finishing' | 'kitchen' | 'laundry' | 'repair' | 'maintenance';
+  category: 'repair' | 'installation' | 'kitchen' | 'bathroom' | 'unclog' | 'filter' | 'maintenance';
   priceRangeMin: number;
   priceRangeMax: number;
   estimatedDuration: number;
@@ -98,7 +98,7 @@ export const updateCategory = async (
   data: {
     name: string;
     description: string;
-    category: 'rough-in' | 'finishing' | 'kitchen' | 'laundry' | 'repair' | 'maintenance';
+    category: 'repair' | 'installation' | 'kitchen' | 'bathroom' | 'unclog' | 'filter' | 'maintenance';
     priceRangeMin: number;
     priceRangeMax: number;
     estimatedDuration: number;

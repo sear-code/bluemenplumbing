@@ -14,15 +14,20 @@ export const COMPANY = {
   hours: '24/7',
   experience: '15+',
   customers: '1000+',
+  googleRating: 5.0,
+  googleReviewCount: 20,
   siteUrl: 'https://bluemenplumbing.com',
 } as const;
 
 export const SERVICE_SLUGS = [
-  'bathroom-rough-in',
-  'bathroom-finishing',
-  'kitchen-plumbing',
-  'laundry-connections',
-  'repairs-troubleshooting',
+  'leak-repairs',
+  'installations',
+  'kitchen-plumbing-v2',
+  'bathroom-plumbing',
+  'unclog',
+  'filters',
 ] as const;
 
 export type ServiceSlug = (typeof SERVICE_SLUGS)[number];
+
+export const EMERGENCY_FEE = 250; // base price before 20% markup → displays as $300

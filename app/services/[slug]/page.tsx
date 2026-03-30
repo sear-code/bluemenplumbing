@@ -102,7 +102,9 @@ export default async function ServiceDetailPage({ params }: Props) {
                     )}
                   </div>
                   <p className="col-span-3 text-right font-medium text-accent">
-                    ${item.unitPrice}
+                    {item.priceMin != null && item.priceMax != null && item.priceMin !== item.priceMax
+                      ? `$${item.priceMin} - $${item.priceMax}`
+                      : `$${item.unitPrice}`}
                   </p>
                   <p className="col-span-3 text-right text-sm text-muted-foreground">
                     ~{item.estimatedDuration} min

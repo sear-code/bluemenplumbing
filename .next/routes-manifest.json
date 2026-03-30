@@ -11,6 +11,36 @@
       "priority": true,
       "statusCode": 308,
       "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    },
+    {
+      "source": "/services/bathroom-rough-in",
+      "destination": "/services/bathroom-plumbing",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/services/bathroom-rough-in(?:/)?$"
+    },
+    {
+      "source": "/services/bathroom-finishing",
+      "destination": "/services/bathroom-plumbing",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/services/bathroom-finishing(?:/)?$"
+    },
+    {
+      "source": "/services/laundry-connections",
+      "destination": "/services/installations",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/services/laundry-connections(?:/)?$"
+    },
+    {
+      "source": "/services/repairs-troubleshooting",
+      "destination": "/services/leak-repairs",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/services/repairs-troubleshooting(?:/)?$"
+    },
+    {
+      "source": "/services/kitchen-plumbing",
+      "destination": "/services/kitchen-plumbing-v2",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/services/kitchen-plumbing(?:/)?$"
     }
   ],
   "headers": [],
