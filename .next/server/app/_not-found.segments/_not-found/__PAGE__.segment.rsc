@@ -1,9 +1,9 @@
 1:"$Sreact.fragment"
-2:I[47257,["/_next/static/chunks/ff1a16fafef87110.js","/_next/static/chunks/247eb132b7f7b574.js"],"ClientPageRoot"]
-3:I[36768,["/_next/static/chunks/0ffbb2900eae88da.js","/_next/static/chunks/c1d63a94f9456a0b.js","/_next/static/chunks/6ab799f069f1a078.js","/_next/static/chunks/cd479200b4b41d2b.js","/_next/static/chunks/79cdacf198097365.js"],"default"]
-6:I[97367,["/_next/static/chunks/ff1a16fafef87110.js","/_next/static/chunks/247eb132b7f7b574.js"],"OutletBoundary"]
+2:I[47257,["/_next/static/chunks/c1d63a94f9456a0b.js","/_next/static/chunks/888ff270d1cf4a2d.js","/_next/static/chunks/117bfe402b75b387.js","/_next/static/chunks/76645fc053638a40.js"],"ClientPageRoot"]
+3:I[36768,["/_next/static/chunks/c1d63a94f9456a0b.js","/_next/static/chunks/888ff270d1cf4a2d.js","/_next/static/chunks/117bfe402b75b387.js","/_next/static/chunks/76645fc053638a40.js","/_next/static/chunks/79cdacf198097365.js"],"default"]
+6:I[97367,["/_next/static/chunks/c1d63a94f9456a0b.js","/_next/static/chunks/888ff270d1cf4a2d.js","/_next/static/chunks/117bfe402b75b387.js","/_next/static/chunks/76645fc053638a40.js"],"OutletBoundary"]
 7:"$Sreact.suspense"
-0:{"buildId":"GlpoYTE9g7o1LCaupxiq9","rsc":["$","$1","c",{"children":[["$","$L2",null,{"Component":"$3","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@4","$@5"]}}],[["$","script","script-0",{"src":"/_next/static/chunks/79cdacf198097365.js","async":true}]],["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"loading":null,"isPartial":false}
+0:{"buildId":"tmvCnitMP6RcuIRzyOva5","rsc":["$","$1","c",{"children":[["$","$L2",null,{"Component":"$3","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@4","$@5"]}}],[["$","script","script-0",{"src":"/_next/static/chunks/79cdacf198097365.js","async":true}]],["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"loading":null,"isPartial":false}
 4:{}
-5:"$0:rsc:props:children:0:props:serverProvidedParams:params"
+5:{}
 8:null

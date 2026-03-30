@@ -115,12 +115,6 @@
       "namedRegex": "^/api/services(?:/)?$"
     },
     {
-      "page": "/opengraph-image",
-      "regex": "^/opengraph\\-image(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/opengraph\\-image(?:/)?$"
-    },
-    {
       "page": "/privacy",
       "regex": "^/privacy(?:/)?$",
       "routeKeys": {},

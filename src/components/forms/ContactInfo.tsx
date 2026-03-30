@@ -116,24 +116,24 @@ const ContactInfo = ({
     fieldErrors[field] ? 'border-red-500 ring-1 ring-red-500' : '';
 
   return (
-    <div className="space-y-6 md:space-y-8">
+    <div className="space-y-8">
       <div>
-        <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">
           {isCustomServiceOnly ? 'Contact Information' : 'Contact & Service Address'}
         </h2>
-        <p className="text-sm md:text-base text-gray-600 mb-4 md:mb-6">
+        <p className="text-gray-600 mb-6">
           {isCustomServiceOnly
             ? 'Please provide your contact details so we can discuss your custom service request'
             : 'Please provide your contact details and complete service address'}
         </p>
 
-        <div className="space-y-4 md:space-y-6">
+        <div className="space-y-6">
           {/* Personal Information */}
           <div className="space-y-4">
-            <h3 className="text-base md:text-lg font-semibold text-gray-900">Personal Information</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+            <h3 className="text-lg font-semibold text-gray-900">Personal Information</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="firstName" className="text-sm md:text-base font-medium">
+                <Label htmlFor="firstName" className="text-base font-medium">
                   First Name *
                 </Label>
                 <Input
@@ -154,7 +154,7 @@ const ContactInfo = ({
               </div>
 
               <div>
-                <Label htmlFor="lastName" className="text-sm md:text-base font-medium">
+                <Label htmlFor="lastName" className="text-base font-medium">
                   Last Name *
                 </Label>
                 <Input
@@ -176,7 +176,7 @@ const ContactInfo = ({
             </div>
 
             <div>
-              <Label htmlFor="phone" className="text-sm md:text-base font-medium">
+              <Label htmlFor="phone" className="text-base font-medium">
                 Phone Number *
               </Label>
               <Input
@@ -198,7 +198,7 @@ const ContactInfo = ({
             </div>
 
             <div>
-              <Label htmlFor="email" className="text-sm md:text-base font-medium">
+              <Label htmlFor="email" className="text-base font-medium">
                 Email Address *
               </Label>
               <Input
@@ -222,9 +222,9 @@ const ContactInfo = ({
           {/* Service Address */}
           {!isCustomServiceOnly && (
             <div className="space-y-4 pt-4 border-t border-gray-200">
-              <h3 className="text-base md:text-lg font-semibold text-gray-900">Service Address</h3>
+              <h3 className="text-lg font-semibold text-gray-900">Service Address</h3>
               <div>
-                <Label htmlFor="street" className="text-sm md:text-base font-medium">
+                <Label htmlFor="street" className="text-base font-medium">
                   Street Address *
                 </Label>
                 <Input
@@ -244,9 +244,9 @@ const ContactInfo = ({
                 )}
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <Label htmlFor="city" className="text-sm md:text-base font-medium">
+                  <Label htmlFor="city" className="text-base font-medium">
                     City
                   </Label>
                   <Input
@@ -261,7 +261,7 @@ const ContactInfo = ({
                 </div>
 
                 <div>
-                  <Label htmlFor="state" className="text-sm md:text-base font-medium">
+                  <Label htmlFor="state" className="text-base font-medium">
                     Province *
                   </Label>
                   <Input
@@ -282,7 +282,7 @@ const ContactInfo = ({
                 </div>
 
                 <div>
-                  <Label htmlFor="zipCode" className="text-sm md:text-base font-medium">
+                  <Label htmlFor="zipCode" className="text-base font-medium">
                     Postal Code *
                   </Label>
                   <Input
@@ -305,7 +305,7 @@ const ContactInfo = ({
               </div>
 
               <div>
-                <Label htmlFor="accessNotes" className="text-sm md:text-base font-medium">
+                <Label htmlFor="accessNotes" className="text-base font-medium">
                   Access Notes (Optional)
                 </Label>
                 <p className="text-sm text-gray-600 mb-2">
@@ -325,7 +325,7 @@ const ContactInfo = ({
       </div>
 
       {/* PIPEDA Privacy Consent */}
-      <div className="pt-4 md:pt-6 border-t border-gray-200">
+      <div className="pt-6 border-t border-gray-200">
         <div className="flex items-start space-x-3">
           <Checkbox
             id="pipedaConsent"
@@ -351,8 +351,8 @@ const ContactInfo = ({
       </div>
 
       {!isCustomServiceOnly && (
-        <div className="pt-3 md:pt-4 border-t border-gray-200">
-          <Label htmlFor="preferredDateTime" className="text-sm md:text-base font-medium mb-2 block">
+        <div className="pt-4 border-t border-gray-200">
+          <Label className="text-base font-medium mb-2 block">
             Preferred Date & Time (Optional)
           </Label>
           <p className="text-sm text-gray-600 mb-4">
@@ -360,7 +360,6 @@ const ContactInfo = ({
           </p>
 
           <Button
-            id="preferredDateTime"
             type="button"
             variant="outline"
             className="w-full md:w-[300px] justify-start text-left font-normal"

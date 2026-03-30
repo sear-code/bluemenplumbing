@@ -111,8 +111,6 @@ export async function POST(request: NextRequest) {
       urgency: quoteData.urgency,
       estimated_price: quoteData.estimatedPrice,
       estimated_duration: quoteData.estimatedDuration,
-      distance_fee: quoteData.distanceFee ?? null,
-      distance_km: quoteData.distanceKm ?? null,
       status: 'submitted',
       access_notes: quoteData.accessNotes || null,
       preferred_datetime: quoteData.preferredDateTime || null,

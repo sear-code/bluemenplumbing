@@ -67,8 +67,6 @@ CREATE TABLE IF NOT EXISTS quotes (
   -- Quote Details
   estimated_price INTEGER DEFAULT 0,
   estimated_duration INTEGER DEFAULT 0,
-  distance_fee INTEGER DEFAULT 0,
-  distance_km INTEGER DEFAULT 0,
   status TEXT DEFAULT 'submitted' CHECK (status IN ('draft', 'submitted', 'contacted', 'approved', 'completed', 'cancelled')),
   
   -- Additional Info
