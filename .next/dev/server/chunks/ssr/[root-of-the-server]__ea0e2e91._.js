@@ -6327,7 +6327,7 @@ const QuoteGenerator = ()=>{
         }, ("TURBOPACK compile-time value", void 0));
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
         id: "quote",
-        className: "pt-8 pb-16 md:pt-0 md:pb-0 bg-gradient-to-br from-blue-50 via-white to-blue-50",
+        className: "pt-20 pb-16 md:pt-0 md:pb-0 bg-gradient-to-br from-blue-50 via-white to-blue-50",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
             className: "container mx-auto px-4 md:px-0",
             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6367,7 +6367,7 @@ const QuoteGenerator = ()=>{
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
                                             className: "text-xl md:text-3xl font-bold text-white mb-2 md:mb-4",
-                                            children: "Get Your Free Quote in Minutes"
+                                            children: "Plumbing Problem? We'll Fix the Price First."
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/QuoteGenerator.tsx",
                                             lineNumber: 102,
@@ -6375,7 +6375,7 @@ const QuoteGenerator = ()=>{
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                             className: "hidden md:block text-blue-50 text-lg mb-8 max-w-2xl mx-auto",
-                                            children: t('quote.cta.description', 'Fill out our quick form and our team will provide you with a comprehensive quote tailored to your needs')
+                                            children: t('quote.cta.description', 'Tell us what\'s going on — we\'ll send you an honest quote before we send a plumber.')
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/QuoteGenerator.tsx",
                                             lineNumber: 105,
@@ -6391,7 +6391,7 @@ const QuoteGenerator = ()=>{
                                                         size: "lg",
                                                         className: "bg-white text-[#4492AC] hover:bg-gray-100 text-base px-6 py-4 md:text-lg md:px-8 md:py-6 h-auto font-semibold shadow-lg",
                                                         children: [
-                                                            t('quote.cta.button', 'Request Free Quote'),
+                                                            t('quote.cta.button', 'Get Your Price'),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$right$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowRight$3e$__["ArrowRight"], {
                                                                 className: "ml-2 w-5 h-5"
                                                             }, void 0, false, {

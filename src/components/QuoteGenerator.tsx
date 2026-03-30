@@ -77,7 +77,7 @@ const QuoteGenerator = () => {
   );
 
   return (
-    <section id="quote" className="pt-8 pb-16 md:pt-0 md:pb-0 bg-gradient-to-br from-blue-50 via-white to-blue-50">
+    <section id="quote" className="pt-20 pb-16 md:pt-0 md:pb-0 bg-gradient-to-br from-blue-50 via-white to-blue-50">
       <div className="container mx-auto px-4 md:px-0">
         <div className="grid grid-cols-1 md:grid-cols-2 md:min-h-screen">
           {/* Left Side - Lottie (Hidden on Mobile) */}
@@ -100,10 +100,10 @@ const QuoteGenerator = () => {
               {/* CTA Section */}
               <div className="bg-[#4492AC] rounded-2xl p-5 md:p-12 text-center shadow-xl">
                 <h3 className="text-xl md:text-3xl font-bold text-white mb-2 md:mb-4">
-                  Get Your Free Quote in Minutes
+                  Plumbing Problem? We'll Fix the Price First.
                 </h3>
                 <p className="hidden md:block text-blue-50 text-lg mb-8 max-w-2xl mx-auto">
-                  {t('quote.cta.description', 'Fill out our quick form and our team will provide you with a comprehensive quote tailored to your needs')}
+                  {t('quote.cta.description', 'Tell us what\'s going on — we\'ll send you an honest quote before we send a plumber.')}
                 </p>
 
                 <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -112,7 +112,7 @@ const QuoteGenerator = () => {
                       size="lg"
                       className="bg-white text-[#4492AC] hover:bg-gray-100 text-base px-6 py-4 md:text-lg md:px-8 md:py-6 h-auto font-semibold shadow-lg"
                     >
-                      {t('quote.cta.button', 'Request Free Quote')}
+                      {t('quote.cta.button', 'Get Your Price')}
                       <ArrowRight className="ml-2 w-5 h-5" />
                     </Button>
                   </DialogTrigger>
