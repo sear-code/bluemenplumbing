@@ -220,8 +220,8 @@
       "mcpServer": true,
       "optimizePackageImports": [
         "lucide-react",
-        "@radix-ui/react-icons",
         "date-fns",
+        "react-day-picker",
         "lodash-es",
         "ramda",
         "antd",

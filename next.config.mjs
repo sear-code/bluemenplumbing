@@ -20,7 +20,7 @@ const nextConfig = {
   },
   // Enable experimental features for better performance
   experimental: {
-    optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
+    optimizePackageImports: ['lucide-react', 'date-fns', 'react-day-picker'],
   },
   // Optimize for production
   compress: true,

@@ -15,11 +15,8 @@ const StickyMobileCTA = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToQuote = () => {
-    const quoteSection = document.getElementById('quote');
-    if (quoteSection) {
-      quoteSection.scrollIntoView({ behavior: 'smooth' });
-    }
+  const openQuoteDialog = () => {
+    window.dispatchEvent(new CustomEvent('open-quote-dialog'));
   };
 
   if (!visible) return null;
@@ -36,7 +33,7 @@ const StickyMobileCTA = () => {
         </a>
         <button
           type="button"
-          onClick={scrollToQuote}
+          onClick={openQuoteDialog}
           className="flex-1 flex items-center justify-center gap-2 bg-[#4492AC] text-white font-semibold py-3 rounded-lg active:scale-95 transition-transform"
         >
           <FileText className="w-5 h-5" />

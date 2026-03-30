@@ -53,6 +53,12 @@ const QuoteGenerator = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const handleOpenQuote = () => setIsOpen(true);
+    window.addEventListener('open-quote-dialog', handleOpenQuote);
+    return () => window.removeEventListener('open-quote-dialog', handleOpenQuote);
+  }, []);
+
   const lottieContainer = (mobile?: boolean) => (
     <div
       className="relative w-full"

@@ -38,10 +38,11 @@ const Header = () => {
             className="transition-transform duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-lg"
             aria-label="Go to homepage"
           >
-            <Logo 
-              variant="full" 
+            <Logo
+              variant="full"
               size="md"
-              className="max-w-[180px] sm:max-w-[200px]" 
+              priority
+              className="max-w-[180px] sm:max-w-[200px]"
             />
           </button>
 

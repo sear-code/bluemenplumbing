@@ -153,6 +153,11 @@ export default function RootLayout({
           as="fetch"
           crossOrigin="anonymous"
         />
+        <link
+          rel="preload"
+          href="/assets/logos/bmp-light.png"
+          as="image"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

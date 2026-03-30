@@ -11,7 +11,12 @@
       "Bash(grep -r \"lottie\\\\|Lottie\" /Users/searahmad/Documents/GitHub/bluemenplumbing/src --include=*.tsx --include=*.ts --include=*.jsx --include=*.js)",
       "Bash(find /Users/searahmad/Documents/GitHub/bluemenplumbing/app -type f -name *.tsx -o -name *.ts)",
       "Bash(find /Users/searahmad/Documents/GitHub/bluemenplumbing/public -type f -name *.jpg -o -name *.png -o -name *.webp)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(wc:*)",
+      "Bash(grep -v \"^ui$\")",
+      "Bash(du -sh /Users/searahmad/Documents/GitHub/bluemenplumbing/public/assets/logos/*)",
+      "Bash(du:*)",
+      "Bash(npx --yes sharp-cli --version)"
     ]
   },
   "enableAllProjectMcpServers": true,

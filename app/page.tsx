@@ -1,13 +1,16 @@
+import dynamic from 'next/dynamic'
 import Header from '@/components/Header'
 import QuoteGenerator from '@/components/QuoteGenerator'
-import Services from '@/components/Services'
-import About from '@/components/About'
-import Portfolio from '@/components/Portfolio'
-import Testimonials from '@/components/Testimonials'
-import FAQ from '@/components/FAQ'
-import Contact from '@/components/Contact'
-import Footer from '@/components/Footer'
-import StickyMobileCTA from '@/components/StickyMobileCTA'
+
+// Below-the-fold sections — code-split to reduce initial JS bundle
+const About = dynamic(() => import('@/components/About'))
+const Services = dynamic(() => import('@/components/Services'))
+const Portfolio = dynamic(() => import('@/components/Portfolio'))
+const Testimonials = dynamic(() => import('@/components/Testimonials'))
+const FAQ = dynamic(() => import('@/components/FAQ'))
+const Contact = dynamic(() => import('@/components/Contact'))
+const Footer = dynamic(() => import('@/components/Footer'))
+const StickyMobileCTA = dynamic(() => import('@/components/StickyMobileCTA'))
 
 export default function Home() {
   return (
