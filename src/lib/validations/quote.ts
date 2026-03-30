@@ -71,6 +71,8 @@ export const quoteSubmissionSchema = z.object({
   urgency: z.enum(['standard', 'urgent', 'emergency']).default('standard'),
   estimatedPrice: z.number().min(0).max(100000).default(0),
   estimatedDuration: z.number().min(0).max(10000).default(120),
+  distanceFee: z.number().min(0).max(1000).optional().nullable(),
+  distanceKm: z.number().min(0).max(1000).optional().nullable(),
   accessNotes: z
     .string()
     .max(1000)

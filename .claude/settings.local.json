@@ -16,7 +16,13 @@
       "Bash(grep -v \"^ui$\")",
       "Bash(du -sh /Users/searahmad/Documents/GitHub/bluemenplumbing/public/assets/logos/*)",
       "Bash(du:*)",
-      "Bash(npx --yes sharp-cli --version)"
+      "Bash(npx --yes sharp-cli --version)",
+      "mcp__supabase__list_projects",
+      "Bash(mv \"JPEG image-42E9-90DF-04-0.jpeg\" \"professional-plumbing-installation.jpeg\")",
+      "Bash(mv \"JPEG image-42E9-90DF-04-3.jpeg\" \"plumbing-fixture-repair.jpeg\")",
+      "Bash(mv \"JPEG image-42E9-90DF-04-4.jpeg\" \"residential-pipe-installation.jpeg\")",
+      "Bash(mv \"JPEG image-42E9-90DF-04-5.jpeg\" \"bathroom-plumbing-renovation.jpeg\")",
+      "Bash(mv \"JPEG image-42E9-90DF-04-6.jpeg\" \"kitchen-plumbing-service.jpeg\")"
     ]
   },
   "enableAllProjectMcpServers": true,

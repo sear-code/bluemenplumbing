@@ -2964,12 +2964,12 @@ const JobDetails = ({ description, photos = [], propertyType, address, onUpdate 
         });
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "space-y-8",
+        className: "space-y-6 md:space-y-8",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                        className: "text-2xl font-bold text-gray-900 mb-2",
+                        className: "text-xl md:text-2xl font-bold text-gray-900 mb-2",
                         children: "Job Details"
                     }, void 0, false, {
                         fileName: "[project]/src/components/forms/ProblemDetails.tsx",
@@ -2977,7 +2977,7 @@ const JobDetails = ({ description, photos = [], propertyType, address, onUpdate 
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                        className: "text-gray-600 mb-6",
+                        className: "text-sm md:text-base text-gray-600 mb-4 md:mb-6",
                         children: "Tell us about your property and the plumbing issue"
                     }, void 0, false, {
                         fileName: "[project]/src/components/forms/ProblemDetails.tsx",
@@ -2985,12 +2985,12 @@ const JobDetails = ({ description, photos = [], propertyType, address, onUpdate 
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "space-y-6",
+                        className: "space-y-4 md:space-y-6",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
-                                        className: "text-base font-medium mb-3 block",
+                                        className: "text-sm md:text-base font-medium mb-3 block",
                                         children: "Property Type *"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/forms/ProblemDetails.tsx",
@@ -3002,7 +3002,7 @@ const JobDetails = ({ description, photos = [], propertyType, address, onUpdate 
                                         onValueChange: (val)=>onUpdate({
                                                 propertyType: val
                                             }),
-                                        className: "grid grid-cols-1 md:grid-cols-3 gap-4",
+                                        className: "grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "relative",
@@ -3018,10 +3018,10 @@ const JobDetails = ({ description, photos = [], propertyType, address, onUpdate 
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
                                                         htmlFor: "house",
-                                                        className: "flex flex-col items-center justify-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-[#4492AC] peer-data-[state=checked]:border-[#4492AC] peer-data-[state=checked]:bg-blue-50 transition-all",
+                                                        className: "flex flex-col items-center justify-center p-3 md:p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-[#4492AC] peer-data-[state=checked]:border-[#4492AC] peer-data-[state=checked]:bg-blue-50 transition-all",
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$house$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Home$3e$__["Home"], {
-                                                                className: "w-8 h-8 mb-2 text-gray-600"
+                                                                className: "w-6 h-6 md:w-8 md:h-8 mb-1.5 md:mb-2 text-gray-600"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/forms/ProblemDetails.tsx",
                                                                 lineNumber: 88,
@@ -3061,10 +3061,10 @@ const JobDetails = ({ description, photos = [], propertyType, address, onUpdate 
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
                                                         htmlFor: "apartment",
-                                                        className: "flex flex-col items-center justify-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-[#4492AC] peer-data-[state=checked]:border-[#4492AC] peer-data-[state=checked]:bg-blue-50 transition-all",
+                                                        className: "flex flex-col items-center justify-center p-3 md:p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-[#4492AC] peer-data-[state=checked]:border-[#4492AC] peer-data-[state=checked]:bg-blue-50 transition-all",
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$building$2d$2$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Building2$3e$__["Building2"], {
-                                                                className: "w-8 h-8 mb-2 text-gray-600"
+                                                                className: "w-6 h-6 md:w-8 md:h-8 mb-1.5 md:mb-2 text-gray-600"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/forms/ProblemDetails.tsx",
                                                                 lineNumber: 98,
@@ -3104,10 +3104,10 @@ const JobDetails = ({ description, photos = [], propertyType, address, onUpdate 
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
                                                         htmlFor: "commercial",
-                                                        className: "flex flex-col items-center justify-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-[#4492AC] peer-data-[state=checked]:border-[#4492AC] peer-data-[state=checked]:bg-blue-50 transition-all",
+                                                        className: "flex flex-col items-center justify-center p-3 md:p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-[#4492AC] peer-data-[state=checked]:border-[#4492AC] peer-data-[state=checked]:bg-blue-50 transition-all",
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$store$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Store$3e$__["Store"], {
-                                                                className: "w-8 h-8 mb-2 text-gray-600"
+                                                                className: "w-6 h-6 md:w-8 md:h-8 mb-1.5 md:mb-2 text-gray-600"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/forms/ProblemDetails.tsx",
                                                                 lineNumber: 108,
@@ -3149,7 +3149,7 @@ const JobDetails = ({ description, photos = [], propertyType, address, onUpdate 
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
                                         htmlFor: "city",
-                                        className: "text-base font-medium",
+                                        className: "text-sm md:text-base font-medium",
                                         children: "City *"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/forms/ProblemDetails.tsx",
@@ -3201,7 +3201,7 @@ const JobDetails = ({ description, photos = [], propertyType, address, onUpdate 
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
                             htmlFor: "description",
-                            className: "text-base font-medium",
+                            className: "text-sm md:text-base font-medium",
                             children: "Problem Description *"
                         }, void 0, false, {
                             fileName: "[project]/src/components/forms/ProblemDetails.tsx",
@@ -3248,7 +3248,7 @@ const JobDetails = ({ description, photos = [], propertyType, address, onUpdate 
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
-                        className: "text-base font-medium mb-3 block",
+                        className: "text-sm md:text-base font-medium mb-3 block",
                         children: "Upload Photos (Optional)"
                     }, void 0, false, {
                         fileName: "[project]/src/components/forms/ProblemDetails.tsx",
@@ -3268,7 +3268,7 @@ const JobDetails = ({ description, photos = [], propertyType, address, onUpdate 
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
                                 htmlFor: "photo-upload",
-                                className: "flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors",
+                                className: "flex flex-col items-center justify-center w-full h-28 md:h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "flex flex-col items-center justify-center pt-5 pb-6",
@@ -3347,7 +3347,7 @@ const JobDetails = ({ description, photos = [], propertyType, address, onUpdate 
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                                 type: "button",
                                                 onClick: ()=>handleRemovePhoto(index),
-                                                className: "absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity",
+                                                className: "absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity",
                                                 "aria-label": "Remove photo",
                                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
                                                     className: "w-4 h-4"
@@ -3623,12 +3623,12 @@ const ContactInfo = ({ customerInfo, address, accessNotes, preferredDateTime, pi
     };
     const inputErrorClass = (field)=>fieldErrors[field] ? 'border-red-500 ring-1 ring-red-500' : '';
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "space-y-8",
+        className: "space-y-6 md:space-y-8",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                        className: "text-2xl font-bold text-gray-900 mb-2",
+                        className: "text-xl md:text-2xl font-bold text-gray-900 mb-2",
                         children: isCustomServiceOnly ? 'Contact Information' : 'Contact & Service Address'
                     }, void 0, false, {
                         fileName: "[project]/src/components/forms/ContactInfo.tsx",
@@ -3636,7 +3636,7 @@ const ContactInfo = ({ customerInfo, address, accessNotes, preferredDateTime, pi
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                        className: "text-gray-600 mb-6",
+                        className: "text-sm md:text-base text-gray-600 mb-4 md:mb-6",
                         children: isCustomServiceOnly ? 'Please provide your contact details so we can discuss your custom service request' : 'Please provide your contact details and complete service address'
                     }, void 0, false, {
                         fileName: "[project]/src/components/forms/ContactInfo.tsx",
@@ -3644,13 +3644,13 @@ const ContactInfo = ({ customerInfo, address, accessNotes, preferredDateTime, pi
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "space-y-6",
+                        className: "space-y-4 md:space-y-6",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "space-y-4",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                        className: "text-lg font-semibold text-gray-900",
+                                        className: "text-base md:text-lg font-semibold text-gray-900",
                                         children: "Personal Information"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/forms/ContactInfo.tsx",
@@ -3658,13 +3658,13 @@ const ContactInfo = ({ customerInfo, address, accessNotes, preferredDateTime, pi
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "grid grid-cols-1 md:grid-cols-2 gap-4",
+                                        className: "grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
                                                         htmlFor: "firstName",
-                                                        className: "text-base font-medium",
+                                                        className: "text-sm md:text-base font-medium",
                                                         children: "First Name *"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/forms/ContactInfo.tsx",
@@ -3707,7 +3707,7 @@ const ContactInfo = ({ customerInfo, address, accessNotes, preferredDateTime, pi
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
                                                         htmlFor: "lastName",
-                                                        className: "text-base font-medium",
+                                                        className: "text-sm md:text-base font-medium",
                                                         children: "Last Name *"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/forms/ContactInfo.tsx",
@@ -3756,7 +3756,7 @@ const ContactInfo = ({ customerInfo, address, accessNotes, preferredDateTime, pi
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
                                                 htmlFor: "phone",
-                                                className: "text-base font-medium",
+                                                className: "text-sm md:text-base font-medium",
                                                 children: "Phone Number *"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/forms/ContactInfo.tsx",
@@ -3800,7 +3800,7 @@ const ContactInfo = ({ customerInfo, address, accessNotes, preferredDateTime, pi
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
                                                 htmlFor: "email",
-                                                className: "text-base font-medium",
+                                                className: "text-sm md:text-base font-medium",
                                                 children: "Email Address *"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/forms/ContactInfo.tsx",
@@ -3849,7 +3849,7 @@ const ContactInfo = ({ customerInfo, address, accessNotes, preferredDateTime, pi
                                 className: "space-y-4 pt-4 border-t border-gray-200",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                        className: "text-lg font-semibold text-gray-900",
+                                        className: "text-base md:text-lg font-semibold text-gray-900",
                                         children: "Service Address"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/forms/ContactInfo.tsx",
@@ -3860,7 +3860,7 @@ const ContactInfo = ({ customerInfo, address, accessNotes, preferredDateTime, pi
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
                                                 htmlFor: "street",
-                                                className: "text-base font-medium",
+                                                className: "text-sm md:text-base font-medium",
                                                 children: "Street Address *"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/forms/ContactInfo.tsx",
@@ -3900,13 +3900,13 @@ const ContactInfo = ({ customerInfo, address, accessNotes, preferredDateTime, pi
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "grid grid-cols-1 md:grid-cols-3 gap-4",
+                                        className: "grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
                                                         htmlFor: "city",
-                                                        className: "text-base font-medium",
+                                                        className: "text-sm md:text-base font-medium",
                                                         children: "City"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/forms/ContactInfo.tsx",
@@ -3943,7 +3943,7 @@ const ContactInfo = ({ customerInfo, address, accessNotes, preferredDateTime, pi
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
                                                         htmlFor: "state",
-                                                        className: "text-base font-medium",
+                                                        className: "text-sm md:text-base font-medium",
                                                         children: "Province *"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/forms/ContactInfo.tsx",
@@ -3986,7 +3986,7 @@ const ContactInfo = ({ customerInfo, address, accessNotes, preferredDateTime, pi
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
                                                         htmlFor: "zipCode",
-                                                        className: "text-base font-medium",
+                                                        className: "text-sm md:text-base font-medium",
                                                         children: "Postal Code *"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/forms/ContactInfo.tsx",
@@ -4036,7 +4036,7 @@ const ContactInfo = ({ customerInfo, address, accessNotes, preferredDateTime, pi
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
                                                 htmlFor: "accessNotes",
-                                                className: "text-base font-medium",
+                                                className: "text-sm md:text-base font-medium",
                                                 children: "Access Notes (Optional)"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/forms/ContactInfo.tsx",
@@ -4089,7 +4089,7 @@ const ContactInfo = ({ customerInfo, address, accessNotes, preferredDateTime, pi
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "pt-6 border-t border-gray-200",
+                className: "pt-4 md:pt-6 border-t border-gray-200",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "flex items-start space-x-3",
                     children: [
@@ -4143,10 +4143,10 @@ const ContactInfo = ({ customerInfo, address, accessNotes, preferredDateTime, pi
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             !isCustomServiceOnly && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "pt-4 border-t border-gray-200",
+                className: "pt-3 md:pt-4 border-t border-gray-200",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
-                        className: "text-base font-medium mb-2 block",
+                        className: "text-sm md:text-base font-medium mb-2 block",
                         children: "Preferred Date & Time (Optional)"
                     }, void 0, false, {
                         fileName: "[project]/src/components/forms/ContactInfo.tsx",
@@ -4324,7 +4324,7 @@ const QuoteEstimate = ({ quoteData, onUpdate, onGoToStep })=>{
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                        className: "text-2xl font-bold text-gray-900 mb-2",
+                        className: "text-xl md:text-2xl font-bold text-gray-900 mb-2",
                         children: "Your Estimated Quote"
                     }, void 0, false, {
                         fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
@@ -4332,7 +4332,7 @@ const QuoteEstimate = ({ quoteData, onUpdate, onGoToStep })=>{
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                        className: "text-gray-600 mb-6",
+                        className: "text-sm md:text-base text-gray-600 mb-4 md:mb-6",
                         children: "Based on the information provided, here's your estimated cost"
                     }, void 0, false, {
                         fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
@@ -4346,12 +4346,12 @@ const QuoteEstimate = ({ quoteData, onUpdate, onGoToStep })=>{
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
-                className: "p-8 bg-gradient-to-br from-[#4492AC] to-[#357a91] text-white",
+                className: "p-5 md:p-8 bg-gradient-to-br from-[#4492AC] to-[#357a91] text-white",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "text-center",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                            className: "text-lg opacity-90 mb-2",
+                            className: "text-base md:text-lg opacity-90 mb-2",
                             children: "Estimated Total"
                         }, void 0, false, {
                             fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
@@ -4362,14 +4362,14 @@ const QuoteEstimate = ({ quoteData, onUpdate, onGoToStep })=>{
                             className: "flex items-center justify-center gap-2",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$dollar$2d$sign$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__DollarSign$3e$__["DollarSign"], {
-                                    className: "w-8 h-8"
+                                    className: "w-6 h-6 md:w-8 md:h-8"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
                                     lineNumber: 80,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                    className: "text-5xl font-bold",
+                                    className: "text-3xl md:text-5xl font-bold",
                                     children: livePrice || 0
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
@@ -4402,10 +4402,10 @@ const QuoteEstimate = ({ quoteData, onUpdate, onGoToStep })=>{
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
-                className: "p-6",
+                className: "p-4 md:p-6",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                        className: "font-semibold text-lg text-gray-900 mb-4",
+                        className: "font-semibold text-base md:text-lg text-gray-900 mb-4",
                         children: "Quote Details"
                     }, void 0, false, {
                         fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
@@ -4840,7 +4840,7 @@ const QuoteEstimate = ({ quoteData, onUpdate, onGoToStep })=>{
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
-                className: "p-4 bg-blue-50 border-[#4492AC]",
+                className: "p-3 md:p-4 bg-blue-50 border-[#4492AC]",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "flex items-start gap-3",
                     children: [
@@ -4886,10 +4886,10 @@ const QuoteEstimate = ({ quoteData, onUpdate, onGoToStep })=>{
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
-                className: "p-6",
+                className: "p-4 md:p-6",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                        className: "font-semibold text-lg text-gray-900 mb-3",
+                        className: "font-semibold text-base md:text-lg text-gray-900 mb-3",
                         children: "What's Included"
                     }, void 0, false, {
                         fileName: "[project]/src/components/forms/QuoteEstimate.tsx",
@@ -5135,15 +5135,15 @@ const QuoteConfirmation = ({ quoteData })=>{
     // Check if this is a custom service request
     const isCustomServiceRequest = quoteData.selectedServices.length === 0 && quoteData.customService && quoteData.customService.trim().length > 0;
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "space-y-6",
+        className: "space-y-5 md:space-y-6",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "text-center",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4",
+                        className: "inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 bg-green-100 rounded-full mb-4",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
-                            className: "w-10 h-10 text-green-600"
+                            className: "w-7 h-7 md:w-10 md:h-10 text-green-600"
                         }, void 0, false, {
                             fileName: "[project]/src/components/forms/QuoteConfirmation.tsx",
                             lineNumber: 28,
@@ -5155,7 +5155,7 @@ const QuoteConfirmation = ({ quoteData })=>{
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                        className: "text-3xl font-bold text-gray-900 mb-2",
+                        className: "text-xl md:text-3xl font-bold text-gray-900 mb-2",
                         children: isCustomServiceRequest ? 'Custom Quote Request Received!' : 'Quote Request Submitted!'
                     }, void 0, false, {
                         fileName: "[project]/src/components/forms/QuoteConfirmation.tsx",
@@ -5163,7 +5163,7 @@ const QuoteConfirmation = ({ quoteData })=>{
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                        className: "text-lg text-gray-600",
+                        className: "text-sm md:text-lg text-gray-600",
                         children: "Thank you for choosing Blue Men Plumbing"
                     }, void 0, false, {
                         fileName: "[project]/src/components/forms/QuoteConfirmation.tsx",
@@ -5177,14 +5177,14 @@ const QuoteConfirmation = ({ quoteData })=>{
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
-                className: "p-6 bg-blue-50 border-[#4492AC]",
+                className: "p-4 md:p-6 bg-blue-50 border-[#4492AC]",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "space-y-4",
+                    className: "space-y-3 md:space-y-4",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                    className: "font-semibold text-lg text-gray-900 mb-3",
+                                    className: "font-semibold text-base md:text-lg text-gray-900 mb-3",
                                     children: "What happens next?"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/forms/QuoteConfirmation.tsx",
@@ -5359,7 +5359,7 @@ const QuoteConfirmation = ({ quoteData })=>{
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0)),
                         !isCustomServiceRequest && quoteData.estimatedPrice && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "pt-4 border-t border-blue-200",
+                            className: "pt-3 md:pt-4 border-t border-blue-200",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                     className: "text-sm text-gray-600 mb-1",
@@ -5370,7 +5370,7 @@ const QuoteConfirmation = ({ quoteData })=>{
                                     columnNumber: 15
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: "text-2xl font-bold text-[#4492AC]",
+                                    className: "text-xl md:text-2xl font-bold text-[#4492AC]",
                                     children: [
                                         "$",
                                         quoteData.estimatedPrice
@@ -5406,10 +5406,10 @@ const QuoteConfirmation = ({ quoteData })=>{
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
-                className: "p-6",
+                className: "p-4 md:p-6",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                        className: "font-semibold text-lg text-gray-900 mb-4",
+                        className: "font-semibold text-base md:text-lg text-gray-900 mb-4",
                         children: "Quote Summary"
                     }, void 0, false, {
                         fileName: "[project]/src/components/forms/QuoteConfirmation.tsx",
@@ -5417,7 +5417,7 @@ const QuoteConfirmation = ({ quoteData })=>{
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "space-y-4",
+                        className: "space-y-3 md:space-y-4",
                         children: [
                             isCustomServiceRequest ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 children: [
@@ -5716,10 +5716,10 @@ const QuoteConfirmation = ({ quoteData })=>{
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
-                className: "p-6",
+                className: "p-4 md:p-6",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                        className: "font-semibold text-lg text-gray-900 mb-3",
+                        className: "font-semibold text-base md:text-lg text-gray-900 mb-3",
                         children: "What's Included"
                     }, void 0, false, {
                         fileName: "[project]/src/components/forms/QuoteConfirmation.tsx",
@@ -5838,7 +5838,7 @@ const QuoteConfirmation = ({ quoteData })=>{
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "text-center pt-4",
+                className: "text-center pt-3 md:pt-4",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         className: "text-gray-600 mb-4",

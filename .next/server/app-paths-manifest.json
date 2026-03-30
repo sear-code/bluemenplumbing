@@ -7,6 +7,7 @@
   "/api/google-reviews/route": "app/api/google-reviews/route.js",
   "/api/quotes/route": "app/api/quotes/route.js",
   "/api/services/route": "app/api/services/route.js",
+  "/opengraph-image/route": "app-edge-has-no-entrypoint",
   "/page": "app/page.js",
   "/privacy/page": "app/privacy/page.js",
   "/services/[slug]/page": "app/services/[slug]/page.js",

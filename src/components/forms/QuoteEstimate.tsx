@@ -4,10 +4,11 @@ import { QuoteRequest } from '@/models/Quote';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { getServiceItemById, calculateTotalDuration, calculateTotalPrice } from '@/services/serviceData';
-import { Clock, DollarSign, AlertCircle, X, Pencil } from 'lucide-react';
+import { Clock, DollarSign, AlertCircle, X, Pencil, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { applyPriceMarkup } from '@/lib/utils';
 import { EMERGENCY_FEE } from '@/lib/constants';
+import { SERVICE_CITIES } from '@/config/serviceAreas';
 
 interface QuoteEstimateProps {
   quoteData: QuoteRequest;
@@ -38,6 +39,14 @@ const QuoteEstimate = ({ quoteData, onUpdate, onGoToStep }: QuoteEstimateProps) 
     quoteData.propertyType
   );
 
+  const distanceFee = quoteData.distanceFee ?? 0;
+  const distanceKm = quoteData.distanceKm ?? 0;
+  const nearestCoreCity = distanceKm > 0
+    ? SERVICE_CITIES.find(c => c.name === quoteData.address.city)?.nearestCoreCity ?? ''
+    : '';
+
+  const displayTotal = livePrice + distanceFee;
+
   const isEmergency = quoteData.urgency === 'emergency';
   const emergencyMin = applyPriceMarkup(EMERGENCY_FEE);
 
@@ -64,22 +73,22 @@ const QuoteEstimate = ({ quoteData, onUpdate, onGoToStep }: QuoteEstimateProps) 
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+        <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">
           Your Estimated Quote
         </h2>
-        <p className="text-gray-600 mb-6">
+        <p className="text-sm md:text-base text-gray-600 mb-4 md:mb-6">
           Based on the information provided, here's your estimated cost
         </p>
       </div>
 
       {/* Price Display */}
-      <Card className="p-8 bg-gradient-to-br from-[#4492AC] to-[#357a91] text-white">
+      <Card className="p-5 md:p-8 bg-gradient-to-br from-[#4492AC] to-[#357a91] text-white">
         <div className="text-center">
-          <p className="text-lg opacity-90 mb-2">Estimated Total</p>
+          <p className="text-base md:text-lg opacity-90 mb-2">Estimated Total</p>
           <div className="flex items-center justify-center gap-2">
-            <DollarSign className="w-8 h-8" />
-            <span className="text-5xl font-bold">
-              {livePrice || 0}
+            <DollarSign className="w-6 h-6 md:w-8 md:h-8" />
+            <span className="text-3xl md:text-5xl font-bold">
+              {displayTotal || 0}
             </span>
           </div>
           <p className="text-sm opacity-75 mt-3">
@@ -89,8 +98,8 @@ const QuoteEstimate = ({ quoteData, onUpdate, onGoToStep }: QuoteEstimateProps) 
       </Card>
 
       {/* Quote Details */}
-      <Card className="p-6">
-        <h3 className="font-semibold text-lg text-gray-900 mb-4">
+      <Card className="p-4 md:p-6">
+        <h3 className="font-semibold text-base md:text-lg text-gray-900 mb-4">
           Quote Details
         </h3>
 
@@ -171,6 +180,22 @@ const QuoteEstimate = ({ quoteData, onUpdate, onGoToStep }: QuoteEstimateProps) 
                 </div>
               )}
 
+              {/* Travel Fee */}
+              {distanceFee > 0 && (
+                <div className="p-3 bg-blue-50 rounded-lg border border-[#4492AC]">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <MapPin className="w-4 h-4 text-[#4492AC]" />
+                      <div>
+                        <p className="text-gray-900 font-medium">Travel Fee</p>
+                        <p className="text-xs text-gray-600">{distanceKm}km from {nearestCoreCity}</p>
+                      </div>
+                    </div>
+                    <span className="text-gray-900 font-semibold">${distanceFee}</span>
+                  </div>
+                </div>
+              )}
+
               {/* Custom Service */}
               {quoteData.customService && quoteData.customService.trim().length > 0 && (
                 <div className="p-3 bg-blue-50 rounded-lg border border-[#4492AC]">
@@ -247,7 +272,7 @@ const QuoteEstimate = ({ quoteData, onUpdate, onGoToStep }: QuoteEstimateProps) 
       </Card>
 
       {/* Information Notice */}
-      <Card className="p-4 bg-blue-50 border-[#4492AC]">
+      <Card className="p-3 md:p-4 bg-blue-50 border-[#4492AC]">
         <div className="flex items-start gap-3">
           <AlertCircle className="w-5 h-5 text-[#4492AC] flex-shrink-0 mt-0.5" />
           <div>
@@ -261,8 +286,8 @@ const QuoteEstimate = ({ quoteData, onUpdate, onGoToStep }: QuoteEstimateProps) 
       </Card>
 
       {/* What's Included */}
-      <Card className="p-6">
-        <h3 className="font-semibold text-lg text-gray-900 mb-3">
+      <Card className="p-4 md:p-6">
+        <h3 className="font-semibold text-base md:text-lg text-gray-900 mb-3">
           What's Included
         </h3>
         <ul className="space-y-2 text-gray-700">

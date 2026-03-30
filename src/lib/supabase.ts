@@ -136,6 +136,8 @@ export interface QuoteRow {
   urgency: string;
   estimated_price: number;
   estimated_duration: number;
+  distance_fee: number | null;
+  distance_km: number | null;
   status: 'draft' | 'submitted' | 'contacted' | 'approved' | 'completed' | 'cancelled';
   access_notes: string | null;
   preferred_datetime: string | null;
@@ -162,6 +164,8 @@ export interface QuoteInsert {
   urgency?: string;
   estimated_price?: number;
   estimated_duration?: number;
+  distance_fee?: number | null;
+  distance_km?: number | null;
   status?: 'draft' | 'submitted' | 'contacted' | 'approved' | 'completed' | 'cancelled';
   access_notes?: string | null;
   preferred_datetime?: string | null;
@@ -186,6 +190,8 @@ export interface QuoteUpdate {
   urgency?: string;
   estimated_price?: number;
   estimated_duration?: number;
+  distance_fee?: number | null;
+  distance_km?: number | null;
   status?: 'draft' | 'submitted' | 'contacted' | 'approved' | 'completed' | 'cancelled';
   access_notes?: string | null;
   preferred_datetime?: string | null;
