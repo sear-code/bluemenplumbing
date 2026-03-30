@@ -69,7 +69,11 @@ export interface QuoteRequest {
   
   // Flags
   isCustomServiceRequest?: boolean;
-  
+
+  // Travel fee
+  distanceFee?: number;
+  distanceKm?: number;
+
   // Calculated
   estimatedPrice?: number;
   status: 'draft' | 'submitted' | 'pending' | 'reviewed';

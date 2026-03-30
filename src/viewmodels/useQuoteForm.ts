@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { QuoteRequest } from '@/models/Quote';
 import { quoteService } from '@/services/quoteService';
 import { calculateTotalPrice } from '@/services/serviceData';
+import { getTravelFee } from '@/config/serviceAreas';
 
 const STORAGE_KEY = 'bluemen-quote-draft';
 const DRAFT_MAX_AGE_MS = 24 * 60 * 60 * 1000; // 24 hours
@@ -93,7 +94,26 @@ export const useQuoteForm = () => {
   }, [formData, currentStep]);
 
   const updateFormData = (updates: Partial<QuoteRequest>) => {
-    setFormData((prev) => ({ ...prev, ...updates }));
+    setFormData((prev) => {
+      const next = { ...prev, ...updates };
+
+      // Recalculate travel fee when city changes
+      if (updates.address && updates.address.city !== prev.address.city) {
+        const result = getTravelFee(updates.address.city);
+        if (result.type === 'core') {
+          next.distanceFee = 0;
+          next.distanceKm = 0;
+        } else if (result.type === 'extended') {
+          next.distanceFee = result.fee;
+          next.distanceKm = result.distanceKm;
+        } else {
+          next.distanceFee = undefined;
+          next.distanceKm = undefined;
+        }
+      }
+
+      return next;
+    });
   };
 
   const validateField = (fieldName: string, value: string): string | null => {
@@ -214,7 +234,11 @@ export const useQuoteForm = () => {
       case 2:
         // Step 2: Job Details (property type, city, problem description, photos)
         if (!formData.address.city || formData.address.city.trim().length === 0) {
-          setError('Please enter your city');
+          setError('Please select your city');
+          return false;
+        }
+        if (formData.address.city === '__not_listed__') {
+          setError('Please call us to check availability in your area');
           return false;
         }
         if (formData.problemDescription.trim().length < 10) {

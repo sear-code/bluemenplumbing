@@ -3,12 +3,12 @@
 import Image from 'next/image';
 
 const photos = [
-  { src: '/assets/photos/JPEG image-42E9-90DF-04-0.jpeg', alt: 'Plumbing project - professional installation' },
-  { src: '/assets/photos/JPEG image-42E9-90DF-04-3.jpeg', alt: 'Plumbing project - fixture work' },
-  { src: '/assets/photos/JPEG image-42E9-90DF-04-4.jpeg', alt: 'Plumbing project - pipe installation' },
-  { src: '/assets/photos/JPEG image-42E9-90DF-04-5.jpeg', alt: 'Plumbing project - bathroom work' },
-  { src: '/assets/photos/JPEG image-42E9-90DF-04-6.jpeg', alt: 'Plumbing project - renovation' },
-  { src: '/assets/photos/JPEG image-42E9-90DF-04-8.jpeg', alt: 'Plumbing project - completed work' },
+  { src: '/assets/photos/professional-plumbing-installation.jpeg', alt: 'Professional plumbing installation' },
+  { src: '/assets/photos/plumbing-fixture-repair.jpeg', alt: 'Plumbing fixture repair' },
+  { src: '/assets/photos/residential-pipe-installation.jpeg', alt: 'Residential pipe installation' },
+  { src: '/assets/photos/bathroom-plumbing-renovation.jpeg', alt: 'Bathroom plumbing renovation' },
+  { src: '/assets/photos/completed-plumbing-project.jpeg', alt: 'Completed plumbing project' },
+  { src: '/assets/photos/kitchen-plumbing-service.jpeg', alt: 'Kitchen plumbing service' },
 ];
 
 const Portfolio = () => {

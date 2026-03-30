@@ -22,23 +22,23 @@ const QuoteConfirmation = ({ quoteData }: QuoteConfirmationProps) => {
     quoteData.customService.trim().length > 0;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 md:space-y-6">
       <div className="text-center">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
-          <CheckCircle2 className="w-10 h-10 text-green-600" />
+        <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 bg-green-100 rounded-full mb-4">
+          <CheckCircle2 className="w-7 h-7 md:w-10 md:h-10 text-green-600" />
         </div>
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">
+        <h2 className="text-xl md:text-3xl font-bold text-gray-900 mb-2">
           {isCustomServiceRequest ? 'Custom Quote Request Received!' : 'Quote Request Submitted!'}
         </h2>
-        <p className="text-lg text-gray-600">
+        <p className="text-sm md:text-lg text-gray-600">
           Thank you for choosing Blue Men Plumbing
         </p>
       </div>
 
-      <Card className="p-6 bg-blue-50 border-[#4492AC]">
-        <div className="space-y-4">
+      <Card className="p-4 md:p-6 bg-blue-50 border-[#4492AC]">
+        <div className="space-y-3 md:space-y-4">
           <div>
-            <h3 className="font-semibold text-lg text-gray-900 mb-3">
+            <h3 className="font-semibold text-base md:text-lg text-gray-900 mb-3">
               What happens next?
             </h3>
             {isCustomServiceRequest ? (
@@ -75,9 +75,9 @@ const QuoteConfirmation = ({ quoteData }: QuoteConfirmationProps) => {
           </div>
 
           {!isCustomServiceRequest && quoteData.estimatedPrice && (
-            <div className="pt-4 border-t border-blue-200">
+            <div className="pt-3 md:pt-4 border-t border-blue-200">
               <p className="text-sm text-gray-600 mb-1">Estimated Price Range</p>
-              <p className="text-2xl font-bold text-[#4492AC]">
+              <p className="text-xl md:text-2xl font-bold text-[#4492AC]">
                 ${quoteData.estimatedPrice}
               </p>
               <p className="text-xs text-gray-500 mt-1">
@@ -88,12 +88,12 @@ const QuoteConfirmation = ({ quoteData }: QuoteConfirmationProps) => {
         </div>
       </Card>
 
-      <Card className="p-6">
-        <h3 className="font-semibold text-lg text-gray-900 mb-4">
+      <Card className="p-4 md:p-6">
+        <h3 className="font-semibold text-base md:text-lg text-gray-900 mb-4">
           Quote Summary
         </h3>
 
-        <div className="space-y-4">
+        <div className="space-y-3 md:space-y-4">
           {isCustomServiceRequest ? (
             <div>
               <p className="text-sm font-medium text-gray-600 mb-2">Custom Service Request</p>
@@ -176,8 +176,8 @@ const QuoteConfirmation = ({ quoteData }: QuoteConfirmationProps) => {
       </Card>
 
       {/* What's Included */}
-      <Card className="p-6">
-        <h3 className="font-semibold text-lg text-gray-900 mb-3">
+      <Card className="p-4 md:p-6">
+        <h3 className="font-semibold text-base md:text-lg text-gray-900 mb-3">
           What's Included
         </h3>
         <ul className="space-y-2 text-gray-700">
@@ -200,7 +200,7 @@ const QuoteConfirmation = ({ quoteData }: QuoteConfirmationProps) => {
         </ul>
       </Card>
 
-      <div className="text-center pt-4">
+      <div className="text-center pt-3 md:pt-4">
         <p className="text-gray-600 mb-4">
           Need immediate assistance?
         </p>

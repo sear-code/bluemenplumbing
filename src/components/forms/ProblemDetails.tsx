@@ -1,11 +1,13 @@
 'use client'
 
 import { Textarea } from '@/components/ui/textarea';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Upload, X, Home, Building2, Store } from 'lucide-react';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Upload, X, Home, Building2, Store, MapPin, Phone } from 'lucide-react';
 import { useState } from 'react';
+import { CORE_CITIES, EXTENDED_CITIES, getTravelFee } from '@/config/serviceAreas';
+import { COMPANY } from '@/lib/constants';
 
 interface JobDetailsProps {
   description: string;
@@ -61,31 +63,32 @@ const JobDetails = ({
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 md:space-y-8">
       <div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+        <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">
           Job Details
         </h2>
-        <p className="text-gray-600 mb-6">
+        <p className="text-sm md:text-base text-gray-600 mb-4 md:mb-6">
           Tell us about your property and the plumbing issue
         </p>
 
         {/* Property Type */}
-        <div className="space-y-6">
+        <div className="space-y-4 md:space-y-6">
           <div>
-            <Label className="text-base font-medium mb-3 block">Property Type *</Label>
+            <Label id="propertyType-label" className="text-sm md:text-base font-medium mb-3 block">Property Type *</Label>
             <RadioGroup
               value={propertyType}
               onValueChange={(val) => onUpdate({ propertyType: val })}
-              className="grid grid-cols-1 md:grid-cols-3 gap-4"
+              className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4"
+              aria-labelledby="propertyType-label"
             >
               <div className="relative">
                 <RadioGroupItem value="house" id="house" className="peer sr-only" />
                 <Label
                   htmlFor="house"
-                  className="flex flex-col items-center justify-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-[#4492AC] peer-data-[state=checked]:border-[#4492AC] peer-data-[state=checked]:bg-blue-50 transition-all"
+                  className="flex flex-col items-center justify-center p-3 md:p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-[#4492AC] peer-data-[state=checked]:border-[#4492AC] peer-data-[state=checked]:bg-blue-50 transition-all"
                 >
-                  <Home className="w-8 h-8 mb-2 text-gray-600" />
+                  <Home className="w-6 h-6 md:w-8 md:h-8 mb-1.5 md:mb-2 text-gray-600" />
                   <span className="font-medium">House</span>
                 </Label>
               </div>
@@ -93,9 +96,9 @@ const JobDetails = ({
                 <RadioGroupItem value="apartment" id="apartment" className="peer sr-only" />
                 <Label
                   htmlFor="apartment"
-                  className="flex flex-col items-center justify-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-[#4492AC] peer-data-[state=checked]:border-[#4492AC] peer-data-[state=checked]:bg-blue-50 transition-all"
+                  className="flex flex-col items-center justify-center p-3 md:p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-[#4492AC] peer-data-[state=checked]:border-[#4492AC] peer-data-[state=checked]:bg-blue-50 transition-all"
                 >
-                  <Building2 className="w-8 h-8 mb-2 text-gray-600" />
+                  <Building2 className="w-6 h-6 md:w-8 md:h-8 mb-1.5 md:mb-2 text-gray-600" />
                   <span className="font-medium">Apartment</span>
                 </Label>
               </div>
@@ -103,9 +106,9 @@ const JobDetails = ({
                 <RadioGroupItem value="commercial" id="commercial" className="peer sr-only" />
                 <Label
                   htmlFor="commercial"
-                  className="flex flex-col items-center justify-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-[#4492AC] peer-data-[state=checked]:border-[#4492AC] peer-data-[state=checked]:bg-blue-50 transition-all"
+                  className="flex flex-col items-center justify-center p-3 md:p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-[#4492AC] peer-data-[state=checked]:border-[#4492AC] peer-data-[state=checked]:bg-blue-50 transition-all"
                 >
-                  <Store className="w-8 h-8 mb-2 text-gray-600" />
+                  <Store className="w-6 h-6 md:w-8 md:h-8 mb-1.5 md:mb-2 text-gray-600" />
                   <span className="font-medium">Commercial</span>
                 </Label>
               </div>
@@ -114,21 +117,86 @@ const JobDetails = ({
 
           {/* City */}
           <div>
-            <Label htmlFor="city" className="text-base font-medium">
+            <Label htmlFor="city" className="text-sm md:text-base font-medium">
               City *
             </Label>
             <p className="text-sm text-gray-600 mb-2">
               Which city do you need service in?
             </p>
-            <Input
-              id="city"
-              type="text"
+            <Select
               value={address.city}
-              onChange={(e) => handleAddressChange('city', e.target.value)}
-              placeholder="Enter your city"
-              className="mt-2"
-              required
-            />
+              onValueChange={(val) => handleAddressChange('city', val)}
+            >
+              <SelectTrigger id="city" className="mt-2">
+                <SelectValue placeholder="Select your city" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel className="flex items-center gap-1.5 text-green-700">
+                    <MapPin className="w-3.5 h-3.5" />
+                    Core Service Area
+                  </SelectLabel>
+                  {CORE_CITIES.map(city => (
+                    <SelectItem key={city.name} value={city.name}>
+                      {city.name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+                <SelectGroup>
+                  <SelectLabel className="flex items-center gap-1.5 text-[#4492AC]">
+                    <MapPin className="w-3.5 h-3.5" />
+                    Extended Service Area
+                  </SelectLabel>
+                  {EXTENDED_CITIES.map(city => (
+                    <SelectItem key={city.name} value={city.name}>
+                      {city.name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+                <SelectGroup>
+                  <SelectItem value="__not_listed__">
+                    My city isn't listed
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+
+            {/* City feedback */}
+            {address.city && address.city !== '__not_listed__' && (() => {
+              const result = getTravelFee(address.city);
+              if (result.type === 'core') {
+                return (
+                  <p className="text-sm text-green-600 mt-2 flex items-center gap-1.5">
+                    <MapPin className="w-4 h-4" />
+                    No travel charge for your area
+                  </p>
+                );
+              }
+              if (result.type === 'extended') {
+                return (
+                  <p className="text-sm text-[#4492AC] mt-2 flex items-center gap-1.5">
+                    <MapPin className="w-4 h-4" />
+                    Travel fee: ${result.fee} ({result.distanceKm}km from {result.nearestCoreCity})
+                  </p>
+                );
+              }
+              return null;
+            })()}
+
+            {address.city === '__not_listed__' && (
+              <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-lg text-center">
+                <p className="text-sm text-amber-800">
+                  Please call us to check availability in your area.
+                </p>
+                <a
+                  href={`tel:${COMPANY.phone}`}
+                  className="inline-flex items-center gap-2 mt-2 px-4 py-2 bg-amber-100 hover:bg-amber-200 text-amber-900 font-semibold rounded-lg transition-colors"
+                >
+                  <Phone className="w-4 h-4" />
+                  {COMPANY.phoneFormatted}
+                </a>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -136,7 +204,7 @@ const JobDetails = ({
       {/* Problem Description */}
       <div>
         <div className="space-y-2">
-          <Label htmlFor="description" className="text-base font-medium">
+          <Label htmlFor="description" className="text-sm md:text-base font-medium">
             Problem Description *
           </Label>
           <Textarea
@@ -155,7 +223,7 @@ const JobDetails = ({
 
       {/* Photo Upload */}
       <div>
-        <Label className="text-base font-medium mb-3 block">
+        <Label htmlFor="photo-upload" className="text-sm md:text-base font-medium mb-3 block">
           Upload Photos (Optional)
         </Label>
         <p className="text-sm text-gray-600 mb-4">
@@ -165,7 +233,7 @@ const JobDetails = ({
         <div className="space-y-4">
           <label
             htmlFor="photo-upload"
-            className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors"
+            className="flex flex-col items-center justify-center w-full h-28 md:h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors"
           >
             <div className="flex flex-col items-center justify-center pt-5 pb-6">
               <Upload className="w-8 h-8 text-gray-400 mb-2" />
@@ -198,7 +266,7 @@ const JobDetails = ({
                   <button
                     type="button"
                     onClick={() => handleRemovePhoto(index)}
-                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
                     aria-label="Remove photo"
                   >
                     <X className="w-4 h-4" />
@@ -214,8 +282,3 @@ const JobDetails = ({
 };
 
 export default JobDetails;
-
-
-
-
-
