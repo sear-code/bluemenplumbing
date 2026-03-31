@@ -87,6 +87,14 @@ export const updateQuoteStatus = async (id: string, status: string, notes?: stri
   return result.data;
 };
 
+export const deleteQuote = async (id: string): Promise<void> => {
+  const response = await fetch(`/api/admin/quotes/${id}`, {
+    method: 'DELETE',
+    headers: await getAuthHeaders(),
+  });
+  await handleResponse(response);
+};
+
 export const updateQuoteNotes = async (
   id: string,
   notes: { internal_notes?: string | null; technician_notes?: string | null }

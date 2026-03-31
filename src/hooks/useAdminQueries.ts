@@ -7,6 +7,7 @@ import {
   updateQuote,
   updateQuoteStatus,
   updateQuoteNotes,
+  deleteQuote,
   type QuoteFilters,
 } from '@/services/adminQuoteApi';
 import {
@@ -71,6 +72,16 @@ export function useUpdateQuoteNotes() {
     }) => updateQuoteNotes(id, notes),
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ['admin-quote', variables.id] });
+    },
+  });
+}
+
+export function useDeleteQuote() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => deleteQuote(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-quotes'] });
     },
   });
 }

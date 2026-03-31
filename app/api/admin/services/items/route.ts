@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@/lib/supabase/server';
 import { serviceItemCreateSchema, serviceItemUpdateSchema } from '@/lib/validations/service';
 
 /**
@@ -10,18 +10,14 @@ import { serviceItemCreateSchema, serviceItemUpdateSchema } from '@/lib/validati
  */
 export async function GET(request: NextRequest) {
   try {
-    if (!supabase) {
-      return NextResponse.json(
-        { success: false, error: 'Supabase not configured' },
-        { status: 503 }
-      );
-    }
+    const supabase = await createClient();
     const { searchParams } = new URL(request.url);
     const categoryId = searchParams.get('category_id');
 
     let query = supabase
       .from('service_items')
       .select('*')
+      .eq('is_active', true)
       .order('display_order', { ascending: true });
 
     if (categoryId) {
@@ -55,12 +51,7 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
-    if (!supabase) {
-      return NextResponse.json(
-        { success: false, error: 'Supabase not configured' },
-        { status: 503 }
-      );
-    }
+    const supabase = await createClient();
     const rawBody = await request.json();
     const parseResult = serviceItemCreateSchema.safeParse(rawBody);
 
@@ -102,12 +93,7 @@ export async function POST(request: NextRequest) {
  */
 export async function PUT(request: NextRequest) {
   try {
-    if (!supabase) {
-      return NextResponse.json(
-        { success: false, error: 'Supabase not configured' },
-        { status: 503 }
-      );
-    }
+    const supabase = await createClient();
     const rawBody = await request.json();
     const parseResult = serviceItemUpdateSchema.safeParse(rawBody);
 
@@ -152,12 +138,7 @@ export async function PUT(request: NextRequest) {
  */
 export async function DELETE(request: NextRequest) {
   try {
-    if (!supabase) {
-      return NextResponse.json(
-        { success: false, error: 'Supabase not configured' },
-        { status: 503 }
-      );
-    }
+    const supabase = await createClient();
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
 
@@ -168,12 +149,10 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('service_items')
-      .update({ is_active: false })
-      .eq('id', id)
-      .select()
-      .single();
+      .delete()
+      .eq('id', id);
 
     if (error) {
       console.error('Error deleting item:', error);
@@ -183,7 +162,7 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    return NextResponse.json({ success: true, data });
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error in DELETE item:', error);
     return NextResponse.json(

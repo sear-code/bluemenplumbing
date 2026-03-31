@@ -88,27 +88,6 @@ const CategoryForm = ({
       />
     </div>
 
-    <div>
-      <Label htmlFor="cat-type">Category Type *</Label>
-      <Select
-        value={categoryFormData.category}
-        onValueChange={(value) => setCategoryFormData({ ...categoryFormData, category: value as 'repair' | 'installation' | 'kitchen' | 'bathroom' | 'unclog' | 'filter' | 'maintenance' })}
-      >
-        <SelectTrigger className="mt-1">
-          <SelectValue placeholder="Select category type" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="repair">Leak Repairs</SelectItem>
-          <SelectItem value="installation">Installations</SelectItem>
-          <SelectItem value="kitchen">Kitchen Plumbing</SelectItem>
-          <SelectItem value="bathroom">Bathroom Plumbing</SelectItem>
-          <SelectItem value="unclog">Unclog / Drain Clearing</SelectItem>
-          <SelectItem value="filter">Water Filtration</SelectItem>
-          <SelectItem value="maintenance">Maintenance</SelectItem>
-        </SelectContent>
-      </Select>
-    </div>
-
     <div className="grid grid-cols-2 gap-4">
       <div>
         <Label htmlFor="priceMin">Min Price ($) *</Label>
@@ -464,7 +443,6 @@ const ServicesManagement = () => {
       await adminServiceApi.createCategory({
         name: categoryFormData.name,
         description: categoryFormData.description,
-        category: categoryFormData.category,
         priceRangeMin: parseInt(categoryFormData.priceRangeMin),
         priceRangeMax: parseInt(categoryFormData.priceRangeMax),
         estimatedDuration: parseInt(categoryFormData.estimatedDuration),
@@ -511,7 +489,6 @@ const ServicesManagement = () => {
       await adminServiceApi.updateCategory(editingCategory.id, {
         name: categoryFormData.name,
         description: categoryFormData.description,
-        category: categoryFormData.category,
         priceRangeMin: parseInt(categoryFormData.priceRangeMin),
         priceRangeMax: parseInt(categoryFormData.priceRangeMax),
         estimatedDuration: parseInt(categoryFormData.estimatedDuration),

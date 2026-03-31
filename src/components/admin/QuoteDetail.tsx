@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { useAdminQuote, useUpdateQuote, useUpdateQuoteNotes } from '@/hooks/useAdminQueries';
+import { useAdminQuote, useUpdateQuote, useUpdateQuoteNotes, useDeleteQuote } from '@/hooks/useAdminQueries';
 import { QuoteStatusPipeline } from './QuoteStatusPipeline';
 import { QuoteEditDialog } from './QuoteEditDialog';
 import { StatusBadge } from './StatusBadge';
@@ -25,14 +25,19 @@ import {
   Calendar,
   Clock,
   Loader2,
+  Trash2,
+  Wrench,
 } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { format } from 'date-fns';
 
 export function QuoteDetail({ quoteId }: { quoteId: string }) {
   const { data: quote, isLoading } = useAdminQuote(quoteId);
   const updateQuote = useUpdateQuote();
   const updateNotes = useUpdateQuoteNotes();
+  const deleteQuote = useDeleteQuote();
+  const router = useRouter();
   const [editOpen, setEditOpen] = useState(false);
   const [internalNotes, setInternalNotes] = useState<string | null>(null);
   const [techNotes, setTechNotes] = useState<string | null>(null);
@@ -79,6 +84,17 @@ export function QuoteDetail({ quoteId }: { quoteId: string }) {
     );
   };
 
+  const handleDelete = () => {
+    if (!confirm('Are you sure you want to permanently delete this quote? This cannot be undone.')) return;
+    deleteQuote.mutate(quoteId, {
+      onSuccess: () => {
+        toast.success('Quote deleted');
+        router.push('/admin/quotes');
+      },
+      onError: (err) => toast.error(err.message),
+    });
+  };
+
   if (isLoading) {
     return (
       <div className="space-y-4">
@@ -117,10 +133,25 @@ export function QuoteDetail({ quoteId }: { quoteId: string }) {
           </div>
           <StatusBadge status={quote.status} />
         </div>
-        <Button variant="outline" size="sm" onClick={() => setEditOpen(true)}>
-          <Pencil className="mr-2 h-4 w-4" />
-          Edit
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" size="sm" onClick={() => setEditOpen(true)}>
+            <Pencil className="mr-2 h-4 w-4" />
+            Edit
+          </Button>
+          <Button
+            variant="destructive"
+            size="sm"
+            onClick={handleDelete}
+            disabled={deleteQuote.isPending}
+          >
+            {deleteQuote.isPending ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Trash2 className="mr-2 h-4 w-4" />
+            )}
+            Delete
+          </Button>
+        </div>
       </div>
 
       <Tabs defaultValue="overview">
@@ -207,9 +238,54 @@ export function QuoteDetail({ quoteId }: { quoteId: string }) {
             </Card>
           </div>
 
+          {/* Selected Services */}
+          {(quote.resolved_services?.length > 0 || quote.resolved_categories?.length > 0) && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base flex items-center gap-2">
+                  <Wrench className="h-4 w-4" /> Selected Services
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {quote.resolved_categories?.length > 0 && (
+                  <div className="mb-3">
+                    <p className="text-xs text-muted-foreground mb-1.5">Categories</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {quote.resolved_categories.map((cat: { id: string; name: string }) => (
+                        <Badge key={cat.id} variant="secondary">
+                          {cat.name}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {quote.resolved_services?.length > 0 && (
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-1.5">Services</p>
+                    <div className="rounded-md border">
+                      {quote.resolved_services.map(
+                        (svc: { id: string; name: string; unitPrice: number }, i: number) => (
+                          <div
+                            key={svc.id}
+                            className={`flex items-center justify-between px-3 py-2 text-sm ${
+                              i > 0 ? 'border-t' : ''
+                            }`}
+                          >
+                            <span>{svc.name}</span>
+                            <span className="font-medium">${svc.unitPrice}</span>
+                          </div>
+                        )
+                      )}
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
+
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Service Details</CardTitle>
+              <CardTitle className="text-base">Additional Details</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 text-sm">
               {quote.problem_description && (
@@ -221,7 +297,7 @@ export function QuoteDetail({ quoteId }: { quoteId: string }) {
               {quote.custom_service && (
                 <div>
                   <p className="text-muted-foreground mb-1">Custom Service Request</p>
-                  <p>{quote.custom_service}</p>
+                  <p className="bg-muted/50 rounded-md p-2">{quote.custom_service}</p>
                 </div>
               )}
               {quote.access_notes && (
@@ -235,6 +311,9 @@ export function QuoteDetail({ quoteId }: { quoteId: string }) {
                   <p className="text-muted-foreground mb-1">Preferred Date/Time</p>
                   <p>{format(new Date(quote.preferred_datetime), 'MMM d, yyyy h:mm a')}</p>
                 </div>
+              )}
+              {!quote.problem_description && !quote.custom_service && !quote.access_notes && !quote.preferred_datetime && (
+                <p className="text-muted-foreground text-center py-2">No additional details.</p>
               )}
             </CardContent>
           </Card>

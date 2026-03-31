@@ -18,6 +18,7 @@ import {
   FileText,
   Wrench as WrenchIcon,
   Calendar,
+  DollarSign,
   Settings,
   LogOut,
 } from 'lucide-react';
@@ -27,6 +28,7 @@ const navItems = [
   { href: '/admin/quotes', label: 'Quotes', icon: FileText },
   { href: '/admin/services', label: 'Services', icon: WrenchIcon },
   { href: '/admin/calendar', label: 'Calendar', icon: Calendar },
+  { href: '/admin/revenue', label: 'Revenue', icon: DollarSign },
   { href: '/admin/settings', label: 'Settings', icon: Settings },
 ];
 
