@@ -9,6 +9,6 @@ export function cn(...inputs: ClassValue[]) {
  * Apply 20% markup to price for frontend display
  * Does not affect database prices
  */
-export const applyPriceMarkup = (price: number): number => {
-  return Math.round(price * 1.2);
+export const applyPriceMarkup = (price: number, markupPercentage: number = 20): number => {
+  return Math.round(price * (1 + markupPercentage / 100));
 }

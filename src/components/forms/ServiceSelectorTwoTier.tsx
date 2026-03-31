@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
+
 import { Textarea } from '@/components/ui/textarea';
 import {
   CheckCircle2,
@@ -68,6 +68,10 @@ const ServiceSelectorTwoTier = ({
       setError(null);
 
       const response = await fetch('/api/services');
+      if (!response.ok) {
+        setError('Failed to load services. Please try again.');
+        return;
+      }
       const result = await response.json();
 
       if (result.success && result.data) {
@@ -144,8 +148,8 @@ const ServiceSelectorTwoTier = ({
 
   const isEmergency = urgency === 'emergency';
 
-  const handleEmergencyToggle = (checked: boolean) => {
-    onUpdate({ urgency: checked ? 'emergency' : 'standard' });
+  const handleEmergencyToggle = () => {
+    onUpdate({ urgency: isEmergency ? 'standard' : 'emergency' });
   };
 
   const getRunningTotal = (): string => {
@@ -196,13 +200,14 @@ const ServiceSelectorTwoTier = ({
 
   return (
     <div className="space-y-6 md:space-y-8">
-      {/* Emergency Toggle — compact on mobile */}
+      {/* Emergency Option — clickable card */}
       <Card
-        className={`p-3 md:p-5 transition-all duration-200 ${
+        className={`p-3 md:p-5 cursor-pointer transition-all duration-200 hover:shadow-md ${
           isEmergency
             ? 'border-[#FF8C00] border-2 bg-orange-50'
-            : 'border-gray-200'
+            : 'border-gray-200 hover:border-[#FF8C00]/50'
         }`}
+        onClick={handleEmergencyToggle}
       >
         <div className="flex items-center justify-between gap-3 md:gap-4">
           <div className="flex items-start gap-2 md:gap-3">
@@ -216,11 +221,13 @@ const ServiceSelectorTwoTier = ({
               </p>
             </div>
           </div>
-          <Switch
-            checked={isEmergency}
-            onCheckedChange={handleEmergencyToggle}
-            className="flex-shrink-0"
-          />
+          <div className="flex-shrink-0">
+            {isEmergency ? (
+              <CheckCircle2 className="w-5 h-5 text-[#FF8C00]" />
+            ) : (
+              <div className="w-5 h-5 rounded-full border-2 border-gray-300" />
+            )}
+          </div>
         </div>
       </Card>
 
@@ -432,7 +439,7 @@ const ServiceSelectorTwoTier = ({
       </div>
 
       {/* Summary with running total */}
-      {(selectedServices.length > 0 || customService.trim().length > 0) && (
+      {(selectedServices.length > 0 || customService.trim().length > 0 || isEmergency) && (
         <Card className="p-3 md:p-4 bg-blue-50 border-[#4492AC]">
           <div className="flex items-center justify-between">
             <div>
@@ -446,11 +453,14 @@ const ServiceSelectorTwoTier = ({
                 {selectedServices.length === 0 && customService.trim().length > 0 && (
                   <span>Custom service added</span>
                 )}
+                {selectedServices.length === 0 && customService.trim().length === 0 && isEmergency && (
+                  <span>Emergency service selected</span>
+                )}
               </p>
-              {selectedServices.length > 0 && (
+              {(selectedServices.length > 0 || isEmergency) && (
                 <p className="text-[10px] md:text-xs text-gray-600 mt-0.5 md:mt-1">
-                  Estimated: {getRunningTotal()}
-                  {isEmergency && ' (incl. emergency)'}
+                  Estimated: {selectedServices.length === 0 && isEmergency ? '~$300' : getRunningTotal()}
+                  {isEmergency && selectedServices.length > 0 && ' (incl. emergency)'}
                 </p>
               )}
             </div>

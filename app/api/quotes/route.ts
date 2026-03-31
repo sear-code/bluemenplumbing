@@ -120,11 +120,9 @@ export async function POST(request: NextRequest) {
     };
 
     // Insert quote into database
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('quotes')
-      .insert(quoteInsert)
-      .select()
-      .single();
+      .insert(quoteInsert);
 
     if (error) {
       console.error('Supabase error:', error);
@@ -304,7 +302,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       data: responseData,
-      dbRecord: data,
     });
   } catch (error) {
     console.error('Quote submission error:', error);

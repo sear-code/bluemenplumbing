@@ -8,9 +8,8 @@ import { applyPriceMarkup } from '@/lib/utils';
  */
 export const fetchServiceCategories = async (): Promise<ServiceCategory[]> => {
   try {
-    // Check if Supabase is configured
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-      console.warn('Supabase not configured - environment variables missing');
+    if (!supabase) {
+      console.warn('Supabase client not initialized');
       return [];
     }
 
@@ -68,6 +67,7 @@ export const fetchServiceCategories = async (): Promise<ServiceCategory[]> => {
  */
 export const fetchCategoryById = async (categoryId: string): Promise<ServiceCategory | null> => {
   try {
+    if (!supabase) return null;
     const { data: category, error: categoryError } = await supabase
       .from('service_categories')
       .select('*')
@@ -105,6 +105,7 @@ export const fetchCategoryById = async (categoryId: string): Promise<ServiceCate
  */
 export const fetchServiceItemById = async (itemId: string): Promise<{ category: ServiceCategory; item: ServiceItem } | null> => {
   try {
+    if (!supabase) return null;
     const { data: item, error: itemError } = await supabase
       .from('service_items')
       .select('*')
@@ -142,7 +143,7 @@ export const calculateTotalPriceFromSupabase = async (
   propertyType: string
 ): Promise<number> => {
   try {
-    if (selectedItemIds.length === 0) return 0;
+    if (selectedItemIds.length === 0 || !supabase) return 0;
 
     const { data: items, error } = await supabase
       .from('service_items')
@@ -184,7 +185,7 @@ export const calculateTotalPriceFromSupabase = async (
  */
 export const calculateTotalDurationFromSupabase = async (selectedItemIds: string[]): Promise<number> => {
   try {
-    if (selectedItemIds.length === 0) return 0;
+    if (selectedItemIds.length === 0 || !supabase) return 0;
 
     const { data: items, error } = await supabase
       .from('service_items')

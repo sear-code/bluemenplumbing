@@ -10,6 +10,12 @@ import { serviceItemCreateSchema, serviceItemUpdateSchema } from '@/lib/validati
  */
 export async function GET(request: NextRequest) {
   try {
+    if (!supabase) {
+      return NextResponse.json(
+        { success: false, error: 'Supabase not configured' },
+        { status: 503 }
+      );
+    }
     const { searchParams } = new URL(request.url);
     const categoryId = searchParams.get('category_id');
 
@@ -49,6 +55,12 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
+    if (!supabase) {
+      return NextResponse.json(
+        { success: false, error: 'Supabase not configured' },
+        { status: 503 }
+      );
+    }
     const rawBody = await request.json();
     const parseResult = serviceItemCreateSchema.safeParse(rawBody);
 
@@ -90,6 +102,12 @@ export async function POST(request: NextRequest) {
  */
 export async function PUT(request: NextRequest) {
   try {
+    if (!supabase) {
+      return NextResponse.json(
+        { success: false, error: 'Supabase not configured' },
+        { status: 503 }
+      );
+    }
     const rawBody = await request.json();
     const parseResult = serviceItemUpdateSchema.safeParse(rawBody);
 
@@ -134,6 +152,12 @@ export async function PUT(request: NextRequest) {
  */
 export async function DELETE(request: NextRequest) {
   try {
+    if (!supabase) {
+      return NextResponse.json(
+        { success: false, error: 'Supabase not configured' },
+        { status: 503 }
+      );
+    }
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
 

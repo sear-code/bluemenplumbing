@@ -22,7 +22,14 @@
       "Bash(mv \"JPEG image-42E9-90DF-04-3.jpeg\" \"plumbing-fixture-repair.jpeg\")",
       "Bash(mv \"JPEG image-42E9-90DF-04-4.jpeg\" \"residential-pipe-installation.jpeg\")",
       "Bash(mv \"JPEG image-42E9-90DF-04-5.jpeg\" \"bathroom-plumbing-renovation.jpeg\")",
-      "Bash(mv \"JPEG image-42E9-90DF-04-6.jpeg\" \"completed-plumbing-project.jpeg\")"
+      "Bash(mv \"JPEG image-42E9-90DF-04-6.jpeg\" \"completed-plumbing-project.jpeg\")",
+      "mcp__supabase__list_projects",
+      "Bash(find /Users/searahmad/Documents/GitHub/bluemenplumbing -path */node_modules -prune -o -type f -name *admin* -print)",
+      "Bash(npx next:*)",
+      "Bash(kill:*)",
+      "Bash(npm install:*)",
+      "Bash(grep -r 'new URL' src/ app/ --include=*.ts --include=*.tsx)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d, indent=2\\)\\)\")"
     ]
   },
   "enableAllProjectMcpServers": true,

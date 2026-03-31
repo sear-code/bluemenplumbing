@@ -1,14 +1,14 @@
 import { ServiceCategory, ServiceItem } from '@/models/Quote';
+import { createClient } from '@/lib/supabase/client';
 
 const ADMIN_API_BASE = '/api/admin/services';
 
-const getAuthHeaders = (): HeadersInit => {
-  const token = typeof window !== 'undefined'
-    ? localStorage.getItem('admin_api_token') || ''
-    : '';
+const getAuthHeaders = async (): Promise<HeadersInit> => {
+  const supabase = createClient();
+  const { data: { session } } = await supabase.auth.getSession();
   return {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${token}`,
+    Authorization: `Bearer ${session?.access_token || ''}`,
   };
 };
 
@@ -21,9 +21,10 @@ const handleResponse = async (response: Response) => {
 };
 
 export const fetchServices = async (): Promise<ServiceCategory[]> => {
+  const headers = await getAuthHeaders();
   const [catRes, itemRes] = await Promise.all([
-    fetch(`${ADMIN_API_BASE}/categories`, { headers: getAuthHeaders() }),
-    fetch(`${ADMIN_API_BASE}/items`, { headers: getAuthHeaders() }),
+    fetch(`${ADMIN_API_BASE}/categories`, { headers }),
+    fetch(`${ADMIN_API_BASE}/items`, { headers }),
   ]);
 
   const catData = await handleResponse(catRes);
@@ -65,7 +66,7 @@ export const createCategory = async (data: {
 }): Promise<ServiceCategory> => {
   const response = await fetch(`${ADMIN_API_BASE}/categories`, {
     method: 'POST',
-    headers: getAuthHeaders(),
+    headers: await getAuthHeaders(),
     body: JSON.stringify({
       id: crypto.randomUUID(),
       name: data.name,
@@ -106,7 +107,7 @@ export const updateCategory = async (
 ): Promise<ServiceCategory> => {
   const response = await fetch(`${ADMIN_API_BASE}/categories`, {
     method: 'PUT',
-    headers: getAuthHeaders(),
+    headers: await getAuthHeaders(),
     body: JSON.stringify({
       id: categoryId,
       name: data.name,
@@ -137,7 +138,7 @@ export const updateCategory = async (
 export const deleteCategory = async (categoryId: string): Promise<void> => {
   const response = await fetch(`${ADMIN_API_BASE}/categories?id=${categoryId}`, {
     method: 'DELETE',
-    headers: getAuthHeaders(),
+    headers: await getAuthHeaders(),
   });
   await handleResponse(response);
 };
@@ -152,7 +153,7 @@ export const createItem = async (data: {
 }): Promise<ServiceItem> => {
   const response = await fetch(`${ADMIN_API_BASE}/items`, {
     method: 'POST',
-    headers: getAuthHeaders(),
+    headers: await getAuthHeaders(),
     body: JSON.stringify({
       id: crypto.randomUUID(),
       category_id: data.categoryId,
@@ -191,7 +192,7 @@ export const updateItem = async (
 ): Promise<ServiceItem> => {
   const response = await fetch(`${ADMIN_API_BASE}/items`, {
     method: 'PUT',
-    headers: getAuthHeaders(),
+    headers: await getAuthHeaders(),
     body: JSON.stringify({
       id: itemId,
       category_id: data.categoryId,
@@ -220,7 +221,7 @@ export const updateItem = async (
 export const deleteItem = async (itemId: string): Promise<void> => {
   const response = await fetch(`${ADMIN_API_BASE}/items?id=${itemId}`, {
     method: 'DELETE',
-    headers: getAuthHeaders(),
+    headers: await getAuthHeaders(),
   });
   await handleResponse(response);
 };

@@ -9,6 +9,12 @@ import { serviceCategoryCreateSchema, serviceCategoryUpdateSchema } from '@/lib/
  */
 export async function GET() {
   try {
+    if (!supabase) {
+      return NextResponse.json(
+        { success: false, error: 'Supabase not configured' },
+        { status: 503 }
+      );
+    }
     const { data, error } = await supabase
       .from('service_categories')
       .select('*')
@@ -39,6 +45,12 @@ export async function GET() {
  */
 export async function POST(request: NextRequest) {
   try {
+    if (!supabase) {
+      return NextResponse.json(
+        { success: false, error: 'Supabase not configured' },
+        { status: 503 }
+      );
+    }
     const rawBody = await request.json();
     const parseResult = serviceCategoryCreateSchema.safeParse(rawBody);
 
@@ -80,6 +92,12 @@ export async function POST(request: NextRequest) {
  */
 export async function PUT(request: NextRequest) {
   try {
+    if (!supabase) {
+      return NextResponse.json(
+        { success: false, error: 'Supabase not configured' },
+        { status: 503 }
+      );
+    }
     const rawBody = await request.json();
     const parseResult = serviceCategoryUpdateSchema.safeParse(rawBody);
 
@@ -124,6 +142,12 @@ export async function PUT(request: NextRequest) {
  */
 export async function DELETE(request: NextRequest) {
   try {
+    if (!supabase) {
+      return NextResponse.json(
+        { success: false, error: 'Supabase not configured' },
+        { status: 503 }
+      );
+    }
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
 

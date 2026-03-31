@@ -225,8 +225,9 @@ export const useQuoteForm = () => {
         // Step 1: Service Selection
         const hasSelectedServices = formData.selectedServices.length > 0;
         const hasCustomService = formData.customService && formData.customService.trim().length > 0;
+        const hasEmergency = formData.urgency === 'emergency';
 
-        if (!hasSelectedServices && !hasCustomService) {
+        if (!hasSelectedServices && !hasCustomService && !hasEmergency) {
           setError('Please select at least one service or describe a custom service');
           return false;
         }

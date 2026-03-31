@@ -4,10 +4,12 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables');
+  console.warn('Missing Supabase environment variables — Supabase client will not be available');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = supabaseUrl && supabaseAnonKey
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : null;
 
 // Database types
 export interface Database {
@@ -27,6 +29,21 @@ export interface Database {
         Row: QuoteRow;
         Insert: QuoteInsert;
         Update: QuoteUpdate;
+      };
+      admin_settings: {
+        Row: AdminSettingsRow;
+        Insert: AdminSettingsInsert;
+        Update: AdminSettingsUpdate;
+      };
+      service_areas: {
+        Row: ServiceAreaRow;
+        Insert: ServiceAreaInsert;
+        Update: ServiceAreaUpdate;
+      };
+      quote_status_history: {
+        Row: QuoteStatusHistoryRow;
+        Insert: QuoteStatusHistoryInsert;
+        Update: QuoteStatusHistoryUpdate;
       };
     };
   };
@@ -117,6 +134,83 @@ export interface ServiceItemUpdate {
   is_active?: boolean;
 }
 
+export interface AdminSettingsRow {
+  id: string;
+  markup_percentage: number;
+  emergency_fee: number;
+  travel_rate_per_km: number;
+  max_service_radius_km: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AdminSettingsInsert {
+  id?: string;
+  markup_percentage?: number;
+  emergency_fee?: number;
+  travel_rate_per_km?: number;
+  max_service_radius_km?: number;
+}
+
+export interface AdminSettingsUpdate {
+  markup_percentage?: number;
+  emergency_fee?: number;
+  travel_rate_per_km?: number;
+  max_service_radius_km?: number;
+}
+
+export interface ServiceAreaRow {
+  id: string;
+  city_name: string;
+  zone: 'core' | 'extended';
+  distance_km: number;
+  nearest_core_city: string | null;
+  is_active: boolean;
+  display_order: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ServiceAreaInsert {
+  city_name: string;
+  zone: 'core' | 'extended';
+  distance_km?: number;
+  nearest_core_city?: string | null;
+  is_active?: boolean;
+  display_order?: number;
+}
+
+export interface ServiceAreaUpdate {
+  city_name?: string;
+  zone?: 'core' | 'extended';
+  distance_km?: number;
+  nearest_core_city?: string | null;
+  is_active?: boolean;
+  display_order?: number;
+}
+
+export interface QuoteStatusHistoryRow {
+  id: string;
+  quote_id: string;
+  previous_status: string | null;
+  new_status: string;
+  changed_by: string;
+  notes: string | null;
+  created_at: string;
+}
+
+export interface QuoteStatusHistoryInsert {
+  quote_id: string;
+  previous_status?: string | null;
+  new_status: string;
+  changed_by?: string;
+  notes?: string | null;
+}
+
+export interface QuoteStatusHistoryUpdate {
+  notes?: string | null;
+}
+
 export interface QuoteRow {
   id: string;
   quote_id: string;
@@ -142,6 +236,10 @@ export interface QuoteRow {
   access_notes: string | null;
   preferred_datetime: string | null;
   photos: string[];
+  scheduled_date: string | null;
+  scheduled_time: string | null;
+  internal_notes: string | null;
+  technician_notes: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -170,6 +268,10 @@ export interface QuoteInsert {
   access_notes?: string | null;
   preferred_datetime?: string | null;
   photos?: string[];
+  scheduled_date?: string | null;
+  scheduled_time?: string | null;
+  internal_notes?: string | null;
+  technician_notes?: string | null;
 }
 
 export interface QuoteUpdate {
@@ -196,5 +298,9 @@ export interface QuoteUpdate {
   access_notes?: string | null;
   preferred_datetime?: string | null;
   photos?: string[];
+  scheduled_date?: string | null;
+  scheduled_time?: string | null;
+  internal_notes?: string | null;
+  technician_notes?: string | null;
 }
 

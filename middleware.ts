@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-
-const ADMIN_API_SECRET = process.env.ADMIN_API_SECRET;
+import { updateSession } from '@/lib/supabase/middleware';
 
 const securityHeaders = {
   'X-Content-Type-Options': 'nosniff',
@@ -10,57 +9,59 @@ const securityHeaders = {
   'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
 };
 
-function isAdminRoute(pathname: string): boolean {
-  return pathname.startsWith('/api/admin');
+function applySecurityHeaders(response: NextResponse) {
+  for (const [key, value] of Object.entries(securityHeaders)) {
+    response.headers.set(key, value);
+  }
+  return response;
 }
 
-function verifyAdminAuth(request: NextRequest): boolean {
-  if (!ADMIN_API_SECRET) {
-    console.error('ADMIN_API_SECRET is not configured');
-    return false;
-  }
-
-  const authHeader = request.headers.get('authorization');
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return false;
-  }
-
-  const token = authHeader.slice(7);
-  return token === ADMIN_API_SECRET;
-}
-
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // Refresh Supabase auth session and get user
+  const { user, supabaseResponse } = await updateSession(request);
+
+  // Protect admin pages (except login)
+  if (pathname.startsWith('/admin') && pathname !== '/admin/login') {
+    if (!user) {
+      const loginUrl = request.nextUrl.clone();
+      loginUrl.pathname = '/admin/login';
+      const redirectResponse = NextResponse.redirect(loginUrl);
+      return applySecurityHeaders(redirectResponse);
+    }
+  }
+
+  // Redirect logged-in users away from login page
+  if (pathname === '/admin/login' && user) {
+    const adminUrl = request.nextUrl.clone();
+    adminUrl.pathname = '/admin';
+    const redirectResponse = NextResponse.redirect(adminUrl);
+    return applySecurityHeaders(redirectResponse);
+  }
+
   // Protect admin API routes
-  if (isAdminRoute(pathname)) {
-    if (!verifyAdminAuth(request)) {
-      return NextResponse.json(
-        { success: false, error: 'Unauthorized' },
-        {
-          status: 401,
-          headers: {
-            ...securityHeaders,
-            'WWW-Authenticate': 'Bearer',
-          },
-        }
+  if (pathname.startsWith('/api/admin')) {
+    if (!user) {
+      return applySecurityHeaders(
+        NextResponse.json(
+          { success: false, error: 'Unauthorized' },
+          {
+            status: 401,
+            headers: { 'WWW-Authenticate': 'Bearer' },
+          }
+        )
       );
     }
   }
 
-  const response = NextResponse.next();
-
-  // Apply security headers to all responses
-  for (const [key, value] of Object.entries(securityHeaders)) {
-    response.headers.set(key, value);
-  }
-
-  return response;
+  return applySecurityHeaders(supabaseResponse);
 }
 
 export const config = {
   matcher: [
     '/api/:path*',
+    '/admin/:path*',
     '/((?!_next/static|_next/image|favicon.ico).*)',
   ],
 };
